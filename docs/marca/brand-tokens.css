@@ -1,0 +1,41 @@
+/* FoodSave · tokens de marca (referencia para la Etapa 7)
+   Se aplican sobre las variables del tema de shadcn/ui de la plantilla.
+   Los NOMBRES de variables deben verificarse contra el archivo de tema real de la plantilla. */
+:root {
+  --fs-primary: #14683B;       /* verde bosque */
+  --fs-secondary: #F7B21A;     /* amarillo miel */
+  --fs-accent: #F26B21;        /* naranja */
+  --fs-leaf: #6BAF3D;
+  --fs-cream: #FFF7E6;
+  --fs-brown: #3D2514;
+  --fs-font-heading: "Fredoka", system-ui, sans-serif;
+  --fs-font-body: "Nunito", system-ui, sans-serif;
+
+  --background: #FFFBF2;
+  --foreground: #3D2514;
+  --card: #FFFFFF;
+  --card-foreground: #3D2514;
+  --primary: #14683B;          --primary-foreground: #FFFFFF;
+  --secondary: #F7B21A;        --secondary-foreground: #3D2514;
+  --accent: #FDE7C8;           --accent-foreground: #3D2514;
+  --muted: #F5EEDD;            --muted-foreground: #6B5646;
+  --destructive: #C62828;      --destructive-foreground: #FFFFFF;
+  --border: #E9DFC9;           --input: #E9DFC9;  --ring: #14683B;
+  --sidebar: #0F4F2E;          --sidebar-foreground: #FFF7E6;
+  --sidebar-primary: #F7B21A;  --sidebar-primary-foreground: #3D2514;
+  --sidebar-accent: #14683B;   --sidebar-accent-foreground: #FFFFFF;
+  --radius: 0.75rem;
+}
+.dark {
+  --background: #10201A;  --foreground: #FFF7E6;
+  --card: #16291F;        --card-foreground: #FFF7E6;
+  --primary: #6BAF3D;     --primary-foreground: #10201A;
+  --secondary: #F7B21A;   --secondary-foreground: #3D2514;
+  --accent: #1E3A2A;      --accent-foreground: #FFF7E6;
+  --muted: #1B3025;       --muted-foreground: #C9BBA3;
+  --destructive: #E57373; --destructive-foreground: #10201A;
+  --border: #284637;      --input: #284637;  --ring: #6BAF3D;
+  --sidebar: #0B1712;     --sidebar-foreground: #FFF7E6;
+}
+body { font-family: var(--fs-font-body); }
+h1, h2, h3, h4 { font-family: var(--fs-font-heading); }
