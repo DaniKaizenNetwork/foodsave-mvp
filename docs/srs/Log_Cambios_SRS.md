@@ -1,4 +1,8 @@
-# Log de cambios del SRS: v0.1 → v0.2
+# Log de cambios del SRS
+
+> Dos secciones: **v0.1 → v0.2** (correcciones transversales) y **v0.2 → v0.3** (ajustes de la verificación y validación de requisitos, Etapa 3).
+
+# v0.1 → v0.2
 
 **Documento:** SRS FoodSave (ISO/IEC/IEEE 29148) · **Fecha:** 2026-11-17 · **Autor:** _(nombre)_ · **Revisado por:** _(nombre)_
 
@@ -28,3 +32,26 @@
 ## Pendiente por decidir
 
 Ninguno.
+
+---
+
+# v0.2 → v0.3 (Etapa 3: verificación y validación)
+
+**Fecha:** 2026-11-17 · **Origen:** `02_Verificacion_Requisitos.xlsx` y `03_Validacion_Requisitos.xlsx` · **Autor:** _(nombre)_ · **Revisado por:** _(nombre)_
+
+| ID | Sección | Hallazgo | Cambio aplicado | SWR afectados |
+|----|---------|----------|-----------------|---------------|
+| AJ-01 | 5.4 | Verificación: SWR-BUS-005 era ambiguo («buscar por el nombre»: no define coincidencia total o parcial ni sensibilidad a mayúsculas) y no se podía derivar un resultado esperado | «…buscar ofertas activas por coincidencia total o parcial con el nombre del producto, sin distinguir entre mayúsculas y minúsculas» | SWR-BUS-005 |
+| AJ-02 | 4.2 | Validación: STK-CON-02 no mencionaba la búsqueda por nombre, así que SWR-BUS-005 no tenía una necesidad que lo respaldara | STK-CON-02 incluye «por nombre del producto» | SWR-BUS-005 |
+| AJ-03 | 5.3 | Verificación: SWR-OFE-003 expresa dos condiciones independientes en una sola frase | Se numeran como incisos verificables por separado: (a) cantidad entera positiva y (b) precio de oferta menor al original. No se divide en dos SWR para no superar el límite de 15 del MVP | SWR-OFE-003 |
+| AJ-04 | 5.5 | Verificación: SWR-RES-001 no define la cantidad válida (0, negativa o decimal) | «…indicando la cantidad deseada, que deberá ser un número entero positivo» | SWR-RES-001 |
+| AJ-05 | 5.5 | Verificación: SWR-RES-002 reúne tres condiciones y no dice qué se informa al usuario cuando falla | Incisos (a), (b) y (c), y «deberá rechazar la reserva informando al consumidor la condición que no se cumple» | SWR-RES-002 |
+| AJ-06 | 5.5 | Verificación: SWR-RES-005 no precisa a qué día corresponde «la hora de cierre de la sede», aunque el horario es por día de la semana (SWR-COM-014) | «…la hora de cierre de la sede del día de la reserva…» | SWR-RES-005 |
+| AJ-07 | 5 y Anexo A | Validación: seis SWR seleccionados no llegaban a un STK ni a un BR (SWR-SEC-002, OFE-003, BUS-001, BUS-005, RES-002, RES-003) | Se agregó STK en la columna de trazabilidad de SEC-002, OFE-003, RES-002 y RES-003; en el Anexo A se agregaron a las filas BR-03/STK-GEN-03 (SEC-002), BR-01/STK-DUE-03 (OFE-003, RES-002, RES-003), BR-01/STK-CON-01 (BUS-001, BUS-005) y BR-02/STK-CON-03 (RES-002, RES-003) | SEC-002, OFE-003, BUS-001, BUS-005, RES-002, RES-003 |
+| AJ-08 | Anexo A | Validación: SWR-RES-015 (marcar «Entregada») solo se trazaba a BR-03, pero la entrega es el evento que mide el retiro de BR-02 (SWR-ADM-014) | Nueva fila: BR-02 / STK-PER-02 / SYS-13 / SWR-RES-015. Se conserva el vínculo con BR-03 | SWR-RES-015 |
+
+Cambios de control documental: versión 0.3 y nueva fila en el historial de revisiones.
+
+## Revisado sin cambio
+
+SWR-AUTH-001, 005, 006, 010, SWR-OFE-001, SWR-RES-003, 011 y 015 tienen observaciones (por ejemplo, dependencia de permisos por persona o de la política de contraseñas) que se documentan en la verificación pero no modifican el texto del SRS, porque corresponden a requisitos fuera del alcance del MVP.
