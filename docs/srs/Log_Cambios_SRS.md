@@ -55,3 +55,19 @@ Cambios de control documental: versión 0.3 y nueva fila en el historial de revi
 ## Revisado sin cambio
 
 SWR-AUTH-001, 005, 006, 010, SWR-OFE-001, SWR-RES-003, 011 y 015 tienen observaciones (por ejemplo, dependencia de permisos por persona o de la política de contraseñas) que se documentan en la verificación pero no modifican el texto del SRS, porque corresponden a requisitos fuera del alcance del MVP.
+
+---
+
+# Notas posteriores a v0.3 (Etapa 6: plan de desarrollo con IA)
+
+**Fecha:** 2026-11-17 · **Origen:** plan de desarrollo aprobado (`docs/plan/plan_aprobado.md`) · **El texto del SRS no cambia; sigue en v0.3.**
+
+| ID | Tema | Nota |
+|----|------|------|
+| NP-01 | TC-AUTH-005 (SWR-AUTH-010) | El caso dice que se deniega el acceso y se redirige al inicio de sesión. En la implementación, sin sesión se redirige a /login con «Debes iniciar sesión»; con sesión y rol incorrecto se muestra «No tienes permiso para realizar esta acción» sin redirigir. Se interpreta que la redirección aplica al caso sin sesión. |
+| NP-02 | SYS-06 | La declaración de la condición del producto no se captura en el MVP; los campos obligatorios de la oferta son producto, precios, cantidad, vencimiento y sede (dependencia implícita c). |
+| NP-03 | SWR-BUS-001 y RN-03 | El listado muestra solo ofertas activas con unidades disponibles y vencimiento posterior a la hora actual; no hay cierre automático (SWR-OFE-012 fuera del MVP). |
+| NP-04 | SWR-RES-011 y RN-09 | Se cancela solo una reserva RESERVADA con plazo vigente (ahora menor que el plazo de retiro). Una reserva con plazo vencido no se cancela, sí se puede entregar, y su stock no se libera por no haber expiración (SWR-RES-018 fuera). |
+| NP-05 | SWR-RES-005 | Una sede abierta las 24 horas no tiene hora de cierre; el plazo es el menor entre las 12 horas y el vencimiento. |
+| NP-06 | Dependencia implícita (e) | `GET /sedes/mias` permite elegir la sede al publicar y filtrar las reservas de la sede (SWR-OFE-001 y SWR-RES-015). |
+

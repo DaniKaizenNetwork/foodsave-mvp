@@ -111,5 +111,6 @@ Fuente: `SRS_FoodSave_v0.3` y `01_Alcance_y_Trazabilidad.xlsx`. Estos son los **
 
 - Correo único (SWR-AUTH-004): restricción de unicidad en la base de datos.
 - Mostrar el plazo de retiro en la confirmación de la reserva (SWR-RES-006).
-- Campos obligatorios de la oferta (SWR-OFE-002): producto, precio original, precio de oferta, cantidad, vencimiento, sede y condición del producto.
+- Campos obligatorios de la oferta (SWR-OFE-002): producto, precio original, precio de oferta, cantidad, vencimiento y sede. La declaración de condición del producto (SYS-06) no se captura en el MVP.
 - Listados mínimos de reservas para cancelar y entregar desde la interfaz (SWR-RES-013, SWR-RES-020, SWR-RES-021).
+- Listado de sedes del usuario, `GET /sedes/mias` (dependencia implícita e): necesario para elegir la sede al publicar una oferta y para filtrar las reservas de la sede.
