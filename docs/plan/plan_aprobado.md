@@ -1,6 +1,6 @@
 # Plan de desarrollo FoodSave MVP — versión aprobada (v2)
 
-Plan aprobado por el equipo. Complemento: [componentes_plantilla.md](componentes_plantilla.md) (qué se reutiliza y descarta de la plantilla visual). Los cambios al contrato y a la matriz de pruebas están en la sección 10; se aplican a los `.xlsx` en la rama `docs/ajuste-contrato-matriz` (paso 0b del orden de desarrollo).
+Plan aprobado por el equipo. Complemento: [componentes_plantilla.md](componentes_plantilla.md) (qué se reutiliza y descarta de la plantilla visual). Los cambios al contrato y a la matriz de pruebas están en la sección 10; los aplicó el equipo a los `.xlsx`, `CLAUDE.md`, `SWR_seleccionados.md` y `Log_Cambios_SRS.md` fuera de la sesión de Claude Code (paso 0b del orden de desarrollo; ver la nota final).
 
 Fuentes leídas: `SWR_seleccionados.md`, `01_Alcance_y_Trazabilidad.xlsx`, `04_Matriz_Pruebas.xlsx` (todas las hojas de diseño), `Log_Cambios_SRS.md`, `CLAUDE.md`. El PDF 06 no se usa: ya verificaste sus criterios.
 
@@ -100,7 +100,7 @@ Zona horaria `America/Bogota` para interpretar el horario de cierre del día; fe
 
 ## 7. Orden de desarrollo: ramas y PR (a `develop`)
 0. `docs/plan-aprobado` — `plan_aprobado.md` + `componentes_plantilla.md`.
-0b. `docs/ajuste-contrato-matriz` — aplica la sección §10 a las hojas del contrato/matriz, `CLAUDE.md` y `Log_Cambios_SRS.md` (**solo con tu visto bueno**; editar los `.xlsx` conservando fórmulas y formato).
+0b. Ajuste del contrato y la matriz — **lo ejecutó el equipo, no la IA**, fuera de la sesión de Claude Code y en un PR aparte: aplica la sección §10 a los `.xlsx`, `CLAUDE.md`, `SWR_seleccionados.md` y `Log_Cambios_SRS.md`.
 1. `chore/monorepo-base` — workspaces npm, TypeScript 5.x, Nest, Prisma, Jest/Vitest, `.env.example`, logs globales + `redact` + UNIT-16.
 2. `feature/auth-api` — Usuario/Comercio/Sede, `hashPassword` + UNIT-08, register/login, guards, errores comunes, seed de usuarios con `SEED_ALLOW_RESET`, UNIT-14 y UNIT-15. **AUTH-001/005/006/010, SEC-002.**
 3. `feature/web-base` — plantilla limpia (sin Clerk ni demos), marca, layout/sidebar, `AuthProvider`, `RutaProtegida`, `/login`, `/registro`. **Cierra la autenticación completa (API + UI) antes del flujo principal.**
@@ -202,10 +202,14 @@ C1 mensajes de campos obligatorios → textos de RTL-01. C2 sin sesión/rol inco
 3. Sede no 24 h sin fila de horario para el día: error de configuración 500 registrado en logs, no un código de negocio nuevo; las semillas cargan los 7 días (✔).
 4. `SEED_ALLOW_RESET=true` exigido a **ambos** `seed` y `seed:test` porque los dos reinician datos (✔).
 5. Un único TypeScript 5.x en la raíz para `api` y `web`; si la versión de Next de la plantilla lo impide, te aviso antes de cambiar nada (✔).
-6. Aplicar §10 al `.xlsx`/`CLAUDE.md`/log en la rama `docs/ajuste-contrato-matriz` **después** de tu visto bueno, en un PR separado (✔).
+6. Aplicar §10 a los `.xlsx`, `CLAUDE.md`, `SWR_seleccionados.md` y `Log_Cambios_SRS.md`: lo ejecutó el equipo fuera de la sesión de Claude Code, en un PR aparte (paso 0b).
 7. UNIT-16 (`redact`) no tiene SWR en la matriz; se registra como «regla de CLAUDE.md» (✔).
 
 **Riesgos:** (1) sobreventa: se mitiga con el `UPDATE … WHERE disponible >= n` en la transacción; no hay prueba de concurrencia en la matriz. (2) Dependencia del reloj en E2E/BB-08: la Sede Centro 24 h y vencimientos lejanos la reducen. (3) Plantilla Next 16/React 19/Tailwind 4 con base-ui muy reciente: la limpieza (Clerk, ~14 páginas demo, 10 temas) puede subestimarse; criterio de salida: `build` y `typecheck` limpios. (4) Todo cambio de contrato obliga a actualizar la matriz; se declara en cada PR. (5) Supabase: `DATABASE_URL` (pooler) vs. `DIRECT_URL` (migraciones). (6) Seguridad: token en `localStorage` (XSS), 409 de registro que enumera correos, sin límite de intentos; para la Etapa 9. (7) Reservas sin expiración dejan stock «congelado»; limitación conocida. (8) Precio/cantidad negativos o cero se aceptan (hallazgo candidato, no se corrige). (9) Editar `.xlsx` con fórmulas puede romper formato; se hará con cuidado y revisión.
 
 ## Verificación (tras implementar, por etapa)
 `npm test` (UNIT-01..16, WB-01..07), `npm run build` y `typecheck` en `api` y `web`, `npm run seed:test` con y sin `SEED_ALLOW_RESET`, recorrido manual (dueño publica → consumidor busca y reserva → personal entrega; cancelación), `grep -ri clerk apps/web` vacío, y revisión de logs JSON sin secretos.
+
+---
+
+**Ajuste posterior a la aprobación:** el paso 0b lo ejecutó el equipo, no la IA. La sección 10 se aplicó a los .xlsx, CLAUDE.md, SWR_seleccionados.md y Log_Cambios_SRS.md fuera de la sesión de Claude Code.
