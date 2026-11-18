@@ -66,7 +66,7 @@ export function MisReservas() {
   );
 
   return (
-    <div className='flex flex-col gap-4'>
+    <div className='flex flex-1 flex-col gap-4'>
       <AvisoDeReserva aviso={aviso} />
 
       {reservas.isPending && (
@@ -126,7 +126,8 @@ function TablaMisReservas({
   });
 
   return (
-    <DataTable table={table}>
+    // `min-h`: en pantallas bajas la página hace scroll en lugar de aplastar la tabla.
+    <DataTable table={table} className='min-h-[22rem]'>
       <DataTableToolbar table={table} />
     </DataTable>
   );
