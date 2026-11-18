@@ -1,5 +1,5 @@
 // FoodSave · modelo de datos (PostgreSQL / Supabase)
-// Esta rama: usuarios, comercios y sedes. Horarios, ofertas y reservas llegan en sus ramas.
+// Usuarios, comercios, sedes, horarios y ofertas. Las reservas llegan en su rama.
 
 generator client {
   provider     = "prisma-client"
@@ -22,6 +22,12 @@ enum EstadoComercio {
   APROBADO
 }
 
+enum EstadoOferta {
+  ACTIVA
+  CERRADA
+  AGOTADA
+}
+
 model Comercio {
   id     String         @id @default(uuid())
   nombre String
@@ -31,13 +37,15 @@ model Comercio {
 }
 
 model Sede {
-  id         String    @id @default(uuid())
+  id         String        @id @default(uuid())
   comercioId String
-  comercio   Comercio  @relation(fields: [comercioId], references: [id])
+  comercio   Comercio      @relation(fields: [comercioId], references: [id])
   nombre     String
   direccion  String
-  abierta24h Boolean   @default(false)
+  abierta24h Boolean       @default(false)
   personal   Usuario[]
+  horarios   HorarioSede[]
+  ofertas    Oferta[]
 }
 
 model Usuario {
@@ -51,4 +59,35 @@ model Usuario {
   comercioId   String? // solo DUENO
   comercio     Comercio? @relation(fields: [comercioId], references: [id])
   createdAt    DateTime  @default(now())
+  ofertas      Oferta[]
+}
+
+/// Horario de atención por día. Solo se usa si la sede no es 24 h (`abierta24h = false`).
+model HorarioSede {
+  id        String @id @default(uuid())
+  sedeId    String
+  sede      Sede   @relation(fields: [sedeId], references: [id])
+  diaSemana Int // 0 = domingo ... 6 = sábado (igual que Date.getDay())
+  apertura  String // "HH:mm", hora local de Bogotá
+  cierre    String // "HH:mm", hora local de Bogotá
+
+  @@unique([sedeId, diaSemana])
+}
+
+model Oferta {
+  id             String       @id @default(uuid())
+  sedeId         String
+  sede           Sede         @relation(fields: [sedeId], references: [id])
+  producto       String
+  precioOriginal Int // pesos colombianos, sin decimales
+  precioOferta   Int
+  cantidad       Int
+  disponible     Int // inventario actual; la CHECK de la migración exige 0 <= disponible <= cantidad
+  vencimiento    DateTime
+  estado         EstadoOferta @default(ACTIVA)
+  creadoPorId    String
+  creadoPor      Usuario      @relation(fields: [creadoPorId], references: [id])
+  createdAt      DateTime     @default(now())
+
+  @@index([sedeId, estado])
 }
