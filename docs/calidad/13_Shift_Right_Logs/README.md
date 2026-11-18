@@ -30,7 +30,9 @@ curl -s -X POST http://localhost:3001/auth/login -H 'Content-Type: application/j
 curl -s -X POST http://localhost:3001/reservas -H "Authorization: Bearer $TOKEN" \
   -H 'Content-Type: application/json' -d '{"ofertaId":"<oferta>","cantidad":1}'
 ```
-Resultado: login 200, reserva 201. Después se canceló (200) para devolver la unidad al inventario; así el escenario no dejó stock consumido.
+Resultado: login 200, reserva 201. Después se canceló (200) para devolver la unidad al inventario.
+
+> **Este escenario escribió en la base de datos real:** creó una reserva que quedó en estado **`CANCELADA`** (no se borra, queda como registro) y el stock de la oferta se **restituyó** a su valor anterior. Es el único escenario que escribe; los demás son de solo lectura o se rechazan antes de llegar a la base.
 
 ```json
 {"ts":"2026-11-18T14:54:48.071Z","nivel":"info","tipo":"evento","evento":"LOGIN_OK","usuarioId":"<usuario-consumidor1>","rol":"CONSUMIDOR"}
@@ -77,8 +79,35 @@ Resultado: `400 {"codigo":"CAMPOS_INVALIDOS","mensaje":"Los datos enviados no so
 - El log dice *qué* falló (`CAMPOS_INVALIDOS`) pero no *qué campo*; no sirve para depurar un cliente mal configurado (brecha 3 del mapeo).
 - Se registra el `usuarioId` aunque la petición sea inválida: permite atribuir el uso indebido.
 
-## (d) Error controlado que genere `ERROR_INTERNO`
-**Pendiente de aprobación.** Propuesta en el mensaje del PR; no se ejecutó nada todavía.
+## (d) Error controlado que genera `ERROR_INTERNO`
+Opción elegida: **A**, una petición de **solo lectura** con un carácter nulo (`%00`) en la búsqueda. No se pasó a la opción B (instancia con base falsa) porque la A sí produjo el error.
+```bash
+curl -s -w '\nHTTP=%{http_code}\n' "http://localhost:3001/ofertas?q=%00"
+```
+Resultado: **`500 {"codigo":"ERROR_INTERNO","mensaje":"Error interno del servidor"}`**.
+```json
+{"ts":"2026-11-18T15:01:41.353Z","nivel":"error","tipo":"evento","evento":"ERROR_INTERNO","error":"PrismaClientKnownRequestError","detalle":"\nInvalid `this.prisma.oferta.findMany()` invocation in\n<repo>/apps/api/dist/ofertas/ofertas.service.js:73:35\n\n  70 }\n  71 listarActivas(q) {\n  72     const texto = q?.trim();\n→ 73     return this.prisma.oferta.findMany(\nDatabase error. Code: `22021`. Message: `invalid byte sequence for encoding \"UTF8\": 0x00`"}
+{"ts":"2026-11-18T15:01:41.356Z","nivel":"error","metodo":"GET","ruta":"/ofertas","estado":500,"duracionMs":695,"codigoError":"ERROR_INTERNO"}
+```
+(El extracto completo y depurado está en [`logs_escenario_d_depurado.jsonl`](logs_escenario_d_depurado.jsonl); la segunda línea real no lleva el campo `tipo`.)
+
+### Hallazgo real: una entrada de usuario provoca un 500
+PostgreSQL no admite el byte `0x00` en texto; el parámetro `q` llega a Prisma sin validarse y la base lanza el error `22021`, que el filtro de excepciones convierte en `ERROR_INTERNO`. **Es un defecto del sistema, no se corrigió** (regla de esta tanda: no tocar código). Cualquier persona sin sesión puede provocarlo con una URL, porque `GET /ofertas` es público. Efectos: un 500 donde correspondía un 400 `CAMPOS_INVALIDOS` (o tratar el texto como búsqueda sin resultados) y ruido de nivel `error` en los logs que activaría alertas falsas. Candidato a hallazgo de la Etapa 9, de severidad baja (no expone datos ni cambia estado).
+
+### Comprobaciones de seguridad sobre el log y la respuesta
+| Comprobación | Resultado |
+|---|---|
+| ¿La **respuesta al cliente** revela el detalle? | **No.** Solo `{"codigo":"ERROR_INTERNO","mensaje":"Error interno del servidor"}`. |
+| ¿El `detalle` del log incluye cadena de conexión, usuario, host o contraseña de la base? | **No** (búsqueda automática de `postgres`, `supabase`, `pooler`, `@`, usuario y host de `DATABASE_URL`, contraseña de las semillas y tokens). |
+| ¿El `detalle` incluye rutas locales? | **Sí.** La ruta absoluta del archivo compilado, con el nombre de usuario del equipo. **Se redactó** en el extracto (`<repo>/…`). |
+| ¿Incluye código fuente? | **Sí.** Cuatro líneas del servicio alrededor del fallo (el mensaje de Prisma las adjunta). No es un secreto, pero revela la estructura interna. |
+
+**Brecha registrada:** el evento `ERROR_INTERNO` vuelca `exception.message` completo en `detalle`. Con Prisma ese texto trae la ruta absoluta del servidor y un fragmento del código. No es un problema en el cliente (nunca sale), pero **sí lo es si los logs se envían a un servicio externo o los leen más personas**. Mejora para la Etapa 9: registrar solo `error` y el código de base de datos (`22021`), o recortar la primera línea, y añadir un `requestId`.
+
+**Qué se aprende:**
+- El mecanismo funciona como se diseñó: el error inesperado se **captura**, se responde con un mensaje genérico, se registra con `nivel: error` y, en la línea de petición, `codigoError: ERROR_INTERNO` con estado 500.
+- Son **dos líneas** y la de evento (que explica la causa) no lleva ni ruta ni usuario: para saber qué petición lo causó hay que cruzarla por `ts` con la siguiente. Sin `requestId` esa correlación falla cuando hay tráfico concurrente (brecha 2 del mapeo).
+- Una alerta útil sería «cualquier línea con `nivel: error`»: aquí habría saltado por una entrada hostil sin consecuencias, lo que ilustra la importancia de validar entradas antes de llegar a la base.
 
 ## (e) Una operación con su duración (`duracionMs`)
 Se usó la reserva del escenario (a) y se comparó con cinco consultas de solo lectura al listado (`GET /ofertas?q=E2E`):
