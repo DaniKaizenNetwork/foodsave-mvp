@@ -1,5 +1,6 @@
 import { ErrorNegocio } from '../common/errores';
 import { EventLogger } from '../common/logging/event-logger.service';
+import { SedesService } from '../ofertas/sedes.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { HorarioDia } from './cierre-sede';
 import { ReservasService } from './reservas.service';
@@ -50,7 +51,7 @@ function armar(opciones: { oferta?: Partial<OfertaFalsa> | null; consumidorExist
   const logger = new EventLogger();
   logger.salida = (l) => lineas.push(l);
   const eventos = () => lineas.map((l) => JSON.parse(l)).filter((l) => l.tipo === 'evento');
-  return { servicio: new ReservasService(prisma, logger), oferta, updateMany, crearReserva, reservasCreadas, eventos, tx };
+  return { servicio: new ReservasService(prisma, {} as SedesService, logger), oferta, updateMany, crearReserva, reservasCreadas, eventos, tx };
 }
 
 async function codigoDelRechazo(promesa: Promise<unknown>): Promise<string> {
