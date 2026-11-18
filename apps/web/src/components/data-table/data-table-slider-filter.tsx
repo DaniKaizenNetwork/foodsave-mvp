@@ -255,7 +255,7 @@ function DataTableSliderFilterContent<TData extends RowData>({
           />
         </div>
         <Button aria-label={`Clear ${title} filter`} variant='outline' onClick={onReset}>
-          Clear
+          Limpiar
         </Button>
       </PopoverContent>
     </Popover>
