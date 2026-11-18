@@ -1,0 +1,22 @@
+
+ RUN  v5.1.0 <repo>/apps/web
+
+ ✓ src/components/RutaProtegida.test.tsx > RutaProtegida (SWR-AUTH-010, lado cliente) > RTL-05: un CONSUMIDOR en una ruta de DUENO/PERSONAL ve «No tienes permiso…» y no ve el contenido 31ms
+ ✓ src/components/ReservaForm.test.tsx > ReservaForm (SWR-RES-001, SWR-RES-002, SWR-RES-003, SWR-RES-005) > RTL-11: si no hay unidades suficientes (409) muestra «No hay unidades suficientes» y no confirma 95ms
+ ✓ src/components/ListaOfertas.test.tsx > ListaOfertas (SWR-BUS-001, SWR-BUS-005) > RTL-06: mientras la API responde muestra «Cargando ofertas…» 34ms
+ ✓ src/components/ListaOfertas.test.tsx > ListaOfertas (SWR-BUS-001, SWR-BUS-005) > RTL-07: sin ofertas muestra «No hay ofertas disponibles» 11ms
+ ✓ src/components/ListaOfertas.test.tsx > ListaOfertas (SWR-BUS-001, SWR-BUS-005) > RTL-08: con dos ofertas muestra producto, precio y unidades disponibles de cada una 26ms
+ ✓ src/components/ReservaForm.test.tsx > ReservaForm (SWR-RES-001, SWR-RES-002, SWR-RES-003, SWR-RES-005) > RTL-12: deshabilita el botón mientras envía y luego muestra «Reserva confirmada» con el plazo 32ms
+ ✓ src/components/ListaOfertas.test.tsx > ListaOfertas (SWR-BUS-001, SWR-BUS-005) > RTL-09: al buscar «pan» consulta la API con q=pan y actualiza la URL 41ms
+ ✓ src/components/RegisterForm.test.tsx > RegisterForm (SWR-AUTH-001) > RTL-01: con los campos vacíos muestra los tres mensajes obligatorios y no llama a la API 64ms
+ ✓ src/components/OfertaForm.test.tsx > OfertaForm (SWR-OFE-001, SWR-OFE-003) > RTL-10: con precio de oferta igual al original muestra el error de precio y no envía 123ms
+ ✓ src/components/RegisterForm.test.tsx > RegisterForm (SWR-AUTH-001) > RTL-02: con datos válidos registra a la persona y muestra «Cuenta creada correctamente» 119ms
+ ✓ src/components/LoginForm.test.tsx > LoginForm (SWR-AUTH-005, SWR-AUTH-006) > RTL-03: con credenciales válidas guarda la sesión y navega a /ofertas 169ms
+ ✓ src/components/LoginForm.test.tsx > LoginForm (SWR-AUTH-005, SWR-AUTH-006) > RTL-04: con credenciales inválidas muestra «Credenciales inválidas» y no navega 96ms
+
+ Test Files  6 passed (6)
+      Tests  12 passed (12)
+   Start at  00:23:32
+   Duration  2.56s (import 72%, environment 15%, tests 7%, transform 3%, setup 2%)
+
+JUNIT report written to <repo>/docs/calidad/08_RTL/resultado_rtl.xml
