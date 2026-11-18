@@ -4,7 +4,8 @@
   "private": true,
   "description": "FoodSave MVP: plataforma web para publicar y reservar productos próximos a vencer",
   "workspaces": [
-    "apps/*"
+    "apps/*",
+    "e2e"
   ],
   "engines": {
     "node": ">=22.12"
