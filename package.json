@@ -1,0 +1,21 @@
+{
+  "name": "foodsave-mvp",
+  "version": "0.1.0",
+  "private": true,
+  "description": "FoodSave MVP: plataforma web para publicar y reservar productos próximos a vencer",
+  "workspaces": [
+    "apps/*"
+  ],
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "dev:api": "npm run start:dev -w apps/api",
+    "build": "npm run build --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3"
+  }
+}
