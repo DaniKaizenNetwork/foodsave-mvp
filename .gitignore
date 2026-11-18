@@ -8,3 +8,5 @@ coverage/
 !.env.example
 *.tsbuildinfo
 apps/api/src/generated/
+apps/web/.next/
+apps/web/next-env.d.ts
