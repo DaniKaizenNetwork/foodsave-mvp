@@ -30,8 +30,9 @@ async function main(): Promise<void> {
   });
 
   try {
-    // Orden por dependencias; la rama de reservas añade aquí las reservas al principio.
+    // Orden por dependencias: primero lo que referencia a lo demás.
     await prisma.$transaction([
+      prisma.reserva.deleteMany(),
       prisma.oferta.deleteMany(),
       prisma.horarioSede.deleteMany(),
       prisma.usuario.deleteMany(),

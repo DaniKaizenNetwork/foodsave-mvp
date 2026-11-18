@@ -1,5 +1,5 @@
 // FoodSave · modelo de datos (PostgreSQL / Supabase)
-// Usuarios, comercios, sedes, horarios y ofertas. Las reservas llegan en su rama.
+// Usuarios, comercios, sedes, horarios, ofertas y reservas.
 
 generator client {
   provider     = "prisma-client"
@@ -20,6 +20,13 @@ enum Rol {
 
 enum EstadoComercio {
   APROBADO
+}
+
+enum EstadoReserva {
+  RESERVADA
+  ENTREGADA
+  CANCELADA
+  EXPIRADA // sin uso en el MVP (no hay expiración automática)
 }
 
 enum EstadoOferta {
@@ -60,6 +67,7 @@ model Usuario {
   comercio     Comercio? @relation(fields: [comercioId], references: [id])
   createdAt    DateTime  @default(now())
   ofertas      Oferta[]
+  reservas     Reserva[]
 }
 
 /// Horario de atención por día. Solo se usa si la sede no es 24 h (`abierta24h = false`).
@@ -88,6 +96,23 @@ model Oferta {
   creadoPorId    String
   creadoPor      Usuario      @relation(fields: [creadoPorId], references: [id])
   createdAt      DateTime     @default(now())
+  reservas       Reserva[]
 
   @@index([sedeId, estado])
+}
+
+model Reserva {
+  id            String        @id @default(uuid())
+  ofertaId      String
+  oferta        Oferta        @relation(fields: [ofertaId], references: [id])
+  consumidorId  String
+  consumidor    Usuario       @relation(fields: [consumidorId], references: [id])
+  cantidad      Int // la CHECK de la migración exige cantidad > 0
+  estado        EstadoReserva @default(RESERVADA)
+  plazoRetiro   DateTime // el menor entre 12 h desde la reserva, el cierre de la sede y el vencimiento
+  createdAt     DateTime      @default(now())
+  actualizadaAt DateTime      @updatedAt
+
+  @@index([consumidorId])
+  @@index([ofertaId, estado])
 }
