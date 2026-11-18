@@ -213,3 +213,15 @@ C1 mensajes de campos obligatorios → textos de RTL-01. C2 sin sesión/rol inco
 ---
 
 **Ajuste posterior a la aprobación:** el paso 0b lo ejecutó el equipo, no la IA. La sección 10 se aplicó a los .xlsx, CLAUDE.md, SWR_seleccionados.md y Log_Cambios_SRS.md fuera de la sesión de Claude Code.
+
+---
+
+## Desviaciones respecto al plan
+
+Detectadas y aceptadas durante `chore/monorepo-base`:
+
+1. **Middleware en vez de interceptor para los logs de petición.** `request-logger.interceptor.ts` pasa a ser `request-logger.middleware.ts`. Los interceptores no se ejecutan cuando un guard rechaza la petición (401/403) ni en rutas inexistentes (404), y esas respuestas deben quedar registradas. El middleware escribe al terminar la respuesta, con el estado final. `CLAUDE.md` se actualiza a «middleware global».
+2. **Vitest y `e2e` se crean después.** Vitest + React Testing Library se instalan en `feature/web-base`, cuando exista `apps/web`; el workspace `e2e` se añade cuando se cree Playwright (Etapa 8). Por ahora `workspaces` es solo `apps/*`.
+3. **Códigos `RUTA_NO_ENCONTRADA` (404) y `ERROR_INTERNO` (500).** No están en el contrato; son solo de infraestructura (ruta inexistente y fallos inesperados) para que toda respuesta de error tenga forma `{ codigo, mensaje }`. No se añaden a las hojas «Contrato provisional» ni «Datos y mensajes».
+4. **Evento `SERVIDOR_INICIADO` y prueba extra del middleware.** Se registra un evento al arrancar la API y se añade `request-logger.middleware.spec.ts` (3 casos), que no figura en la matriz de pruebas.
+5. **Sin endpoint de prueba.** No se creó ningún endpoint para comprobar los logs; se verificaron con una petición a una ruta inexistente (404).
