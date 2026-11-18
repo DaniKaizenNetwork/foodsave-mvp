@@ -134,7 +134,7 @@ function DataTableColumnHeaderMenu<TData extends RowData, TValue>({
             onClick={() => column.toggleVisibility(false)}
           >
             <IconEyeClosed />
-            Hide
+            Ocultar
           </DropdownMenuCheckboxItem>
         )}
       </DropdownMenuContent>

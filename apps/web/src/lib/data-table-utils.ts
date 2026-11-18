@@ -46,56 +46,56 @@ export const SORT_ORDERS = [
 ] as const;
 
 const TEXT_OPERATORS = [
-  { label: 'Contains', value: 'iLike' },
-  { label: 'Does not contain', value: 'notILike' },
-  { label: 'Is', value: 'eq' },
-  { label: 'Is not', value: 'ne' },
-  { label: 'Is empty', value: 'isEmpty' },
-  { label: 'Is not empty', value: 'isNotEmpty' }
+  { label: 'Contiene', value: 'iLike' },
+  { label: 'No contiene', value: 'notILike' },
+  { label: 'Es', value: 'eq' },
+  { label: 'No es', value: 'ne' },
+  { label: 'Está vacío', value: 'isEmpty' },
+  { label: 'No está vacío', value: 'isNotEmpty' }
 ] satisfies FilterOperatorOption[];
 
 const NUMERIC_OPERATORS = [
-  { label: 'Is', value: 'eq' },
-  { label: 'Is not', value: 'ne' },
-  { label: 'Is less than', value: 'lt' },
-  { label: 'Is less than or equal to', value: 'lte' },
-  { label: 'Is greater than', value: 'gt' },
-  { label: 'Is greater than or equal to', value: 'gte' },
-  { label: 'Is between', value: 'isBetween' },
-  { label: 'Is empty', value: 'isEmpty' },
-  { label: 'Is not empty', value: 'isNotEmpty' }
+  { label: 'Es', value: 'eq' },
+  { label: 'No es', value: 'ne' },
+  { label: 'Es menor que', value: 'lt' },
+  { label: 'Es menor o igual que', value: 'lte' },
+  { label: 'Es mayor que', value: 'gt' },
+  { label: 'Es mayor o igual que', value: 'gte' },
+  { label: 'Está entre', value: 'isBetween' },
+  { label: 'Está vacío', value: 'isEmpty' },
+  { label: 'No está vacío', value: 'isNotEmpty' }
 ] satisfies FilterOperatorOption[];
 
 const DATE_OPERATORS = [
-  { label: 'Is', value: 'eq' },
-  { label: 'Is not', value: 'ne' },
-  { label: 'Is before', value: 'lt' },
-  { label: 'Is after', value: 'gt' },
-  { label: 'Is on or before', value: 'lte' },
-  { label: 'Is on or after', value: 'gte' },
-  { label: 'Is between', value: 'isBetween' },
-  { label: 'Is relative to today', value: 'isRelativeToToday' },
-  { label: 'Is empty', value: 'isEmpty' },
-  { label: 'Is not empty', value: 'isNotEmpty' }
+  { label: 'Es', value: 'eq' },
+  { label: 'No es', value: 'ne' },
+  { label: 'Es anterior a', value: 'lt' },
+  { label: 'Es posterior a', value: 'gt' },
+  { label: 'Es del mismo día o anterior', value: 'lte' },
+  { label: 'Es del mismo día o posterior', value: 'gte' },
+  { label: 'Está entre', value: 'isBetween' },
+  { label: 'Es relativo a hoy', value: 'isRelativeToToday' },
+  { label: 'Está vacío', value: 'isEmpty' },
+  { label: 'No está vacío', value: 'isNotEmpty' }
 ] satisfies FilterOperatorOption[];
 
 const SELECT_OPERATORS = [
-  { label: 'Is', value: 'eq' },
-  { label: 'Is not', value: 'ne' },
-  { label: 'Is empty', value: 'isEmpty' },
-  { label: 'Is not empty', value: 'isNotEmpty' }
+  { label: 'Es', value: 'eq' },
+  { label: 'No es', value: 'ne' },
+  { label: 'Está vacío', value: 'isEmpty' },
+  { label: 'No está vacío', value: 'isNotEmpty' }
 ] satisfies FilterOperatorOption[];
 
 const MULTI_SELECT_OPERATORS = [
-  { label: 'Has any of', value: 'inArray' },
-  { label: 'Has none of', value: 'notInArray' },
-  { label: 'Is empty', value: 'isEmpty' },
-  { label: 'Is not empty', value: 'isNotEmpty' }
+  { label: 'Tiene alguno de', value: 'inArray' },
+  { label: 'No tiene ninguno de', value: 'notInArray' },
+  { label: 'Está vacío', value: 'isEmpty' },
+  { label: 'No está vacío', value: 'isNotEmpty' }
 ] satisfies FilterOperatorOption[];
 
 const BOOLEAN_OPERATORS = [
-  { label: 'Is', value: 'eq' },
-  { label: 'Is not', value: 'ne' }
+  { label: 'Es', value: 'eq' },
+  { label: 'No es', value: 'ne' }
 ] satisfies FilterOperatorOption[];
 
 const MULTI_VALUE_FILTER_VARIANTS: FilterVariant[] = [

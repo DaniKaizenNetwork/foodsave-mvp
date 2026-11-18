@@ -55,10 +55,10 @@ export function ThemeModeToggle() {
         }
       >
         <Icons.brightness />
-        <span className='sr-only'>Toggle dark mode</span>
+        <span className='sr-only'>Cambiar entre modo claro y oscuro</span>
       </TooltipTrigger>
       <TooltipContent>
-        Toggle theme <Kbd>⌘⇧D</Kbd> <Kbd>D D</Kbd>
+        Cambiar tema <Kbd>⌘⇧D</Kbd>
       </TooltipContent>
     </Tooltip>
   );

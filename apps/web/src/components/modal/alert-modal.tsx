@@ -18,15 +18,15 @@ export function AlertModal({
   onClose,
   onConfirm,
   loading,
-  title = 'Are you sure?',
-  description = 'This action cannot be undone.',
-  confirmLabel = 'Continue'
+  title = '¿Estás seguro?',
+  description = 'Esta acción no se puede deshacer.',
+  confirmLabel = 'Continuar'
 }: AlertModalProps) {
   return (
     <Modal title={title} description={description} isOpen={isOpen} onClose={onClose}>
       <div className='flex w-full items-center justify-end space-x-2 pt-6'>
         <Button variant='outline' onClick={onClose}>
-          Cancel
+          Cancelar
         </Button>
         <LoadingButton loading={loading} type='button' variant='destructive' onClick={onConfirm}>
           {confirmLabel}

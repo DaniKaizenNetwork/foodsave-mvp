@@ -21,7 +21,7 @@ export interface LoadingButtonProps extends Omit<React.ComponentProps<typeof But
  */
 export function LoadingButton({
   loading = false,
-  loadingLabel = 'Loading…',
+  loadingLabel = 'Cargando…',
   disabled,
   className,
   children,

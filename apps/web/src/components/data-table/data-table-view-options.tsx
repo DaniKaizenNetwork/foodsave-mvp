@@ -55,7 +55,7 @@ export function DataTableViewOptions<TData extends RowData>({
           <FacetedTrigger
             render={
               <Button
-                aria-label='View columns'
+                aria-label='Ver columnas'
                 variant='outline'
                 className='ms-auto hidden lg:flex'
                 disabled={disabled}
@@ -63,18 +63,18 @@ export function DataTableViewOptions<TData extends RowData>({
             }
           >
             <IconSettings className='text-muted-foreground' />
-            View
+            Ver
           </FacetedTrigger>
           <FacetedContent
-            aria-label='Columns'
+            aria-label='Columnas'
             dir={dir}
             align='center'
             className={cn('w-44', className)}
             {...props}
           >
-            <FacetedInput placeholder='Search columns...' />
+            <FacetedInput placeholder='Buscar columnas...' />
             <FacetedList>
-              <FacetedEmpty>No columns found.</FacetedEmpty>
+              <FacetedEmpty>No se encontraron columnas.</FacetedEmpty>
               <FacetedGroup>
                 {columns.map((column) => (
                   <FacetedItem

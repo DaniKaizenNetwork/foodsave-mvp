@@ -143,7 +143,7 @@ function DataTableDateFilterContent<TData extends RowData>({
       if (!getIsDateRange(selectedDates)) return null;
 
       const hasSelectedDates = selectedDates.from || selectedDates.to;
-      const dateText = hasSelectedDates ? formatDateRange(selectedDates) : 'Select date range';
+      const dateText = hasSelectedDates ? formatDateRange(selectedDates) : 'Selecciona un rango de fechas';
 
       return (
         <span className='flex items-center gap-2'>
@@ -164,7 +164,7 @@ function DataTableDateFilterContent<TData extends RowData>({
     if (getIsDateRange(selectedDates)) return null;
 
     const hasSelectedDate = selectedDates.length > 0;
-    const dateText = hasSelectedDate ? formatDate(selectedDates[0]) : 'Select date';
+    const dateText = hasSelectedDate ? formatDate(selectedDates[0]) : 'Selecciona una fecha';
 
     return (
       <span className='flex items-center gap-2'>
@@ -220,12 +220,12 @@ function DataTableDateFilterContent<TData extends RowData>({
         {hasValue && (
           <div className='border-t p-3'>
             <Button
-              aria-label={`Clear ${title} filter`}
+              aria-label={`Limpiar filtro ${title}`}
               variant='outline'
               className='w-full'
               onClick={onReset}
             >
-              Clear
+              Limpiar
             </Button>
           </div>
         )}
