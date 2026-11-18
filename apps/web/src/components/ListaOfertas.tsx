@@ -2,6 +2,7 @@
 
 import { Icons } from '@/components/icons';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { BotonReservar } from '@/components/BotonReservar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -37,7 +38,9 @@ export function ListaOfertas({ qInicial = '' }: { qInicial?: string }) {
 
   const consulta = useQuery({
     queryKey: ['ofertas', q],
-    queryFn: () => listarOfertas(q || undefined)
+    queryFn: () => listarOfertas(q || undefined),
+    // El inventario cambia con cada reserva: al volver al listado se muestra el dato fresco.
+    staleTime: 5_000
   });
 
   function aplicarBusqueda(valor: string) {
@@ -165,14 +168,17 @@ function TarjetaOferta({ oferta }: { oferta: Oferta }) {
           )}
         </div>
       </CardContent>
-      <CardFooter className='text-muted-foreground flex flex-wrap justify-between gap-2 text-sm'>
-        <span className='text-foreground font-semibold'>
-          {oferta.disponible} {oferta.disponible === 1 ? 'disponible' : 'disponibles'}
-        </span>
-        <span className='flex items-center gap-1'>
-          <Icons.clock aria-hidden className='size-4' />
-          Vence: {formatFechaHora(oferta.vencimiento)}
-        </span>
+      <CardFooter className='text-muted-foreground flex flex-col items-stretch gap-3 text-sm'>
+        <div className='flex flex-wrap justify-between gap-2'>
+          <span className='text-foreground font-semibold'>
+            {oferta.disponible} {oferta.disponible === 1 ? 'disponible' : 'disponibles'}
+          </span>
+          <span className='flex items-center gap-1'>
+            <Icons.clock aria-hidden className='size-4' />
+            Vence: {formatFechaHora(oferta.vencimiento)}
+          </span>
+        </div>
+        <BotonReservar oferta={oferta} />
       </CardFooter>
     </Card>
   );
