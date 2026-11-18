@@ -121,8 +121,7 @@ function TablaMisReservas({
   const { table } = useDataTable({
     data: datos,
     columns: columnas,
-    mode: 'client',
-    initialState: { columnPinning: { start: [], end: ['acciones'] } }
+    mode: 'client'
   });
 
   return (
@@ -143,12 +142,18 @@ function crearColumnas({
   return [
     {
       id: 'producto',
+      size: 170,
       accessorFn: (reserva) => reserva.oferta.producto,
       header: ({ column }) => <DataTableColumnHeader column={column} label='Producto' />,
+      // `truncate` + `max-w`: un nombre largo no ensancha la columna (la tabla no usa ancho fijo).
       cell: ({ row }) => (
-        <div className='flex flex-col'>
-          <span className='font-medium'>{row.original.oferta.producto}</span>
-          <span className='text-muted-foreground text-xs'>{row.original.oferta.sede.nombre}</span>
+        <div className='flex max-w-[9.5rem] flex-col'>
+          <span className='truncate font-medium' title={row.original.oferta.producto}>
+            {row.original.oferta.producto}
+          </span>
+          <span className='text-muted-foreground truncate text-xs' title={row.original.oferta.sede.nombre}>
+            {row.original.oferta.sede.nombre}
+          </span>
         </div>
       ),
       meta: { label: 'Producto', placeholder: 'Buscar por producto…', variant: 'text' as const, icon: Icons.text },
@@ -156,17 +161,20 @@ function crearColumnas({
     },
     {
       id: 'cantidad',
+      size: 90,
       accessorKey: 'cantidad',
       header: ({ column }) => <DataTableColumnHeader column={column} label='Cantidad' />
     },
     {
       id: 'total',
+      size: 120,
       accessorFn: (reserva) => reserva.cantidad * reserva.oferta.precioOferta,
       header: ({ column }) => <DataTableColumnHeader column={column} label='Total en sede' />,
       cell: ({ row }) => formatPrecio(row.original.cantidad * row.original.oferta.precioOferta)
     },
     {
       id: 'estado',
+      size: 110,
       accessorKey: 'estado',
       header: ({ column }) => <DataTableColumnHeader column={column} label='Estado' />,
       cell: ({ row }) => <EtiquetaEstado estado={row.original.estado} />,
@@ -175,6 +183,7 @@ function crearColumnas({
     },
     {
       id: 'plazoRetiro',
+      size: 190,
       accessorKey: 'plazoRetiro',
       header: ({ column }) => <DataTableColumnHeader column={column} label='Plazo de retiro' />,
       cell: ({ row }) => {
@@ -189,12 +198,14 @@ function crearColumnas({
     },
     {
       id: 'creada',
+      size: 190,
       accessorKey: 'createdAt',
       header: ({ column }) => <DataTableColumnHeader column={column} label='Reservada el' />,
       cell: ({ row }) => formatFechaHora(row.original.createdAt)
     },
     {
       id: 'acciones',
+      size: 110,
       enableSorting: false,
       cell: ({ row }) => {
         const reserva = row.original;

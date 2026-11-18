@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/components/ui/empty';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useDataTable } from '@/hooks/use-data-table';
+import { listarMisSedes } from '@/lib/api/ofertas';
 import { entregarReserva, listarReservasDeSede, type ReservaDeSede } from '@/lib/api/reservas';
 import { ErrorApi } from '@/lib/api-client';
 import type { DataTableFeatures } from '@/lib/data-table-features';
@@ -58,17 +59,22 @@ export function ReservasSede() {
     }
   });
 
-  const variasSedes = useMemo(
-    () => new Set((reservas.data ?? []).map((reserva) => reserva.oferta.sede.nombre)).size > 1,
-    [reservas.data]
+  // La columna «Sede» solo tiene sentido si el usuario opera en varias sedes (el dueño con dos
+  // sedes); al personal, con una sola, no le aporta nada y ocupa un ancho que hace falta.
+  const sedes = useQuery({ queryKey: ['sedes', 'mias'], queryFn: listarMisSedes, staleTime: 60_000 });
+  const nombresDeSede = useMemo(
+    () => [
+      ...new Set([
+        ...(sedes.data ?? []).map((sede) => sede.nombre),
+        ...(reservas.data ?? []).map((reserva) => reserva.oferta.sede.nombre)
+      ])
+    ],
+    [sedes.data, reservas.data]
   );
+  const variasSedes = nombresDeSede.length > 1;
   const opcionesSede = useMemo(
-    () =>
-      [...new Set((reservas.data ?? []).map((reserva) => reserva.oferta.sede.nombre))].map((nombre) => ({
-        value: nombre,
-        label: nombre
-      })),
-    [reservas.data]
+    () => nombresDeSede.map((nombre) => ({ value: nombre, label: nombre })),
+    [nombresDeSede]
   );
   const columnas = useMemo(
     () =>
@@ -134,8 +140,7 @@ function TablaReservasSede({
   const { table } = useDataTable({
     data: datos,
     columns: columnas,
-    mode: 'client',
-    initialState: { columnPinning: { start: [], end: ['acciones'] } }
+    mode: 'client'
   });
 
   return (
@@ -160,37 +165,53 @@ function crearColumnas({
   return [
     {
       id: 'producto',
+      size: 150,
       accessorFn: (reserva) => reserva.oferta.producto,
       header: ({ column }) => <DataTableColumnHeader column={column} label='Producto' />,
-      cell: ({ row }) => <span className='font-medium'>{row.original.oferta.producto}</span>,
+      // `truncate` + `max-w`: un nombre largo no ensancha la columna (la tabla no usa ancho fijo).
+      cell: ({ row }) => (
+        <span className='block max-w-[8.25rem] truncate font-medium' title={row.original.oferta.producto}>
+          {row.original.oferta.producto}
+        </span>
+      ),
       meta: { label: 'Producto', placeholder: 'Buscar por producto…', variant: 'text' as const, icon: Icons.text },
       enableColumnFilter: true
     },
     {
       id: 'consumidor',
+      size: 140,
       accessorFn: (reserva) => reserva.consumidor.nombre,
-      header: ({ column }) => <DataTableColumnHeader column={column} label='Consumidor' />
+      header: ({ column }) => <DataTableColumnHeader column={column} label='Consumidor' />,
+      cell: ({ row }) => (
+        <span className='block max-w-[7.5rem] truncate' title={row.original.consumidor.nombre}>
+          {row.original.consumidor.nombre}
+        </span>
+      )
     },
-    {
+    ...(variasSedes ? [{
       id: 'sede',
       accessorFn: (reserva) => reserva.oferta.sede.nombre,
       header: ({ column }) => <DataTableColumnHeader column={column} label='Sede' />,
-      enableColumnFilter: variasSedes,
+      size: 110,
+      enableColumnFilter: true,
       meta: { label: 'Sede', variant: 'multiSelect' as const, options: opcionesSede }
-    },
+    } satisfies ColumnDef<DataTableFeatures, ReservaDeSede>] : []),
     {
       id: 'cantidad',
+      size: 90,
       accessorKey: 'cantidad',
       header: ({ column }) => <DataTableColumnHeader column={column} label='Cantidad' />
     },
     {
       id: 'total',
+      size: 120,
       accessorFn: (reserva) => reserva.cantidad * reserva.oferta.precioOferta,
       header: ({ column }) => <DataTableColumnHeader column={column} label='Total a cobrar' />,
       cell: ({ row }) => formatPrecio(row.original.cantidad * row.original.oferta.precioOferta)
     },
     {
       id: 'estado',
+      size: 100,
       accessorKey: 'estado',
       header: ({ column }) => <DataTableColumnHeader column={column} label='Estado' />,
       cell: ({ row }) => <EtiquetaEstado estado={row.original.estado} />,
@@ -199,6 +220,7 @@ function crearColumnas({
     },
     {
       id: 'plazoRetiro',
+      size: 190,
       accessorKey: 'plazoRetiro',
       header: ({ column }) => <DataTableColumnHeader column={column} label='Plazo de retiro' />,
       cell: ({ row }) => {
@@ -213,6 +235,7 @@ function crearColumnas({
     },
     {
       id: 'acciones',
+      size: 150,
       enableSorting: false,
       cell: ({ row }) => {
         if (row.original.estado !== 'RESERVADA') return null;
