@@ -1,0 +1,4360 @@
+{
+  "collection": {
+    "item": [
+      {
+        "id": "7d8e4ce3-4f6b-4616-b289-f16055d21910",
+        "name": "00 Preparación",
+        "description": {
+          "content": "Sesiones y datos de apoyo (no son casos de la matriz).",
+          "type": "text/plain"
+        },
+        "item": [
+          {
+            "id": "7dc1ca93-354f-4fac-ad63-39380fec5255",
+            "name": "Login dueño (apoyo)",
+            "request": {
+              "url": {
+                "path": [
+                  "auth",
+                  "login"
+                ],
+                "host": [
+                  "{{baseUrl}}"
+                ],
+                "query": [],
+                "variable": []
+              },
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "method": "POST",
+              "body": {
+                "mode": "raw",
+                "raw": "{\"correo\":\"dueno@foodsave.test\",\"contrasena\":\"{{password}}\"}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              },
+              "auth": {
+                "type": "noauth",
+                "noauth": []
+              }
+            },
+            "response": [],
+            "event": [
+              {
+                "listen": "test",
+                "script": {
+                  "id": "fc62c900-7eaa-45c8-ada3-790d9a6074dd",
+                  "type": "text/javascript",
+                  "exec": [
+                    "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                    "pm.environment.set('tokenDueno', pm.response.json().accessToken);"
+                  ],
+                  "_lastExecutionId": "62d0f33f-ede0-4221-9313-9b1b60500d75"
+                }
+              }
+            ]
+          },
+          {
+            "id": "ebcad4d6-42de-464b-847b-55f640282b74",
+            "name": "Login consumidor (apoyo)",
+            "request": {
+              "url": {
+                "path": [
+                  "auth",
+                  "login"
+                ],
+                "host": [
+                  "{{baseUrl}}"
+                ],
+                "query": [],
+                "variable": []
+              },
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "method": "POST",
+              "body": {
+                "mode": "raw",
+                "raw": "{\"correo\":\"consumidor1@foodsave.test\",\"contrasena\":\"{{password}}\"}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              },
+              "auth": {
+                "type": "noauth",
+                "noauth": []
+              }
+            },
+            "response": [],
+            "event": [
+              {
+                "listen": "test",
+                "script": {
+                  "id": "d75c1cdc-5550-4540-9d07-5a55f8ca1543",
+                  "type": "text/javascript",
+                  "exec": [
+                    "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                    "pm.environment.set('tokenConsumidor', pm.response.json().accessToken);"
+                  ],
+                  "_lastExecutionId": "a738eeca-3b01-4822-a86e-0070d925ca99"
+                }
+              }
+            ]
+          },
+          {
+            "id": "e16df403-0d77-4da6-8947-1bdc64f57b70",
+            "name": "GET /sedes/mias (sedeId del dueño)",
+            "request": {
+              "url": {
+                "path": [
+                  "sedes",
+                  "mias"
+                ],
+                "host": [
+                  "{{baseUrl}}"
+                ],
+                "query": [],
+                "variable": []
+              },
+              "method": "GET",
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "type": "string",
+                    "value": "[REDACTADO]",
+                    "key": "token"
+                  }
+                ]
+              }
+            },
+            "response": [],
+            "event": [
+              {
+                "listen": "test",
+                "script": {
+                  "id": "89cb68d5-3aae-4cb6-bbb4-6bb3005f43e1",
+                  "type": "text/javascript",
+                  "exec": [
+                    "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                    "const sedes = pm.response.json();",
+                    "pm.test('el dueño tiene al menos una sede', () => pm.expect(sedes).to.be.an('array').that.is.not.empty);",
+                    "const centro = sedes.find((s) => s.nombre === 'Sede Centro') || sedes[0];",
+                    "pm.environment.set('sedeId', centro.id);"
+                  ],
+                  "_lastExecutionId": "ac6747e8-a7a4-4cb7-9806-02189b2befc3"
+                }
+              }
+            ]
+          }
+        ],
+        "event": []
+      },
+      {
+        "id": "c6f2b0f5-791b-47fd-a8f9-4b3d11eca86a",
+        "name": "API-01 Login exitoso",
+        "description": {
+          "content": "SWR-AUTH-005",
+          "type": "text/plain"
+        },
+        "item": [
+          {
+            "id": "dc0d5c44-930b-4b4e-8051-068c9d7d4ca1",
+            "name": "POST /auth/login consumidor1",
+            "request": {
+              "url": {
+                "path": [
+                  "auth",
+                  "login"
+                ],
+                "host": [
+                  "{{baseUrl}}"
+                ],
+                "query": [],
+                "variable": []
+              },
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "method": "POST",
+              "body": {
+                "mode": "raw",
+                "raw": "{\"correo\":\"consumidor1@foodsave.test\",\"contrasena\":\"{{password}}\"}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              },
+              "auth": {
+                "type": "noauth",
+                "noauth": []
+              }
+            },
+            "response": [],
+            "event": [
+              {
+                "listen": "test",
+                "script": {
+                  "id": "202e2fdc-424f-4a9a-b587-a51bbc8a08ca",
+                  "type": "text/javascript",
+                  "exec": [
+                    "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                    "const j = pm.response.json();",
+                    "pm.test('devuelve accessToken (JWT)', () => pm.expect(j.accessToken).to.be.a('string').and.match(/^[\\w-]+\\.[\\w-]+\\.[\\w-]+$/));",
+                    "pm.test('usuario.rol = CONSUMIDOR', () => pm.expect(j.usuario.rol).to.eql('CONSUMIDOR'));",
+                    "pm.test('usuario trae id y nombre', () => { pm.expect(j.usuario.id).to.be.a('string'); pm.expect(j.usuario.nombre).to.be.a('string'); });",
+                    "pm.test('la respuesta no incluye contraseña ni hash', () => {",
+                    "  const t = pm.response.text();",
+                    "  pm.expect(t).to.not.match(/passwordHash|contrasena|password|\\$2[aby]\\$/i);",
+                    "});"
+                  ],
+                  "_lastExecutionId": "7c815646-2a48-4e54-8864-51ba40c5b509"
+                }
+              }
+            ]
+          }
+        ],
+        "event": []
+      },
+      {
+        "id": "1a201de0-a4e1-4e21-88cd-bda2aa5dd5a7",
+        "name": "API-02 Login con contraseña incorrecta",
+        "description": {
+          "content": "SWR-AUTH-006",
+          "type": "text/plain"
+        },
+        "item": [
+          {
+            "id": "ab39cb47-60f7-43a6-a28f-6afec55b28eb",
+            "name": "POST /auth/login clave incorrecta",
+            "request": {
+              "url": {
+                "path": [
+                  "auth",
+                  "login"
+                ],
+                "host": [
+                  "{{baseUrl}}"
+                ],
+                "query": [],
+                "variable": []
+              },
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "method": "POST",
+              "body": {
+                "mode": "raw",
+                "raw": "{\"correo\":\"consumidor1@foodsave.test\",\"contrasena\":\"clave-incorrecta-postman\"}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              },
+              "auth": {
+                "type": "noauth",
+                "noauth": []
+              }
+            },
+            "response": [],
+            "event": [
+              {
+                "listen": "test",
+                "script": {
+                  "id": "ca35e70f-3185-4d46-bf3b-2beb40ba5c01",
+                  "type": "text/javascript",
+                  "exec": [
+                    "pm.test('HTTP 401', () => pm.response.to.have.status(401));",
+                    "pm.test('código de error CREDENCIALES_INVALIDAS', () => pm.expect(pm.response.json().codigo).to.eql('CREDENCIALES_INVALIDAS'));",
+                    "pm.test('mensaje exacto «Credenciales inválidas»', () => pm.expect(pm.response.json().mensaje).to.eql('Credenciales inválidas'));",
+                    "pm.test('no devuelve accessToken', () => pm.expect(pm.response.json()).to.not.have.property('accessToken'));",
+                    "pm.environment.set('mensajeClaveErrada', pm.response.text());"
+                  ],
+                  "_lastExecutionId": "f2aa66c9-efb7-41f3-9e4b-bd7025a7aace"
+                }
+              }
+            ]
+          },
+          {
+            "id": "559c7c2b-1809-4f78-9435-6ad764a9285b",
+            "name": "POST /auth/login correo inexistente",
+            "request": {
+              "url": {
+                "path": [
+                  "auth",
+                  "login"
+                ],
+                "host": [
+                  "{{baseUrl}}"
+                ],
+                "query": [],
+                "variable": []
+              },
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "method": "POST",
+              "body": {
+                "mode": "raw",
+                "raw": "{\"correo\":\"no.existe@foodsave.test\",\"contrasena\":\"clave-incorrecta-postman\"}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              },
+              "auth": {
+                "type": "noauth",
+                "noauth": []
+              }
+            },
+            "response": [],
+            "event": [
+              {
+                "listen": "test",
+                "script": {
+                  "id": "4c07ef6f-9eb1-45e6-9fe6-66259caec0c8",
+                  "type": "text/javascript",
+                  "exec": [
+                    "pm.test('HTTP 401', () => pm.response.to.have.status(401));",
+                    "pm.test('código de error CREDENCIALES_INVALIDAS', () => pm.expect(pm.response.json().codigo).to.eql('CREDENCIALES_INVALIDAS'));",
+                    "pm.test('mensaje exacto «Credenciales inválidas»', () => pm.expect(pm.response.json().mensaje).to.eql('Credenciales inválidas'));",
+                    "pm.test('respuesta idéntica a la de clave incorrecta (no revela si el correo existe)', () => pm.expect(pm.response.text()).to.eql(pm.environment.get('mensajeClaveErrada')));"
+                  ],
+                  "_lastExecutionId": "e123b87d-34d1-4d5f-8c3a-5d4eaf15acc2"
+                }
+              }
+            ]
+          }
+        ],
+        "event": []
+      },
+      {
+        "id": "ee7b57c4-e9bd-40c1-a116-dfc95d4cdb96",
+        "name": "API-03 Consumidor no puede publicar",
+        "description": {
+          "content": "SWR-AUTH-010",
+          "type": "text/plain"
+        },
+        "item": [
+          {
+            "id": "4f0c106f-1961-4fef-be40-00b000c5d060",
+            "name": "POST /ofertas con token de CONSUMIDOR",
+            "request": {
+              "url": {
+                "path": [
+                  "ofertas"
+                ],
+                "host": [
+                  "{{baseUrl}}"
+                ],
+                "query": [],
+                "variable": []
+              },
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "method": "POST",
+              "body": {
+                "mode": "raw",
+                "raw": "{\"sedeId\":\"{{sedeId}}\",\"producto\":\"{{productoNoCreado}}\",\"precioOriginal\":8000,\"precioOferta\":4000,\"cantidad\":10,\"vencimiento\":\"{{vencimiento}}\"}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              },
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "type": "string",
+                    "value": "[REDACTADO]",
+                    "key": "token"
+                  }
+                ]
+              }
+            },
+            "response": [],
+            "event": [
+              {
+                "listen": "prerequest",
+                "script": {
+                  "id": "dfc98f0b-0934-4f15-926b-5cd42e945faf",
+                  "type": "text/javascript",
+                  "exec": [
+                    "pm.environment.set('productoNombre', 'Pan Postman ' + Date.now());",
+                    "pm.environment.set('productoNoCreado', 'Prohibido Postman ' + Date.now());",
+                    "pm.environment.set('vencimiento', new Date(Date.now() + 24*3600*1000).toISOString());"
+                  ],
+                  "_lastExecutionId": "dee214e0-a7e2-4045-a7d0-cf7b7cb9e9ee"
+                }
+              },
+              {
+                "listen": "test",
+                "script": {
+                  "id": "84ce508a-c335-475d-ac1d-db811e9acade",
+                  "type": "text/javascript",
+                  "exec": [
+                    "pm.test('HTTP 403', () => pm.response.to.have.status(403));",
+                    "pm.test('código de error PROHIBIDO', () => pm.expect(pm.response.json().codigo).to.eql('PROHIBIDO'));",
+                    "pm.test('mensaje exacto «No tienes permiso para realizar esta acción»', () => pm.expect(pm.response.json().mensaje).to.eql('No tienes permiso para realizar esta acción'));",
+                    "pm.sendRequest({ url: pm.environment.get('baseUrl') + '/ofertas?q=' + encodeURIComponent(pm.environment.get('productoNombre')), method: 'GET' }, (e, r) => {",
+                    "  pm.test('no se creó ninguna oferta', () => pm.expect(r.json().filter((o) => o.producto === pm.environment.get('productoNoCreado'))).to.be.empty);",
+                    "});"
+                  ],
+                  "_lastExecutionId": "cd069007-57a8-450b-9019-d47fe7dec10b"
+                }
+              }
+            ]
+          }
+        ],
+        "event": []
+      },
+      {
+        "id": "fd7b87db-386d-48e6-aebf-68de555a236e",
+        "name": "API-04 Publicar oferta (dueño)",
+        "description": {
+          "content": "SWR-OFE-001",
+          "type": "text/plain"
+        },
+        "item": [
+          {
+            "id": "f3d6af90-c7da-486d-aa52-58df491019e8",
+            "name": "POST /ofertas válida",
+            "request": {
+              "url": {
+                "path": [
+                  "ofertas"
+                ],
+                "host": [
+                  "{{baseUrl}}"
+                ],
+                "query": [],
+                "variable": []
+              },
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "method": "POST",
+              "body": {
+                "mode": "raw",
+                "raw": "{\"sedeId\":\"{{sedeId}}\",\"producto\":\"{{productoNombre}}\",\"precioOriginal\":8000,\"precioOferta\":4000,\"cantidad\":10,\"vencimiento\":\"{{vencimiento}}\"}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              },
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "type": "string",
+                    "value": "[REDACTADO]",
+                    "key": "token"
+                  }
+                ]
+              }
+            },
+            "response": [],
+            "event": [
+              {
+                "listen": "test",
+                "script": {
+                  "id": "83c4fc42-09ff-4d9b-8443-75c3e39beb5f",
+                  "type": "text/javascript",
+                  "exec": [
+                    "pm.test('HTTP 201', () => pm.response.to.have.status(201));",
+                    "const o = pm.response.json();",
+                    "pm.test('estado ACTIVA', () => pm.expect(o.estado).to.eql('ACTIVA'));",
+                    "pm.test('disponible = cantidad = 10', () => { pm.expect(o.cantidad).to.eql(10); pm.expect(o.disponible).to.eql(10); });",
+                    "pm.test('precioOferta (4000) < precioOriginal (8000)', () => pm.expect(o.precioOferta).to.be.below(o.precioOriginal));",
+                    "pm.test('pertenece a la sede indicada', () => pm.expect(o.sedeId).to.eql(pm.environment.get('sedeId')));",
+                    "pm.environment.set('ofertaId', o.id);"
+                  ],
+                  "_lastExecutionId": "763b2755-8ee8-4789-9956-56b27411dd6f"
+                }
+              }
+            ]
+          }
+        ],
+        "event": []
+      },
+      {
+        "id": "8dcbcf5c-ce3f-4933-b207-3852d706a494",
+        "name": "API-05 Precio de oferta no menor al original",
+        "description": {
+          "content": "SWR-OFE-003",
+          "type": "text/plain"
+        },
+        "item": [
+          {
+            "id": "39bf9b8d-7083-4c6f-b760-6b5070e85d64",
+            "name": "POST /ofertas precioOferta = precioOriginal",
+            "request": {
+              "url": {
+                "path": [
+                  "ofertas"
+                ],
+                "host": [
+                  "{{baseUrl}}"
+                ],
+                "query": [],
+                "variable": []
+              },
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "method": "POST",
+              "body": {
+                "mode": "raw",
+                "raw": "{\"sedeId\":\"{{sedeId}}\",\"producto\":\"{{productoPrecioMalo}}\",\"precioOriginal\":8000,\"precioOferta\":8000,\"cantidad\":10,\"vencimiento\":\"{{vencimiento}}\"}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              },
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "type": "string",
+                    "value": "[REDACTADO]",
+                    "key": "token"
+                  }
+                ]
+              }
+            },
+            "response": [],
+            "event": [
+              {
+                "listen": "prerequest",
+                "script": {
+                  "id": "601e61a8-7684-4f4e-a857-4da7d0db8837",
+                  "type": "text/javascript",
+                  "exec": [
+                    "pm.environment.set('productoPrecioMalo', 'Precio malo Postman ' + Date.now());"
+                  ],
+                  "_lastExecutionId": "af797d1f-b1ec-4061-b2d8-bb4ae8f18d86"
+                }
+              },
+              {
+                "listen": "test",
+                "script": {
+                  "id": "37d849ff-a6ee-49dc-9951-a22120e0e676",
+                  "type": "text/javascript",
+                  "exec": [
+                    "pm.test('HTTP 400', () => pm.response.to.have.status(400));",
+                    "pm.test('código de error PRECIO_INVALIDO', () => pm.expect(pm.response.json().codigo).to.eql('PRECIO_INVALIDO'));",
+                    "pm.test('mensaje exacto «El precio de oferta debe ser menor al precio original»', () => pm.expect(pm.response.json().mensaje).to.eql('El precio de oferta debe ser menor al precio original'));",
+                    "pm.sendRequest({ url: pm.environment.get('baseUrl') + '/ofertas?q=' + encodeURIComponent(pm.environment.get('productoPrecioMalo')), method: 'GET' }, (e, r) => {",
+                    "  pm.test('no se creó la oferta', () => pm.expect(r.json()).to.be.empty);",
+                    "});"
+                  ],
+                  "_lastExecutionId": "a20a9d13-48d9-4de0-ab0f-5b5622479048"
+                }
+              }
+            ]
+          }
+        ],
+        "event": []
+      },
+      {
+        "id": "7acd3c09-5198-43fe-9e49-8c5506ec549d",
+        "name": "API-06 Reservar descuenta inventario",
+        "description": {
+          "content": "SWR-RES-001, RES-002, RES-003, RES-005",
+          "type": "text/plain"
+        },
+        "item": [
+          {
+            "id": "180aa93c-0583-4004-a5ee-0b736775ee49",
+            "name": "POST /reservas cantidad 2",
+            "request": {
+              "url": {
+                "path": [
+                  "reservas"
+                ],
+                "host": [
+                  "{{baseUrl}}"
+                ],
+                "query": [],
+                "variable": []
+              },
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "method": "POST",
+              "body": {
+                "mode": "raw",
+                "raw": "{\"ofertaId\":\"{{ofertaId}}\",\"cantidad\":2}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              },
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "type": "string",
+                    "value": "[REDACTADO]",
+                    "key": "token"
+                  }
+                ]
+              }
+            },
+            "response": [],
+            "event": [
+              {
+                "listen": "test",
+                "script": {
+                  "id": "23ee10ea-440e-420c-9a94-f290db8381eb",
+                  "type": "text/javascript",
+                  "exec": [
+                    "pm.test('HTTP 201', () => pm.response.to.have.status(201));",
+                    "const r = pm.response.json();",
+                    "pm.test('estado RESERVADA y cantidad 2', () => { pm.expect(r.estado).to.eql('RESERVADA'); pm.expect(r.cantidad).to.eql(2); });",
+                    "const creada = new Date(r.createdAt).getTime(), plazo = new Date(r.plazoRetiro).getTime();",
+                    "pm.test('plazoRetiro <= createdAt + 12 h', () => pm.expect(plazo).to.be.at.most(creada + 12*3600*1000 + 1000));",
+                    "pm.test('plazoRetiro <= vencimiento de la oferta', () => pm.expect(plazo).to.be.at.most(new Date(pm.environment.get('vencimiento')).getTime()));",
+                    "pm.environment.set('reservaId', r.id);",
+                    "pm.sendRequest({ url: pm.environment.get('baseUrl') + '/ofertas?q=' + encodeURIComponent(pm.environment.get('productoNombre')), method: 'GET' }, (e, res) => {",
+                    "  const o = res.json().find((x) => x.id === pm.environment.get('ofertaId'));",
+                    "  pm.test('el inventario baja de 10 a 8', () => pm.expect(o.disponible).to.eql(8));",
+                    "});"
+                  ],
+                  "_lastExecutionId": "f5a780cd-1492-4330-8f51-b09f30375a82"
+                }
+              }
+            ]
+          }
+        ],
+        "event": []
+      },
+      {
+        "id": "c97bf154-e553-47ec-b427-3b620a2b9dc4",
+        "name": "API-07 Stock insuficiente",
+        "description": {
+          "content": "SWR-RES-002",
+          "type": "text/plain"
+        },
+        "item": [
+          {
+            "id": "3e1444bf-8437-4cb2-b986-a74d251a0fd1",
+            "name": "POST /reservas cantidad 999",
+            "request": {
+              "url": {
+                "path": [
+                  "reservas"
+                ],
+                "host": [
+                  "{{baseUrl}}"
+                ],
+                "query": [],
+                "variable": []
+              },
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "method": "POST",
+              "body": {
+                "mode": "raw",
+                "raw": "{\"ofertaId\":\"{{ofertaId}}\",\"cantidad\":999}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              },
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "type": "string",
+                    "value": "[REDACTADO]",
+                    "key": "token"
+                  }
+                ]
+              }
+            },
+            "response": [],
+            "event": [
+              {
+                "listen": "test",
+                "script": {
+                  "id": "12d40863-a341-4f5d-af03-6f901a9cc1e6",
+                  "type": "text/javascript",
+                  "exec": [
+                    "pm.test('HTTP 409', () => pm.response.to.have.status(409));",
+                    "pm.test('código de error STOCK_INSUFICIENTE', () => pm.expect(pm.response.json().codigo).to.eql('STOCK_INSUFICIENTE'));",
+                    "pm.test('mensaje exacto «No hay unidades suficientes»', () => pm.expect(pm.response.json().mensaje).to.eql('No hay unidades suficientes'));",
+                    "pm.sendRequest({ url: pm.environment.get('baseUrl') + '/ofertas?q=' + encodeURIComponent(pm.environment.get('productoNombre')), method: 'GET' }, (e, res) => {",
+                    "  const o = res.json().find((x) => x.id === pm.environment.get('ofertaId'));",
+                    "  pm.test('el inventario sigue en 8 (no hubo descuento)', () => pm.expect(o.disponible).to.eql(8));",
+                    "});"
+                  ],
+                  "_lastExecutionId": "25935430-8cd6-48c2-9853-67c10167589e"
+                }
+              }
+            ]
+          }
+        ],
+        "event": []
+      },
+      {
+        "id": "912b54ec-47b1-4f51-9a62-528c19089b9d",
+        "name": "API-08 Cancelar reserva devuelve inventario",
+        "description": {
+          "content": "SWR-RES-011",
+          "type": "text/plain"
+        },
+        "item": [
+          {
+            "id": "5dc1351d-e1a8-4787-8385-6c3be6a3c960",
+            "name": "POST /reservas/:id/cancelar",
+            "request": {
+              "url": {
+                "path": [
+                  "reservas",
+                  "{{reservaId}}",
+                  "cancelar"
+                ],
+                "host": [
+                  "{{baseUrl}}"
+                ],
+                "query": [],
+                "variable": []
+              },
+              "method": "POST",
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "type": "string",
+                    "value": "[REDACTADO]",
+                    "key": "token"
+                  }
+                ]
+              }
+            },
+            "response": [],
+            "event": [
+              {
+                "listen": "test",
+                "script": {
+                  "id": "e2980ddd-9356-4d00-8fd1-30a39c7e3217",
+                  "type": "text/javascript",
+                  "exec": [
+                    "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                    "pm.test('estado CANCELADA', () => pm.expect(pm.response.json().estado).to.eql('CANCELADA'));",
+                    "pm.sendRequest({ url: pm.environment.get('baseUrl') + '/ofertas?q=' + encodeURIComponent(pm.environment.get('productoNombre')), method: 'GET' }, (e, res) => {",
+                    "  const o = res.json().find((x) => x.id === pm.environment.get('ofertaId'));",
+                    "  pm.test('el inventario vuelve a 10', () => pm.expect(o.disponible).to.eql(10));",
+                    "});"
+                  ],
+                  "_lastExecutionId": "d89c5da0-ee82-4673-b1ef-e8613ab6cead"
+                }
+              }
+            ]
+          }
+        ],
+        "event": []
+      }
+    ],
+    "event": [],
+    "variable": [],
+    "info": {
+      "_postman_id": "882269cb-eaa8-484f-b469-52aee7f7cb13",
+      "name": "FoodSave API (API-01 a API-08)",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+      "description": {
+        "content": "Casos API-01..API-08 de 04_Matriz_Pruebas.xlsx. Requiere la variable de entorno `password` (SEED_PASSWORD), que va vacía en el repo. Ejecutar en orden: cada carpeta depende de variables guardadas por las anteriores.",
+        "type": "text/plain"
+      }
+    }
+  },
+  "environment": {
+    "_": {
+      "postman_variable_scope": "environment"
+    },
+    "id": "foodsave-local",
+    "name": "FoodSave local",
+    "values": [
+      {
+        "type": "any",
+        "value": "http://localhost:3001",
+        "key": "baseUrl"
+      },
+      {
+        "type": "any",
+        "value": "[REDACTADO]",
+        "key": "password"
+      },
+      {
+        "type": "any",
+        "value": "[REDACTADO]",
+        "key": "tokenDueno"
+      },
+      {
+        "type": "any",
+        "value": "[REDACTADO]",
+        "key": "tokenConsumidor"
+      },
+      {
+        "type": "any",
+        "value": "dae8c0e6-6bfd-460d-9293-84083caf5144",
+        "key": "sedeId"
+      },
+      {
+        "type": "any",
+        "value": "Pan Postman 1794979218808",
+        "key": "productoNombre"
+      },
+      {
+        "type": "any",
+        "value": "Prohibido Postman 1794979218808",
+        "key": "productoNoCreado"
+      },
+      {
+        "type": "any",
+        "value": "Precio malo Postman 1794979219690",
+        "key": "productoPrecioMalo"
+      },
+      {
+        "type": "any",
+        "value": "2026-11-19T05:20:18.808Z",
+        "key": "vencimiento"
+      },
+      {
+        "type": "any",
+        "value": "f7379a2e-b4c6-448c-b7d0-a3a72d0052ff",
+        "key": "ofertaId"
+      },
+      {
+        "type": "any",
+        "value": "aeef3ce5-27b8-4baf-b744-b79e86a1b2ef",
+        "key": "reservaId"
+      },
+      {
+        "type": "any",
+        "value": "{\"codigo\":\"CREDENCIALES_INVALIDAS\",\"mensaje\":\"Credenciales inválidas\"}",
+        "key": "mensajeClaveErrada"
+      }
+    ]
+  },
+  "globals": {
+    "id": "160384e3-79a2-4995-b33d-c1a899433fff",
+    "values": []
+  },
+  "run": {
+    "stats": {
+      "iterations": {
+        "total": 1,
+        "pending": 0,
+        "failed": 0
+      },
+      "items": {
+        "total": 12,
+        "pending": 0,
+        "failed": 0
+      },
+      "scripts": {
+        "total": 14,
+        "pending": 0,
+        "failed": 0
+      },
+      "prerequests": {
+        "total": 12,
+        "pending": 0,
+        "failed": 0
+      },
+      "requests": {
+        "total": 17,
+        "pending": 0,
+        "failed": 0
+      },
+      "tests": {
+        "total": 12,
+        "pending": 0,
+        "failed": 0
+      },
+      "assertions": {
+        "total": 42,
+        "pending": 0,
+        "failed": 0
+      },
+      "testScripts": {
+        "total": 12,
+        "pending": 0,
+        "failed": 0
+      },
+      "prerequestScripts": {
+        "total": 2,
+        "pending": 0,
+        "failed": 0
+      }
+    },
+    "timings": {
+      "responseAverage": 322.05882352941177,
+      "responseMin": 2,
+      "responseMax": 1031,
+      "responseSd": 269.38262107974293,
+      "dnsAverage": 0,
+      "dnsMin": 0,
+      "dnsMax": 0,
+      "dnsSd": 0,
+      "firstByteAverage": 0,
+      "firstByteMin": 0,
+      "firstByteMax": 0,
+      "firstByteSd": 0,
+      "started": 1794979217334,
+      "completed": 1794979222991
+    },
+    "executions": [
+      {
+        "cursor": {
+          "position": 0,
+          "iteration": 0,
+          "length": 12,
+          "cycles": 1,
+          "empty": false,
+          "eof": false,
+          "bof": true,
+          "cr": false,
+          "ref": "1da1bc3d-149a-4ee7-b5c3-15727278dca8",
+          "httpRequestId": "e0c47511-3aaf-46dd-965c-074412bcbb76"
+        },
+        "item": {
+          "id": "7dc1ca93-354f-4fac-ad63-39380fec5255",
+          "name": "Login dueño (apoyo)",
+          "request": {
+            "url": {
+              "path": [
+                "auth",
+                "login"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"correo\":\"dueno@foodsave.test\",\"contrasena\":\"{{password}}\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth",
+              "noauth": []
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "fc62c900-7eaa-45c8-ada3-790d9a6074dd",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  "pm.environment.set('tokenDueno', pm.response.json().accessToken);"
+                ],
+                "_lastExecutionId": "62d0f33f-ede0-4221-9313-9b1b60500d75"
+              }
+            }
+          ]
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3001",
+            "path": [
+              "auth",
+              "login"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "7e3fd106-9e42-4123-a1d5-e88ff9cfa309",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:3001",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "55",
+              "system": true
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\"correo\":\"dueno@foodsave.test\",\"contrasena\":\"[REDACTADO]\"}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          },
+          "auth": {
+            "type": "noauth",
+            "noauth": []
+          }
+        },
+        "response": {
+          "id": "9e58ca50-4866-4b36-842c-87f126c6217a",
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "X-Powered-By",
+              "value": "Express"
+            },
+            {
+              "key": "Vary",
+              "value": "Origin"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "318"
+            },
+            {
+              "key": "ETag",
+              "value": "W/\"13e-GFty0ZVDc48F+VD4MQ+ItPju/20\""
+            },
+            {
+              "key": "Date",
+              "value": "Wed, 18 Nov 2026 05:20:17 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            }
+          ],
+          "stream": {
+            "redactado": "cuerpo binario omitido",
+            "bytes": 318
+          },
+          "cookie": [],
+          "responseTime": 570,
+          "responseSize": 318
+        },
+        "id": "7dc1ca93-354f-4fac-ad63-39380fec5255",
+        "assertions": [
+          {
+            "assertion": "HTTP 200",
+            "skipped": false
+          }
+        ]
+      },
+      {
+        "cursor": {
+          "ref": "f1829748-0782-40c2-b2a6-00a0c8eee19e",
+          "length": 12,
+          "cycles": 1,
+          "position": 1,
+          "iteration": 0,
+          "httpRequestId": "2204c2c2-96b8-4aed-8854-4cffa59ae50f"
+        },
+        "item": {
+          "id": "ebcad4d6-42de-464b-847b-55f640282b74",
+          "name": "Login consumidor (apoyo)",
+          "request": {
+            "url": {
+              "path": [
+                "auth",
+                "login"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"correo\":\"consumidor1@foodsave.test\",\"contrasena\":\"{{password}}\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth",
+              "noauth": []
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "d75c1cdc-5550-4540-9d07-5a55f8ca1543",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  "pm.environment.set('tokenConsumidor', pm.response.json().accessToken);"
+                ],
+                "_lastExecutionId": "a738eeca-3b01-4822-a86e-0070d925ca99"
+              }
+            }
+          ]
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3001",
+            "path": [
+              "auth",
+              "login"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "bbb804bf-6230-43e3-b53a-ffbd0514278d",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:3001",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "61",
+              "system": true
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\"correo\":\"consumidor1@foodsave.test\",\"contrasena\":\"[REDACTADO]\"}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          },
+          "auth": {
+            "type": "noauth",
+            "noauth": []
+          }
+        },
+        "response": {
+          "id": "eae63813-688b-493d-b323-64dbd744c8c9",
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "X-Powered-By",
+              "value": "Express"
+            },
+            {
+              "key": "Vary",
+              "value": "Origin"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "332"
+            },
+            {
+              "key": "ETag",
+              "value": "W/\"14c-jwn+hEPEocb7k7oTn5jn/McN1F0\""
+            },
+            {
+              "key": "Date",
+              "value": "Wed, 18 Nov 2026 05:20:18 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            }
+          ],
+          "stream": {
+            "redactado": "cuerpo binario omitido",
+            "bytes": 332
+          },
+          "cookie": [],
+          "responseTime": 157,
+          "responseSize": 332
+        },
+        "id": "ebcad4d6-42de-464b-847b-55f640282b74",
+        "assertions": [
+          {
+            "assertion": "HTTP 200",
+            "skipped": false
+          }
+        ]
+      },
+      {
+        "cursor": {
+          "ref": "18c57f70-86a5-4112-850a-3bf12222259c",
+          "length": 12,
+          "cycles": 1,
+          "position": 2,
+          "iteration": 0,
+          "httpRequestId": "31c511de-4375-4824-abfa-25f044a3d34e"
+        },
+        "item": {
+          "id": "e16df403-0d77-4da6-8947-1bdc64f57b70",
+          "name": "GET /sedes/mias (sedeId del dueño)",
+          "request": {
+            "url": {
+              "path": [
+                "sedes",
+                "mias"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "type": "string",
+                  "value": "[REDACTADO]",
+                  "key": "token"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "89cb68d5-3aae-4cb6-bbb4-6bb3005f43e1",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  "const sedes = pm.response.json();",
+                  "pm.test('el dueño tiene al menos una sede', () => pm.expect(sedes).to.be.an('array').that.is.not.empty);",
+                  "const centro = sedes.find((s) => s.nombre === 'Sede Centro') || sedes[0];",
+                  "pm.environment.set('sedeId', centro.id);"
+                ],
+                "_lastExecutionId": "ac6747e8-a7a4-4cb7-9806-02189b2befc3"
+              }
+            }
+          ]
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3001",
+            "path": [
+              "sedes",
+              "mias"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Authorization",
+              "value": "[REDACTADO]",
+              "system": true
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "f732dc8e-55da-4b6c-9e89-68a7e0d031b8",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:3001",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            }
+          ],
+          "method": "GET",
+          "auth": {
+            "type": "bearer",
+            "bearer": [
+              {
+                "type": "string",
+                "value": "[REDACTADO]",
+                "key": "token"
+              }
+            ]
+          }
+        },
+        "response": {
+          "id": "c77beb31-b9b6-4193-be27-3390f95a0991",
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "X-Powered-By",
+              "value": "Express"
+            },
+            {
+              "key": "Vary",
+              "value": "Origin"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "138"
+            },
+            {
+              "key": "ETag",
+              "value": "W/\"8a-a3YHzPy6Uvw9mHjDv4GzVmvuD2Y\""
+            },
+            {
+              "key": "Date",
+              "value": "Wed, 18 Nov 2026 05:20:18 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            }
+          ],
+          "stream": {
+            "redactado": "cuerpo binario omitido",
+            "bytes": 138
+          },
+          "cookie": [],
+          "responseTime": 185,
+          "responseSize": 138
+        },
+        "id": "e16df403-0d77-4da6-8947-1bdc64f57b70",
+        "assertions": [
+          {
+            "assertion": "HTTP 200",
+            "skipped": false
+          },
+          {
+            "assertion": "el dueño tiene al menos una sede",
+            "skipped": false
+          }
+        ]
+      },
+      {
+        "cursor": {
+          "ref": "dc0c3118-36df-4ca9-8283-deb5dfc13235",
+          "length": 12,
+          "cycles": 1,
+          "position": 3,
+          "iteration": 0,
+          "httpRequestId": "cc6a93c6-f5b1-4b45-9ab5-aad86ee2b45c"
+        },
+        "item": {
+          "id": "dc0d5c44-930b-4b4e-8051-068c9d7d4ca1",
+          "name": "POST /auth/login consumidor1",
+          "request": {
+            "url": {
+              "path": [
+                "auth",
+                "login"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"correo\":\"consumidor1@foodsave.test\",\"contrasena\":\"{{password}}\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth",
+              "noauth": []
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "202e2fdc-424f-4a9a-b587-a51bbc8a08ca",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  "const j = pm.response.json();",
+                  "pm.test('devuelve accessToken (JWT)', () => pm.expect(j.accessToken).to.be.a('string').and.match(/^[\\w-]+\\.[\\w-]+\\.[\\w-]+$/));",
+                  "pm.test('usuario.rol = CONSUMIDOR', () => pm.expect(j.usuario.rol).to.eql('CONSUMIDOR'));",
+                  "pm.test('usuario trae id y nombre', () => { pm.expect(j.usuario.id).to.be.a('string'); pm.expect(j.usuario.nombre).to.be.a('string'); });",
+                  "pm.test('la respuesta no incluye contraseña ni hash', () => {",
+                  "  const t = pm.response.text();",
+                  "  pm.expect(t).to.not.match(/passwordHash|contrasena|password|\\$2[aby]\\$/i);",
+                  "});"
+                ],
+                "_lastExecutionId": "7c815646-2a48-4e54-8864-51ba40c5b509"
+              }
+            }
+          ]
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3001",
+            "path": [
+              "auth",
+              "login"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "4e8a2f16-21a5-48a9-b11f-e828bc2f2ff5",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:3001",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "61",
+              "system": true
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\"correo\":\"consumidor1@foodsave.test\",\"contrasena\":\"[REDACTADO]\"}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          },
+          "auth": {
+            "type": "noauth",
+            "noauth": []
+          }
+        },
+        "response": {
+          "id": "2648e175-1b71-4834-8260-460b41b038f9",
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "X-Powered-By",
+              "value": "Express"
+            },
+            {
+              "key": "Vary",
+              "value": "Origin"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "332"
+            },
+            {
+              "key": "ETag",
+              "value": "W/\"14c-jwn+hEPEocb7k7oTn5jn/McN1F0\""
+            },
+            {
+              "key": "Date",
+              "value": "Wed, 18 Nov 2026 05:20:18 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            }
+          ],
+          "stream": {
+            "redactado": "cuerpo binario omitido",
+            "bytes": 332
+          },
+          "cookie": [],
+          "responseTime": 174,
+          "responseSize": 332
+        },
+        "id": "dc0d5c44-930b-4b4e-8051-068c9d7d4ca1",
+        "assertions": [
+          {
+            "assertion": "HTTP 200",
+            "skipped": false
+          },
+          {
+            "assertion": "devuelve accessToken (JWT)",
+            "skipped": false
+          },
+          {
+            "assertion": "usuario.rol = CONSUMIDOR",
+            "skipped": false
+          },
+          {
+            "assertion": "usuario trae id y nombre",
+            "skipped": false
+          },
+          {
+            "assertion": "la respuesta no incluye contraseña ni hash",
+            "skipped": false
+          }
+        ]
+      },
+      {
+        "cursor": {
+          "ref": "690bb088-c1ba-4437-93ac-9d671b1eedf4",
+          "length": 12,
+          "cycles": 1,
+          "position": 4,
+          "iteration": 0,
+          "httpRequestId": "0014cc28-3c6c-4a13-968e-9b9250f39277"
+        },
+        "item": {
+          "id": "ab39cb47-60f7-43a6-a28f-6afec55b28eb",
+          "name": "POST /auth/login clave incorrecta",
+          "request": {
+            "url": {
+              "path": [
+                "auth",
+                "login"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"correo\":\"consumidor1@foodsave.test\",\"contrasena\":\"clave-incorrecta-postman\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth",
+              "noauth": []
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "ca35e70f-3185-4d46-bf3b-2beb40ba5c01",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 401', () => pm.response.to.have.status(401));",
+                  "pm.test('código de error CREDENCIALES_INVALIDAS', () => pm.expect(pm.response.json().codigo).to.eql('CREDENCIALES_INVALIDAS'));",
+                  "pm.test('mensaje exacto «Credenciales inválidas»', () => pm.expect(pm.response.json().mensaje).to.eql('Credenciales inválidas'));",
+                  "pm.test('no devuelve accessToken', () => pm.expect(pm.response.json()).to.not.have.property('accessToken'));",
+                  "pm.environment.set('mensajeClaveErrada', pm.response.text());"
+                ],
+                "_lastExecutionId": "f2aa66c9-efb7-41f3-9e4b-bd7025a7aace"
+              }
+            }
+          ]
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3001",
+            "path": [
+              "auth",
+              "login"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "0bcd63e5-8e7d-4b26-8320-a84c85cb2484",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:3001",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "78",
+              "system": true
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\"correo\":\"consumidor1@foodsave.test\",\"contrasena\":\"clave-incorrecta-postman\"}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          },
+          "auth": {
+            "type": "noauth",
+            "noauth": []
+          }
+        },
+        "response": {
+          "id": "eba6db14-7afd-43b1-9ade-a6d50aff39d0",
+          "status": "Unauthorized",
+          "code": 401,
+          "header": [
+            {
+              "key": "X-Powered-By",
+              "value": "Express"
+            },
+            {
+              "key": "Vary",
+              "value": "Origin"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "71"
+            },
+            {
+              "key": "ETag",
+              "value": "W/\"47-th8aFl2eye8DI81+hq0f0wqiPKg\""
+            },
+            {
+              "key": "Date",
+              "value": "Wed, 18 Nov 2026 05:20:18 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            }
+          ],
+          "stream": {
+            "redactado": "cuerpo binario omitido",
+            "bytes": 71
+          },
+          "cookie": [],
+          "responseTime": 156,
+          "responseSize": 71
+        },
+        "id": "ab39cb47-60f7-43a6-a28f-6afec55b28eb",
+        "assertions": [
+          {
+            "assertion": "HTTP 401",
+            "skipped": false
+          },
+          {
+            "assertion": "código de error CREDENCIALES_INVALIDAS",
+            "skipped": false
+          },
+          {
+            "assertion": "mensaje exacto «Credenciales inválidas»",
+            "skipped": false
+          },
+          {
+            "assertion": "no devuelve accessToken",
+            "skipped": false
+          }
+        ]
+      },
+      {
+        "cursor": {
+          "ref": "70f21dcf-fea1-4d71-9999-34fac8bc0be1",
+          "length": 12,
+          "cycles": 1,
+          "position": 5,
+          "iteration": 0,
+          "httpRequestId": "60d17365-595c-4463-8efe-b88c165809fa"
+        },
+        "item": {
+          "id": "559c7c2b-1809-4f78-9435-6ad764a9285b",
+          "name": "POST /auth/login correo inexistente",
+          "request": {
+            "url": {
+              "path": [
+                "auth",
+                "login"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"correo\":\"no.existe@foodsave.test\",\"contrasena\":\"clave-incorrecta-postman\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth",
+              "noauth": []
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "4c07ef6f-9eb1-45e6-9fe6-66259caec0c8",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 401', () => pm.response.to.have.status(401));",
+                  "pm.test('código de error CREDENCIALES_INVALIDAS', () => pm.expect(pm.response.json().codigo).to.eql('CREDENCIALES_INVALIDAS'));",
+                  "pm.test('mensaje exacto «Credenciales inválidas»', () => pm.expect(pm.response.json().mensaje).to.eql('Credenciales inválidas'));",
+                  "pm.test('respuesta idéntica a la de clave incorrecta (no revela si el correo existe)', () => pm.expect(pm.response.text()).to.eql(pm.environment.get('mensajeClaveErrada')));"
+                ],
+                "_lastExecutionId": "e123b87d-34d1-4d5f-8c3a-5d4eaf15acc2"
+              }
+            }
+          ]
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3001",
+            "path": [
+              "auth",
+              "login"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "c7d24126-c5f6-4f39-8ece-57f1cf5b3806",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:3001",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "76",
+              "system": true
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\"correo\":\"no.existe@foodsave.test\",\"contrasena\":\"clave-incorrecta-postman\"}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          },
+          "auth": {
+            "type": "noauth",
+            "noauth": []
+          }
+        },
+        "response": {
+          "id": "8a48ad58-3d77-45ac-93da-9e0471105397",
+          "status": "Unauthorized",
+          "code": 401,
+          "header": [
+            {
+              "key": "X-Powered-By",
+              "value": "Express"
+            },
+            {
+              "key": "Vary",
+              "value": "Origin"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "71"
+            },
+            {
+              "key": "ETag",
+              "value": "W/\"47-th8aFl2eye8DI81+hq0f0wqiPKg\""
+            },
+            {
+              "key": "Date",
+              "value": "Wed, 18 Nov 2026 05:20:18 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            }
+          ],
+          "stream": {
+            "redactado": "cuerpo binario omitido",
+            "bytes": 71
+          },
+          "cookie": [],
+          "responseTime": 156,
+          "responseSize": 71
+        },
+        "id": "559c7c2b-1809-4f78-9435-6ad764a9285b",
+        "assertions": [
+          {
+            "assertion": "HTTP 401",
+            "skipped": false
+          },
+          {
+            "assertion": "código de error CREDENCIALES_INVALIDAS",
+            "skipped": false
+          },
+          {
+            "assertion": "mensaje exacto «Credenciales inválidas»",
+            "skipped": false
+          },
+          {
+            "assertion": "respuesta idéntica a la de clave incorrecta (no revela si el correo existe)",
+            "skipped": false
+          }
+        ]
+      },
+      {
+        "cursor": {
+          "ref": "7d5c9d89-7190-4e69-954b-52bae13c6510",
+          "length": 12,
+          "cycles": 1,
+          "position": 6,
+          "iteration": 0,
+          "httpRequestId": "8fd2cfd4-d8d8-4b6f-9e55-bdd35f8b13f2",
+          "scriptId": "84ce508a-c335-475d-ac1d-db811e9acade",
+          "execution": "cd069007-57a8-450b-9019-d47fe7dec10b"
+        },
+        "item": {
+          "id": "4f0c106f-1961-4fef-be40-00b000c5d060",
+          "name": "POST /ofertas con token de CONSUMIDOR",
+          "request": {
+            "url": {
+              "path": [
+                "ofertas"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"sedeId\":\"{{sedeId}}\",\"producto\":\"{{productoNoCreado}}\",\"precioOriginal\":8000,\"precioOferta\":4000,\"cantidad\":10,\"vencimiento\":\"{{vencimiento}}\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "type": "string",
+                  "value": "[REDACTADO]",
+                  "key": "token"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "dfc98f0b-0934-4f15-926b-5cd42e945faf",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.environment.set('productoNombre', 'Pan Postman ' + Date.now());",
+                  "pm.environment.set('productoNoCreado', 'Prohibido Postman ' + Date.now());",
+                  "pm.environment.set('vencimiento', new Date(Date.now() + 24*3600*1000).toISOString());"
+                ],
+                "_lastExecutionId": "dee214e0-a7e2-4045-a7d0-cf7b7cb9e9ee"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "id": "84ce508a-c335-475d-ac1d-db811e9acade",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 403', () => pm.response.to.have.status(403));",
+                  "pm.test('código de error PROHIBIDO', () => pm.expect(pm.response.json().codigo).to.eql('PROHIBIDO'));",
+                  "pm.test('mensaje exacto «No tienes permiso para realizar esta acción»', () => pm.expect(pm.response.json().mensaje).to.eql('No tienes permiso para realizar esta acción'));",
+                  "pm.sendRequest({ url: pm.environment.get('baseUrl') + '/ofertas?q=' + encodeURIComponent(pm.environment.get('productoNombre')), method: 'GET' }, (e, r) => {",
+                  "  pm.test('no se creó ninguna oferta', () => pm.expect(r.json().filter((o) => o.producto === pm.environment.get('productoNoCreado'))).to.be.empty);",
+                  "});"
+                ],
+                "_lastExecutionId": "cd069007-57a8-450b-9019-d47fe7dec10b"
+              }
+            }
+          ]
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3001",
+            "path": [
+              "ofertas"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [
+              {
+                "key": "q",
+                "value": "Pan%20Postman%201794979218808"
+              }
+            ],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "9fc971e0-bffc-4b4a-9e99-6e41913fc0ee",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:3001",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            }
+          ],
+          "method": "GET"
+        },
+        "response": {
+          "id": "4bd08c72-7526-481a-bb1b-c7c0e2d73329",
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "X-Powered-By",
+              "value": "Express"
+            },
+            {
+              "key": "Vary",
+              "value": "Origin"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "2"
+            },
+            {
+              "key": "ETag",
+              "value": "W/\"2-l9Fw4VUO7kr8CvBlt4zaMCqXZ0w\""
+            },
+            {
+              "key": "Date",
+              "value": "Wed, 18 Nov 2026 05:20:18 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            }
+          ],
+          "stream": {
+            "redactado": "cuerpo binario omitido",
+            "bytes": 2
+          },
+          "cookie": [],
+          "responseTime": 186,
+          "responseSize": 2
+        },
+        "id": "ede239fe-4549-44dc-a402-d9adb53bc754",
+        "assertions": [
+          {
+            "assertion": "HTTP 403",
+            "skipped": false
+          },
+          {
+            "assertion": "código de error PROHIBIDO",
+            "skipped": false
+          },
+          {
+            "assertion": "mensaje exacto «No tienes permiso para realizar esta acción»",
+            "skipped": false
+          },
+          {
+            "assertion": "no se creó ninguna oferta",
+            "skipped": false
+          }
+        ]
+      },
+      {
+        "cursor": {
+          "ref": "7d5c9d89-7190-4e69-954b-52bae13c6510",
+          "length": 12,
+          "cycles": 1,
+          "position": 6,
+          "iteration": 0,
+          "httpRequestId": "8fd2cfd4-d8d8-4b6f-9e55-bdd35f8b13f2",
+          "scriptId": "84ce508a-c335-475d-ac1d-db811e9acade",
+          "execution": "cd069007-57a8-450b-9019-d47fe7dec10b"
+        },
+        "item": {
+          "id": "4f0c106f-1961-4fef-be40-00b000c5d060",
+          "name": "POST /ofertas con token de CONSUMIDOR",
+          "request": {
+            "url": {
+              "path": [
+                "ofertas"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"sedeId\":\"{{sedeId}}\",\"producto\":\"{{productoNoCreado}}\",\"precioOriginal\":8000,\"precioOferta\":4000,\"cantidad\":10,\"vencimiento\":\"{{vencimiento}}\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "type": "string",
+                  "value": "[REDACTADO]",
+                  "key": "token"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "dfc98f0b-0934-4f15-926b-5cd42e945faf",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.environment.set('productoNombre', 'Pan Postman ' + Date.now());",
+                  "pm.environment.set('productoNoCreado', 'Prohibido Postman ' + Date.now());",
+                  "pm.environment.set('vencimiento', new Date(Date.now() + 24*3600*1000).toISOString());"
+                ],
+                "_lastExecutionId": "dee214e0-a7e2-4045-a7d0-cf7b7cb9e9ee"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "id": "84ce508a-c335-475d-ac1d-db811e9acade",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 403', () => pm.response.to.have.status(403));",
+                  "pm.test('código de error PROHIBIDO', () => pm.expect(pm.response.json().codigo).to.eql('PROHIBIDO'));",
+                  "pm.test('mensaje exacto «No tienes permiso para realizar esta acción»', () => pm.expect(pm.response.json().mensaje).to.eql('No tienes permiso para realizar esta acción'));",
+                  "pm.sendRequest({ url: pm.environment.get('baseUrl') + '/ofertas?q=' + encodeURIComponent(pm.environment.get('productoNombre')), method: 'GET' }, (e, r) => {",
+                  "  pm.test('no se creó ninguna oferta', () => pm.expect(r.json().filter((o) => o.producto === pm.environment.get('productoNoCreado'))).to.be.empty);",
+                  "});"
+                ],
+                "_lastExecutionId": "cd069007-57a8-450b-9019-d47fe7dec10b"
+              }
+            }
+          ]
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3001",
+            "path": [
+              "ofertas"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [
+              {
+                "key": "q",
+                "value": "Pan%20Postman%201794979218808"
+              }
+            ],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "9fc971e0-bffc-4b4a-9e99-6e41913fc0ee",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:3001",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            }
+          ],
+          "method": "GET"
+        },
+        "response": {
+          "id": "4bd08c72-7526-481a-bb1b-c7c0e2d73329",
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "X-Powered-By",
+              "value": "Express"
+            },
+            {
+              "key": "Vary",
+              "value": "Origin"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "2"
+            },
+            {
+              "key": "ETag",
+              "value": "W/\"2-l9Fw4VUO7kr8CvBlt4zaMCqXZ0w\""
+            },
+            {
+              "key": "Date",
+              "value": "Wed, 18 Nov 2026 05:20:18 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            }
+          ],
+          "stream": {
+            "redactado": "cuerpo binario omitido",
+            "bytes": 2
+          },
+          "cookie": [],
+          "responseTime": 186,
+          "responseSize": 2
+        },
+        "id": "ede239fe-4549-44dc-a402-d9adb53bc754",
+        "assertions": [
+          {
+            "assertion": "HTTP 403",
+            "skipped": false
+          },
+          {
+            "assertion": "código de error PROHIBIDO",
+            "skipped": false
+          },
+          {
+            "assertion": "mensaje exacto «No tienes permiso para realizar esta acción»",
+            "skipped": false
+          },
+          {
+            "assertion": "no se creó ninguna oferta",
+            "skipped": false
+          }
+        ]
+      },
+      {
+        "cursor": {
+          "ref": "cab0c186-f63e-4b2b-92b7-2503e1c52cbe",
+          "length": 12,
+          "cycles": 1,
+          "position": 7,
+          "iteration": 0,
+          "httpRequestId": "659f1cc2-3b04-4089-a2bb-cf17ec333f81"
+        },
+        "item": {
+          "id": "f3d6af90-c7da-486d-aa52-58df491019e8",
+          "name": "POST /ofertas válida",
+          "request": {
+            "url": {
+              "path": [
+                "ofertas"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"sedeId\":\"{{sedeId}}\",\"producto\":\"{{productoNombre}}\",\"precioOriginal\":8000,\"precioOferta\":4000,\"cantidad\":10,\"vencimiento\":\"{{vencimiento}}\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "type": "string",
+                  "value": "[REDACTADO]",
+                  "key": "token"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "83c4fc42-09ff-4d9b-8443-75c3e39beb5f",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 201', () => pm.response.to.have.status(201));",
+                  "const o = pm.response.json();",
+                  "pm.test('estado ACTIVA', () => pm.expect(o.estado).to.eql('ACTIVA'));",
+                  "pm.test('disponible = cantidad = 10', () => { pm.expect(o.cantidad).to.eql(10); pm.expect(o.disponible).to.eql(10); });",
+                  "pm.test('precioOferta (4000) < precioOriginal (8000)', () => pm.expect(o.precioOferta).to.be.below(o.precioOriginal));",
+                  "pm.test('pertenece a la sede indicada', () => pm.expect(o.sedeId).to.eql(pm.environment.get('sedeId')));",
+                  "pm.environment.set('ofertaId', o.id);"
+                ],
+                "_lastExecutionId": "763b2755-8ee8-4789-9956-56b27411dd6f"
+              }
+            }
+          ]
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3001",
+            "path": [
+              "ofertas"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Authorization",
+              "value": "[REDACTADO]",
+              "system": true
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "efc54c0a-8525-4acf-a241-205d369d491a",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:3001",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "185",
+              "system": true
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\"sedeId\":\"dae8c0e6-6bfd-460d-9293-84083caf5144\",\"producto\":\"Pan Postman 1794979218808\",\"precioOriginal\":8000,\"precioOferta\":4000,\"cantidad\":10,\"vencimiento\":\"2026-11-19T05:20:18.808Z\"}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          },
+          "auth": {
+            "type": "bearer",
+            "bearer": [
+              {
+                "type": "string",
+                "value": "[REDACTADO]",
+                "key": "token"
+              }
+            ]
+          }
+        },
+        "response": {
+          "id": "e8f3cc61-17bf-422a-bcba-f79ff9ca062e",
+          "status": "Created",
+          "code": 201,
+          "header": [
+            {
+              "key": "X-Powered-By",
+              "value": "Express"
+            },
+            {
+              "key": "Vary",
+              "value": "Origin"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "378"
+            },
+            {
+              "key": "ETag",
+              "value": "W/\"17a-NY3X8b0SXx8bDTlvfBG3NsP2boc\""
+            },
+            {
+              "key": "Date",
+              "value": "Wed, 18 Nov 2026 05:20:19 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            }
+          ],
+          "stream": {
+            "redactado": "cuerpo binario omitido",
+            "bytes": 378
+          },
+          "cookie": [],
+          "responseTime": 663,
+          "responseSize": 378
+        },
+        "id": "f3d6af90-c7da-486d-aa52-58df491019e8",
+        "assertions": [
+          {
+            "assertion": "HTTP 201",
+            "skipped": false
+          },
+          {
+            "assertion": "estado ACTIVA",
+            "skipped": false
+          },
+          {
+            "assertion": "disponible = cantidad = 10",
+            "skipped": false
+          },
+          {
+            "assertion": "precioOferta (4000) < precioOriginal (8000)",
+            "skipped": false
+          },
+          {
+            "assertion": "pertenece a la sede indicada",
+            "skipped": false
+          }
+        ]
+      },
+      {
+        "cursor": {
+          "ref": "8390b1ef-722c-4b86-a99f-372fbc3f9695",
+          "length": 12,
+          "cycles": 1,
+          "position": 8,
+          "iteration": 0,
+          "httpRequestId": "4ae109b8-96a3-4960-8c5a-89700f5f0da3",
+          "scriptId": "37d849ff-a6ee-49dc-9951-a22120e0e676",
+          "execution": "a20a9d13-48d9-4de0-ab0f-5b5622479048"
+        },
+        "item": {
+          "id": "39bf9b8d-7083-4c6f-b760-6b5070e85d64",
+          "name": "POST /ofertas precioOferta = precioOriginal",
+          "request": {
+            "url": {
+              "path": [
+                "ofertas"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"sedeId\":\"{{sedeId}}\",\"producto\":\"{{productoPrecioMalo}}\",\"precioOriginal\":8000,\"precioOferta\":8000,\"cantidad\":10,\"vencimiento\":\"{{vencimiento}}\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "type": "string",
+                  "value": "[REDACTADO]",
+                  "key": "token"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "601e61a8-7684-4f4e-a857-4da7d0db8837",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.environment.set('productoPrecioMalo', 'Precio malo Postman ' + Date.now());"
+                ],
+                "_lastExecutionId": "af797d1f-b1ec-4061-b2d8-bb4ae8f18d86"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "id": "37d849ff-a6ee-49dc-9951-a22120e0e676",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 400', () => pm.response.to.have.status(400));",
+                  "pm.test('código de error PRECIO_INVALIDO', () => pm.expect(pm.response.json().codigo).to.eql('PRECIO_INVALIDO'));",
+                  "pm.test('mensaje exacto «El precio de oferta debe ser menor al precio original»', () => pm.expect(pm.response.json().mensaje).to.eql('El precio de oferta debe ser menor al precio original'));",
+                  "pm.sendRequest({ url: pm.environment.get('baseUrl') + '/ofertas?q=' + encodeURIComponent(pm.environment.get('productoPrecioMalo')), method: 'GET' }, (e, r) => {",
+                  "  pm.test('no se creó la oferta', () => pm.expect(r.json()).to.be.empty);",
+                  "});"
+                ],
+                "_lastExecutionId": "a20a9d13-48d9-4de0-ab0f-5b5622479048"
+              }
+            }
+          ]
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3001",
+            "path": [
+              "ofertas"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [
+              {
+                "key": "q",
+                "value": "Precio%20malo%20Postman%201794979219690"
+              }
+            ],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "c10ce6de-c955-4a84-9951-36475ce2af0c",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:3001",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            }
+          ],
+          "method": "GET"
+        },
+        "response": {
+          "id": "c119eecb-1608-41cc-bec4-0e92714ba61c",
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "X-Powered-By",
+              "value": "Express"
+            },
+            {
+              "key": "Vary",
+              "value": "Origin"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "2"
+            },
+            {
+              "key": "ETag",
+              "value": "W/\"2-l9Fw4VUO7kr8CvBlt4zaMCqXZ0w\""
+            },
+            {
+              "key": "Date",
+              "value": "Wed, 18 Nov 2026 05:20:20 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            }
+          ],
+          "stream": {
+            "redactado": "cuerpo binario omitido",
+            "bytes": 2
+          },
+          "cookie": [],
+          "responseTime": 185,
+          "responseSize": 2
+        },
+        "id": "2d6dd886-bf27-4241-9aa7-e3d3eded841b",
+        "assertions": [
+          {
+            "assertion": "HTTP 400",
+            "skipped": false
+          },
+          {
+            "assertion": "código de error PRECIO_INVALIDO",
+            "skipped": false
+          },
+          {
+            "assertion": "mensaje exacto «El precio de oferta debe ser menor al precio original»",
+            "skipped": false
+          },
+          {
+            "assertion": "no se creó la oferta",
+            "skipped": false
+          }
+        ]
+      },
+      {
+        "cursor": {
+          "ref": "8390b1ef-722c-4b86-a99f-372fbc3f9695",
+          "length": 12,
+          "cycles": 1,
+          "position": 8,
+          "iteration": 0,
+          "httpRequestId": "4ae109b8-96a3-4960-8c5a-89700f5f0da3",
+          "scriptId": "37d849ff-a6ee-49dc-9951-a22120e0e676",
+          "execution": "a20a9d13-48d9-4de0-ab0f-5b5622479048"
+        },
+        "item": {
+          "id": "39bf9b8d-7083-4c6f-b760-6b5070e85d64",
+          "name": "POST /ofertas precioOferta = precioOriginal",
+          "request": {
+            "url": {
+              "path": [
+                "ofertas"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"sedeId\":\"{{sedeId}}\",\"producto\":\"{{productoPrecioMalo}}\",\"precioOriginal\":8000,\"precioOferta\":8000,\"cantidad\":10,\"vencimiento\":\"{{vencimiento}}\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "type": "string",
+                  "value": "[REDACTADO]",
+                  "key": "token"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "601e61a8-7684-4f4e-a857-4da7d0db8837",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.environment.set('productoPrecioMalo', 'Precio malo Postman ' + Date.now());"
+                ],
+                "_lastExecutionId": "af797d1f-b1ec-4061-b2d8-bb4ae8f18d86"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "id": "37d849ff-a6ee-49dc-9951-a22120e0e676",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 400', () => pm.response.to.have.status(400));",
+                  "pm.test('código de error PRECIO_INVALIDO', () => pm.expect(pm.response.json().codigo).to.eql('PRECIO_INVALIDO'));",
+                  "pm.test('mensaje exacto «El precio de oferta debe ser menor al precio original»', () => pm.expect(pm.response.json().mensaje).to.eql('El precio de oferta debe ser menor al precio original'));",
+                  "pm.sendRequest({ url: pm.environment.get('baseUrl') + '/ofertas?q=' + encodeURIComponent(pm.environment.get('productoPrecioMalo')), method: 'GET' }, (e, r) => {",
+                  "  pm.test('no se creó la oferta', () => pm.expect(r.json()).to.be.empty);",
+                  "});"
+                ],
+                "_lastExecutionId": "a20a9d13-48d9-4de0-ab0f-5b5622479048"
+              }
+            }
+          ]
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3001",
+            "path": [
+              "ofertas"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [
+              {
+                "key": "q",
+                "value": "Precio%20malo%20Postman%201794979219690"
+              }
+            ],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "c10ce6de-c955-4a84-9951-36475ce2af0c",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:3001",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            }
+          ],
+          "method": "GET"
+        },
+        "response": {
+          "id": "c119eecb-1608-41cc-bec4-0e92714ba61c",
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "X-Powered-By",
+              "value": "Express"
+            },
+            {
+              "key": "Vary",
+              "value": "Origin"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "2"
+            },
+            {
+              "key": "ETag",
+              "value": "W/\"2-l9Fw4VUO7kr8CvBlt4zaMCqXZ0w\""
+            },
+            {
+              "key": "Date",
+              "value": "Wed, 18 Nov 2026 05:20:20 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            }
+          ],
+          "stream": {
+            "redactado": "cuerpo binario omitido",
+            "bytes": 2
+          },
+          "cookie": [],
+          "responseTime": 185,
+          "responseSize": 2
+        },
+        "id": "2d6dd886-bf27-4241-9aa7-e3d3eded841b",
+        "assertions": [
+          {
+            "assertion": "HTTP 400",
+            "skipped": false
+          },
+          {
+            "assertion": "código de error PRECIO_INVALIDO",
+            "skipped": false
+          },
+          {
+            "assertion": "mensaje exacto «El precio de oferta debe ser menor al precio original»",
+            "skipped": false
+          },
+          {
+            "assertion": "no se creó la oferta",
+            "skipped": false
+          }
+        ]
+      },
+      {
+        "cursor": {
+          "ref": "90ba829a-948f-4596-acfc-006763fcee50",
+          "length": 12,
+          "cycles": 1,
+          "position": 9,
+          "iteration": 0,
+          "httpRequestId": "6d40eacf-b8a2-4039-bde8-e55715f0ecaa",
+          "scriptId": "23ee10ea-440e-420c-9a94-f290db8381eb",
+          "execution": "f5a780cd-1492-4330-8f51-b09f30375a82"
+        },
+        "item": {
+          "id": "180aa93c-0583-4004-a5ee-0b736775ee49",
+          "name": "POST /reservas cantidad 2",
+          "request": {
+            "url": {
+              "path": [
+                "reservas"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"ofertaId\":\"{{ofertaId}}\",\"cantidad\":2}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "type": "string",
+                  "value": "[REDACTADO]",
+                  "key": "token"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "23ee10ea-440e-420c-9a94-f290db8381eb",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 201', () => pm.response.to.have.status(201));",
+                  "const r = pm.response.json();",
+                  "pm.test('estado RESERVADA y cantidad 2', () => { pm.expect(r.estado).to.eql('RESERVADA'); pm.expect(r.cantidad).to.eql(2); });",
+                  "const creada = new Date(r.createdAt).getTime(), plazo = new Date(r.plazoRetiro).getTime();",
+                  "pm.test('plazoRetiro <= createdAt + 12 h', () => pm.expect(plazo).to.be.at.most(creada + 12*3600*1000 + 1000));",
+                  "pm.test('plazoRetiro <= vencimiento de la oferta', () => pm.expect(plazo).to.be.at.most(new Date(pm.environment.get('vencimiento')).getTime()));",
+                  "pm.environment.set('reservaId', r.id);",
+                  "pm.sendRequest({ url: pm.environment.get('baseUrl') + '/ofertas?q=' + encodeURIComponent(pm.environment.get('productoNombre')), method: 'GET' }, (e, res) => {",
+                  "  const o = res.json().find((x) => x.id === pm.environment.get('ofertaId'));",
+                  "  pm.test('el inventario baja de 10 a 8', () => pm.expect(o.disponible).to.eql(8));",
+                  "});"
+                ],
+                "_lastExecutionId": "f5a780cd-1492-4330-8f51-b09f30375a82"
+              }
+            }
+          ]
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3001",
+            "path": [
+              "ofertas"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [
+              {
+                "key": "q",
+                "value": "Pan%20Postman%201794979218808"
+              }
+            ],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "fb1516af-5ef3-45f2-8253-8a09796846d5",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:3001",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            }
+          ],
+          "method": "GET"
+        },
+        "response": {
+          "id": "2cf3cf43-6d55-4647-8c2e-6236429ad535",
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "X-Powered-By",
+              "value": "Express"
+            },
+            {
+              "key": "Vary",
+              "value": "Origin"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "379"
+            },
+            {
+              "key": "ETag",
+              "value": "W/\"17b-bNItE1G4iW6UZ+lvgZukyiMJbjY\""
+            },
+            {
+              "key": "Date",
+              "value": "Wed, 18 Nov 2026 05:20:21 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            }
+          ],
+          "stream": {
+            "redactado": "cuerpo binario omitido",
+            "bytes": 379
+          },
+          "cookie": [],
+          "responseTime": 184,
+          "responseSize": 379
+        },
+        "id": "2d4b5b9e-a240-4766-a619-476e4a29d022",
+        "assertions": [
+          {
+            "assertion": "HTTP 201",
+            "skipped": false
+          },
+          {
+            "assertion": "estado RESERVADA y cantidad 2",
+            "skipped": false
+          },
+          {
+            "assertion": "plazoRetiro <= createdAt + 12 h",
+            "skipped": false
+          },
+          {
+            "assertion": "plazoRetiro <= vencimiento de la oferta",
+            "skipped": false
+          },
+          {
+            "assertion": "el inventario baja de 10 a 8",
+            "skipped": false
+          }
+        ]
+      },
+      {
+        "cursor": {
+          "ref": "90ba829a-948f-4596-acfc-006763fcee50",
+          "length": 12,
+          "cycles": 1,
+          "position": 9,
+          "iteration": 0,
+          "httpRequestId": "6d40eacf-b8a2-4039-bde8-e55715f0ecaa",
+          "scriptId": "23ee10ea-440e-420c-9a94-f290db8381eb",
+          "execution": "f5a780cd-1492-4330-8f51-b09f30375a82"
+        },
+        "item": {
+          "id": "180aa93c-0583-4004-a5ee-0b736775ee49",
+          "name": "POST /reservas cantidad 2",
+          "request": {
+            "url": {
+              "path": [
+                "reservas"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"ofertaId\":\"{{ofertaId}}\",\"cantidad\":2}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "type": "string",
+                  "value": "[REDACTADO]",
+                  "key": "token"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "23ee10ea-440e-420c-9a94-f290db8381eb",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 201', () => pm.response.to.have.status(201));",
+                  "const r = pm.response.json();",
+                  "pm.test('estado RESERVADA y cantidad 2', () => { pm.expect(r.estado).to.eql('RESERVADA'); pm.expect(r.cantidad).to.eql(2); });",
+                  "const creada = new Date(r.createdAt).getTime(), plazo = new Date(r.plazoRetiro).getTime();",
+                  "pm.test('plazoRetiro <= createdAt + 12 h', () => pm.expect(plazo).to.be.at.most(creada + 12*3600*1000 + 1000));",
+                  "pm.test('plazoRetiro <= vencimiento de la oferta', () => pm.expect(plazo).to.be.at.most(new Date(pm.environment.get('vencimiento')).getTime()));",
+                  "pm.environment.set('reservaId', r.id);",
+                  "pm.sendRequest({ url: pm.environment.get('baseUrl') + '/ofertas?q=' + encodeURIComponent(pm.environment.get('productoNombre')), method: 'GET' }, (e, res) => {",
+                  "  const o = res.json().find((x) => x.id === pm.environment.get('ofertaId'));",
+                  "  pm.test('el inventario baja de 10 a 8', () => pm.expect(o.disponible).to.eql(8));",
+                  "});"
+                ],
+                "_lastExecutionId": "f5a780cd-1492-4330-8f51-b09f30375a82"
+              }
+            }
+          ]
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3001",
+            "path": [
+              "ofertas"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [
+              {
+                "key": "q",
+                "value": "Pan%20Postman%201794979218808"
+              }
+            ],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "fb1516af-5ef3-45f2-8253-8a09796846d5",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:3001",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            }
+          ],
+          "method": "GET"
+        },
+        "response": {
+          "id": "2cf3cf43-6d55-4647-8c2e-6236429ad535",
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "X-Powered-By",
+              "value": "Express"
+            },
+            {
+              "key": "Vary",
+              "value": "Origin"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "379"
+            },
+            {
+              "key": "ETag",
+              "value": "W/\"17b-bNItE1G4iW6UZ+lvgZukyiMJbjY\""
+            },
+            {
+              "key": "Date",
+              "value": "Wed, 18 Nov 2026 05:20:21 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            }
+          ],
+          "stream": {
+            "redactado": "cuerpo binario omitido",
+            "bytes": 379
+          },
+          "cookie": [],
+          "responseTime": 184,
+          "responseSize": 379
+        },
+        "id": "2d4b5b9e-a240-4766-a619-476e4a29d022",
+        "assertions": [
+          {
+            "assertion": "HTTP 201",
+            "skipped": false
+          },
+          {
+            "assertion": "estado RESERVADA y cantidad 2",
+            "skipped": false
+          },
+          {
+            "assertion": "plazoRetiro <= createdAt + 12 h",
+            "skipped": false
+          },
+          {
+            "assertion": "plazoRetiro <= vencimiento de la oferta",
+            "skipped": false
+          },
+          {
+            "assertion": "el inventario baja de 10 a 8",
+            "skipped": false
+          }
+        ]
+      },
+      {
+        "cursor": {
+          "ref": "065f6a7b-a3be-44d5-8af3-6c54c67f12a1",
+          "length": 12,
+          "cycles": 1,
+          "position": 10,
+          "iteration": 0,
+          "httpRequestId": "69236c2b-77fb-4567-9924-1a355d46204f",
+          "scriptId": "12d40863-a341-4f5d-af03-6f901a9cc1e6",
+          "execution": "25935430-8cd6-48c2-9853-67c10167589e"
+        },
+        "item": {
+          "id": "3e1444bf-8437-4cb2-b986-a74d251a0fd1",
+          "name": "POST /reservas cantidad 999",
+          "request": {
+            "url": {
+              "path": [
+                "reservas"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"ofertaId\":\"{{ofertaId}}\",\"cantidad\":999}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "type": "string",
+                  "value": "[REDACTADO]",
+                  "key": "token"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "12d40863-a341-4f5d-af03-6f901a9cc1e6",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 409', () => pm.response.to.have.status(409));",
+                  "pm.test('código de error STOCK_INSUFICIENTE', () => pm.expect(pm.response.json().codigo).to.eql('STOCK_INSUFICIENTE'));",
+                  "pm.test('mensaje exacto «No hay unidades suficientes»', () => pm.expect(pm.response.json().mensaje).to.eql('No hay unidades suficientes'));",
+                  "pm.sendRequest({ url: pm.environment.get('baseUrl') + '/ofertas?q=' + encodeURIComponent(pm.environment.get('productoNombre')), method: 'GET' }, (e, res) => {",
+                  "  const o = res.json().find((x) => x.id === pm.environment.get('ofertaId'));",
+                  "  pm.test('el inventario sigue en 8 (no hubo descuento)', () => pm.expect(o.disponible).to.eql(8));",
+                  "});"
+                ],
+                "_lastExecutionId": "25935430-8cd6-48c2-9853-67c10167589e"
+              }
+            }
+          ]
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3001",
+            "path": [
+              "ofertas"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [
+              {
+                "key": "q",
+                "value": "Pan%20Postman%201794979218808"
+              }
+            ],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "bdee01f7-6c30-4e05-b8fc-7b8bf8ce6c9c",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:3001",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            }
+          ],
+          "method": "GET"
+        },
+        "response": {
+          "id": "f721d6be-4c3c-4f9c-b49b-29b5dd9deb08",
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "X-Powered-By",
+              "value": "Express"
+            },
+            {
+              "key": "Vary",
+              "value": "Origin"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "379"
+            },
+            {
+              "key": "ETag",
+              "value": "W/\"17b-bNItE1G4iW6UZ+lvgZukyiMJbjY\""
+            },
+            {
+              "key": "Date",
+              "value": "Wed, 18 Nov 2026 05:20:22 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            }
+          ],
+          "stream": {
+            "redactado": "cuerpo binario omitido",
+            "bytes": 379
+          },
+          "cookie": [],
+          "responseTime": 183,
+          "responseSize": 379
+        },
+        "id": "08674cb8-ec23-4723-98c3-b3192849887e",
+        "assertions": [
+          {
+            "assertion": "HTTP 409",
+            "skipped": false
+          },
+          {
+            "assertion": "código de error STOCK_INSUFICIENTE",
+            "skipped": false
+          },
+          {
+            "assertion": "mensaje exacto «No hay unidades suficientes»",
+            "skipped": false
+          },
+          {
+            "assertion": "el inventario sigue en 8 (no hubo descuento)",
+            "skipped": false
+          }
+        ]
+      },
+      {
+        "cursor": {
+          "ref": "065f6a7b-a3be-44d5-8af3-6c54c67f12a1",
+          "length": 12,
+          "cycles": 1,
+          "position": 10,
+          "iteration": 0,
+          "httpRequestId": "69236c2b-77fb-4567-9924-1a355d46204f",
+          "scriptId": "12d40863-a341-4f5d-af03-6f901a9cc1e6",
+          "execution": "25935430-8cd6-48c2-9853-67c10167589e"
+        },
+        "item": {
+          "id": "3e1444bf-8437-4cb2-b986-a74d251a0fd1",
+          "name": "POST /reservas cantidad 999",
+          "request": {
+            "url": {
+              "path": [
+                "reservas"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"ofertaId\":\"{{ofertaId}}\",\"cantidad\":999}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "type": "string",
+                  "value": "[REDACTADO]",
+                  "key": "token"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "12d40863-a341-4f5d-af03-6f901a9cc1e6",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 409', () => pm.response.to.have.status(409));",
+                  "pm.test('código de error STOCK_INSUFICIENTE', () => pm.expect(pm.response.json().codigo).to.eql('STOCK_INSUFICIENTE'));",
+                  "pm.test('mensaje exacto «No hay unidades suficientes»', () => pm.expect(pm.response.json().mensaje).to.eql('No hay unidades suficientes'));",
+                  "pm.sendRequest({ url: pm.environment.get('baseUrl') + '/ofertas?q=' + encodeURIComponent(pm.environment.get('productoNombre')), method: 'GET' }, (e, res) => {",
+                  "  const o = res.json().find((x) => x.id === pm.environment.get('ofertaId'));",
+                  "  pm.test('el inventario sigue en 8 (no hubo descuento)', () => pm.expect(o.disponible).to.eql(8));",
+                  "});"
+                ],
+                "_lastExecutionId": "25935430-8cd6-48c2-9853-67c10167589e"
+              }
+            }
+          ]
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3001",
+            "path": [
+              "ofertas"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [
+              {
+                "key": "q",
+                "value": "Pan%20Postman%201794979218808"
+              }
+            ],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "bdee01f7-6c30-4e05-b8fc-7b8bf8ce6c9c",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:3001",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            }
+          ],
+          "method": "GET"
+        },
+        "response": {
+          "id": "f721d6be-4c3c-4f9c-b49b-29b5dd9deb08",
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "X-Powered-By",
+              "value": "Express"
+            },
+            {
+              "key": "Vary",
+              "value": "Origin"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "379"
+            },
+            {
+              "key": "ETag",
+              "value": "W/\"17b-bNItE1G4iW6UZ+lvgZukyiMJbjY\""
+            },
+            {
+              "key": "Date",
+              "value": "Wed, 18 Nov 2026 05:20:22 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            }
+          ],
+          "stream": {
+            "redactado": "cuerpo binario omitido",
+            "bytes": 379
+          },
+          "cookie": [],
+          "responseTime": 183,
+          "responseSize": 379
+        },
+        "id": "08674cb8-ec23-4723-98c3-b3192849887e",
+        "assertions": [
+          {
+            "assertion": "HTTP 409",
+            "skipped": false
+          },
+          {
+            "assertion": "código de error STOCK_INSUFICIENTE",
+            "skipped": false
+          },
+          {
+            "assertion": "mensaje exacto «No hay unidades suficientes»",
+            "skipped": false
+          },
+          {
+            "assertion": "el inventario sigue en 8 (no hubo descuento)",
+            "skipped": false
+          }
+        ]
+      },
+      {
+        "cursor": {
+          "ref": "323037ff-1afb-4232-a6d6-528733240d76",
+          "length": 12,
+          "cycles": 1,
+          "position": 11,
+          "iteration": 0,
+          "httpRequestId": "d6f5a023-4253-404e-9b81-5b954a319bc3",
+          "scriptId": "e2980ddd-9356-4d00-8fd1-30a39c7e3217",
+          "execution": "d89c5da0-ee82-4673-b1ef-e8613ab6cead"
+        },
+        "item": {
+          "id": "5dc1351d-e1a8-4787-8385-6c3be6a3c960",
+          "name": "POST /reservas/:id/cancelar",
+          "request": {
+            "url": {
+              "path": [
+                "reservas",
+                "{{reservaId}}",
+                "cancelar"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "type": "string",
+                  "value": "[REDACTADO]",
+                  "key": "token"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "e2980ddd-9356-4d00-8fd1-30a39c7e3217",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  "pm.test('estado CANCELADA', () => pm.expect(pm.response.json().estado).to.eql('CANCELADA'));",
+                  "pm.sendRequest({ url: pm.environment.get('baseUrl') + '/ofertas?q=' + encodeURIComponent(pm.environment.get('productoNombre')), method: 'GET' }, (e, res) => {",
+                  "  const o = res.json().find((x) => x.id === pm.environment.get('ofertaId'));",
+                  "  pm.test('el inventario vuelve a 10', () => pm.expect(o.disponible).to.eql(10));",
+                  "});"
+                ],
+                "_lastExecutionId": "d89c5da0-ee82-4673-b1ef-e8613ab6cead"
+              }
+            }
+          ]
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3001",
+            "path": [
+              "ofertas"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [
+              {
+                "key": "q",
+                "value": "Pan%20Postman%201794979218808"
+              }
+            ],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "43aa0f56-1d36-435b-83e3-f64ca40911c8",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:3001",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            }
+          ],
+          "method": "GET"
+        },
+        "response": {
+          "id": "f27c0b75-c056-4164-8243-99918b1d3831",
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "X-Powered-By",
+              "value": "Express"
+            },
+            {
+              "key": "Vary",
+              "value": "Origin"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "380"
+            },
+            {
+              "key": "ETag",
+              "value": "W/\"17c-9yQqTLlI5QyxLxpQRre/dE0qImE\""
+            },
+            {
+              "key": "Date",
+              "value": "Wed, 18 Nov 2026 05:20:22 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            }
+          ],
+          "stream": {
+            "redactado": "cuerpo binario omitido",
+            "bytes": 380
+          },
+          "cookie": [],
+          "responseTime": 184,
+          "responseSize": 380
+        },
+        "id": "dea0588b-b434-4ae5-bb4b-1db5d3c46842",
+        "assertions": [
+          {
+            "assertion": "HTTP 200",
+            "skipped": false
+          },
+          {
+            "assertion": "estado CANCELADA",
+            "skipped": false
+          },
+          {
+            "assertion": "el inventario vuelve a 10",
+            "skipped": false
+          }
+        ]
+      },
+      {
+        "cursor": {
+          "ref": "323037ff-1afb-4232-a6d6-528733240d76",
+          "length": 12,
+          "cycles": 1,
+          "position": 11,
+          "iteration": 0,
+          "httpRequestId": "d6f5a023-4253-404e-9b81-5b954a319bc3",
+          "scriptId": "e2980ddd-9356-4d00-8fd1-30a39c7e3217",
+          "execution": "d89c5da0-ee82-4673-b1ef-e8613ab6cead"
+        },
+        "item": {
+          "id": "5dc1351d-e1a8-4787-8385-6c3be6a3c960",
+          "name": "POST /reservas/:id/cancelar",
+          "request": {
+            "url": {
+              "path": [
+                "reservas",
+                "{{reservaId}}",
+                "cancelar"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "type": "string",
+                  "value": "[REDACTADO]",
+                  "key": "token"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "e2980ddd-9356-4d00-8fd1-30a39c7e3217",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  "pm.test('estado CANCELADA', () => pm.expect(pm.response.json().estado).to.eql('CANCELADA'));",
+                  "pm.sendRequest({ url: pm.environment.get('baseUrl') + '/ofertas?q=' + encodeURIComponent(pm.environment.get('productoNombre')), method: 'GET' }, (e, res) => {",
+                  "  const o = res.json().find((x) => x.id === pm.environment.get('ofertaId'));",
+                  "  pm.test('el inventario vuelve a 10', () => pm.expect(o.disponible).to.eql(10));",
+                  "});"
+                ],
+                "_lastExecutionId": "d89c5da0-ee82-4673-b1ef-e8613ab6cead"
+              }
+            }
+          ]
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3001",
+            "path": [
+              "ofertas"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [
+              {
+                "key": "q",
+                "value": "Pan%20Postman%201794979218808"
+              }
+            ],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "43aa0f56-1d36-435b-83e3-f64ca40911c8",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:3001",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            }
+          ],
+          "method": "GET"
+        },
+        "response": {
+          "id": "f27c0b75-c056-4164-8243-99918b1d3831",
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "X-Powered-By",
+              "value": "Express"
+            },
+            {
+              "key": "Vary",
+              "value": "Origin"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "380"
+            },
+            {
+              "key": "ETag",
+              "value": "W/\"17c-9yQqTLlI5QyxLxpQRre/dE0qImE\""
+            },
+            {
+              "key": "Date",
+              "value": "Wed, 18 Nov 2026 05:20:22 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            }
+          ],
+          "stream": {
+            "redactado": "cuerpo binario omitido",
+            "bytes": 380
+          },
+          "cookie": [],
+          "responseTime": 184,
+          "responseSize": 380
+        },
+        "id": "dea0588b-b434-4ae5-bb4b-1db5d3c46842",
+        "assertions": [
+          {
+            "assertion": "HTTP 200",
+            "skipped": false
+          },
+          {
+            "assertion": "estado CANCELADA",
+            "skipped": false
+          },
+          {
+            "assertion": "el inventario vuelve a 10",
+            "skipped": false
+          }
+        ]
+      }
+    ],
+    "transfers": {
+      "responseTotal": 3824
+    },
+    "failures": [],
+    "error": null
+  }
+}

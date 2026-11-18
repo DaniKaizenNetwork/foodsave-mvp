@@ -1,0 +1,115 @@
+newman
+
+FoodSave API (API-01 a API-08)
+
+❏ 00 Preparación
+↳ Login dueño (apoyo)
+  POST http://localhost:3001/auth/login [200 OK, 569B, 570ms]
+  ✓  HTTP 200
+
+↳ Login consumidor (apoyo)
+  POST http://localhost:3001/auth/login [200 OK, 583B, 157ms]
+  ✓  HTTP 200
+
+↳ GET /sedes/mias (sedeId del dueño)
+  GET http://localhost:3001/sedes/mias [200 OK, 388B, 185ms]
+  ✓  HTTP 200
+  ✓  el dueño tiene al menos una sede
+
+❏ API-01 Login exitoso
+↳ POST /auth/login consumidor1
+  POST http://localhost:3001/auth/login [200 OK, 583B, 174ms]
+  ✓  HTTP 200
+  ✓  devuelve accessToken (JWT)
+  ✓  usuario.rol = CONSUMIDOR
+  ✓  usuario trae id y nombre
+  ✓  la respuesta no incluye contraseña ni hash
+
+❏ API-02 Login con contraseña incorrecta
+↳ POST /auth/login clave incorrecta
+  POST http://localhost:3001/auth/login [401 Unauthorized, 330B, 156ms]
+  ✓  HTTP 401
+  ✓  código de error CREDENCIALES_INVALIDAS
+  ✓  mensaje exacto «Credenciales inválidas»
+  ✓  no devuelve accessToken
+
+↳ POST /auth/login correo inexistente
+  POST http://localhost:3001/auth/login [401 Unauthorized, 330B, 156ms]
+  ✓  HTTP 401
+  ✓  código de error CREDENCIALES_INVALIDAS
+  ✓  mensaje exacto «Credenciales inválidas»
+  ✓  respuesta idéntica a la de clave incorrecta (no revela si el correo existe)
+
+❏ API-03 Consumidor no puede publicar
+↳ POST /ofertas con token de CONSUMIDOR
+  POST http://localhost:3001/ofertas [403 Forbidden, 335B, 2ms]
+  ✓  HTTP 403
+  ✓  código de error PROHIBIDO
+  ✓  mensaje exacto «No tienes permiso para realizar esta acción»
+  GET http://localhost:3001/ofertas?q=Pan%20Postman%201794979218808 [200 OK, 249B, 186ms]
+  ✓  no se creó ninguna oferta
+
+❏ API-04 Publicar oferta (dueño)
+↳ POST /ofertas válida
+  POST http://localhost:3001/ofertas [201 Created, 634B, 663ms]
+  ✓  HTTP 201
+  ✓  estado ACTIVA
+  ✓  disponible = cantidad = 10
+  ✓  precioOferta (4000) < precioOriginal (8000)
+  ✓  pertenece a la sede indicada
+
+❏ API-05 Precio de oferta no menor al original
+↳ POST /ofertas precioOferta = precioOriginal
+  POST http://localhost:3001/ofertas [400 Bad Request, 352B, 187ms]
+  ✓  HTTP 400
+  ✓  código de error PRECIO_INVALIDO
+  ✓  mensaje exacto «El precio de oferta debe ser menor al precio original»
+  GET http://localhost:3001/ofertas?q=Precio%20malo%20Postman%201794979219690 [200 OK, 249B, 185ms]
+  ✓  no se creó la oferta
+
+❏ API-06 Reservar descuenta inventario
+↳ POST /reservas cantidad 2
+  POST http://localhost:3001/reservas [201 Created, 655B, 1031ms]
+  ✓  HTTP 201
+  ✓  estado RESERVADA y cantidad 2
+  ✓  plazoRetiro <= createdAt + 12 h
+  ✓  plazoRetiro <= vencimiento de la oferta
+  GET http://localhost:3001/ofertas?q=Pan%20Postman%201794979218808 [200 OK, 630B, 184ms]
+  ✓  el inventario baja de 10 a 8
+
+❏ API-07 Stock insuficiente
+↳ POST /reservas cantidad 999
+  POST http://localhost:3001/reservas [409 Conflict, 326B, 542ms]
+  ✓  HTTP 409
+  ✓  código de error STOCK_INSUFICIENTE
+  ✓  mensaje exacto «No hay unidades suficientes»
+  GET http://localhost:3001/ofertas?q=Pan%20Postman%201794979218808 [200 OK, 630B, 183ms]
+  ✓  el inventario sigue en 8 (no hubo descuento)
+
+❏ API-08 Cancelar reserva devuelve inventario
+↳ POST /reservas/:id/cancelar
+  POST http://localhost:3001/reservas/aeef3ce5-27b8-4baf-b744-b79e86a1b2ef/cancelar [200 OK, 650B, 730ms]
+  ✓  HTTP 200
+  ✓  estado CANCELADA
+  GET http://localhost:3001/ofertas?q=Pan%20Postman%201794979218808 [200 OK, 631B, 184ms]
+  ✓  el inventario vuelve a 10
+
+┌─────────────────────────┬────────────────────┬────────────────────┐
+│                         │           executed │             failed │
+├─────────────────────────┼────────────────────┼────────────────────┤
+│              iterations │                  1 │                  0 │
+├─────────────────────────┼────────────────────┼────────────────────┤
+│                requests │                 17 │                  0 │
+├─────────────────────────┼────────────────────┼────────────────────┤
+│            test-scripts │                 12 │                  0 │
+├─────────────────────────┼────────────────────┼────────────────────┤
+│      prerequest-scripts │                  2 │                  0 │
+├─────────────────────────┼────────────────────┼────────────────────┤
+│              assertions │                 42 │                  0 │
+├─────────────────────────┴────────────────────┴────────────────────┤
+│ total run duration: 5.6s                                          │
+├───────────────────────────────────────────────────────────────────┤
+│ total data received: 3.82kB (approx)                              │
+├───────────────────────────────────────────────────────────────────┤
+│ average response time: 322ms [min: 2ms, max: 1031ms, s.d.: 269ms] │
+└───────────────────────────────────────────────────────────────────┘

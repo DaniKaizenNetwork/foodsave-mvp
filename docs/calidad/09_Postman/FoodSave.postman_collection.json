@@ -1,0 +1,698 @@
+{
+  "info": {
+    "name": "FoodSave API (API-01 a API-08)",
+    "description": "Casos API-01..API-08 de 04_Matriz_Pruebas.xlsx. Requiere la variable de entorno `password` (SEED_PASSWORD), que va vacía en el repo. Ejecutar en orden: cada carpeta depende de variables guardadas por las anteriores.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "00 Preparación",
+      "description": "Sesiones y datos de apoyo (no son casos de la matriz).",
+      "item": [
+        {
+          "name": "Login dueño (apoyo)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  "pm.environment.set('tokenDueno', pm.response.json().accessToken);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"correo\":\"dueno@foodsave.test\",\"contrasena\":\"{{password}}\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Login consumidor (apoyo)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  "pm.environment.set('tokenConsumidor', pm.response.json().accessToken);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"correo\":\"consumidor1@foodsave.test\",\"contrasena\":\"{{password}}\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET /sedes/mias (sedeId del dueño)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  "const sedes = pm.response.json();",
+                  "pm.test('el dueño tiene al menos una sede', () => pm.expect(sedes).to.be.an('array').that.is.not.empty);",
+                  "const centro = sedes.find((s) => s.nombre === 'Sede Centro') || sedes[0];",
+                  "pm.environment.set('sedeId', centro.id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{tokenDueno}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/sedes/mias",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sedes",
+                "mias"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "API-01 Login exitoso",
+      "description": "SWR-AUTH-005",
+      "item": [
+        {
+          "name": "POST /auth/login consumidor1",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  "const j = pm.response.json();",
+                  "pm.test('devuelve accessToken (JWT)', () => pm.expect(j.accessToken).to.be.a('string').and.match(/^[\\w-]+\\.[\\w-]+\\.[\\w-]+$/));",
+                  "pm.test('usuario.rol = CONSUMIDOR', () => pm.expect(j.usuario.rol).to.eql('CONSUMIDOR'));",
+                  "pm.test('usuario trae id y nombre', () => { pm.expect(j.usuario.id).to.be.a('string'); pm.expect(j.usuario.nombre).to.be.a('string'); });",
+                  "pm.test('la respuesta no incluye contraseña ni hash', () => {",
+                  "  const t = pm.response.text();",
+                  "  pm.expect(t).to.not.match(/passwordHash|contrasena|password|\\$2[aby]\\$/i);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"correo\":\"consumidor1@foodsave.test\",\"contrasena\":\"{{password}}\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "API-02 Login con contraseña incorrecta",
+      "description": "SWR-AUTH-006",
+      "item": [
+        {
+          "name": "POST /auth/login clave incorrecta",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 401', () => pm.response.to.have.status(401));",
+                  "pm.test('código de error CREDENCIALES_INVALIDAS', () => pm.expect(pm.response.json().codigo).to.eql('CREDENCIALES_INVALIDAS'));",
+                  "pm.test('mensaje exacto «Credenciales inválidas»', () => pm.expect(pm.response.json().mensaje).to.eql('Credenciales inválidas'));",
+                  "pm.test('no devuelve accessToken', () => pm.expect(pm.response.json()).to.not.have.property('accessToken'));",
+                  "pm.environment.set('mensajeClaveErrada', pm.response.text());"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"correo\":\"consumidor1@foodsave.test\",\"contrasena\":\"clave-incorrecta-postman\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          }
+        },
+        {
+          "name": "POST /auth/login correo inexistente",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 401', () => pm.response.to.have.status(401));",
+                  "pm.test('código de error CREDENCIALES_INVALIDAS', () => pm.expect(pm.response.json().codigo).to.eql('CREDENCIALES_INVALIDAS'));",
+                  "pm.test('mensaje exacto «Credenciales inválidas»', () => pm.expect(pm.response.json().mensaje).to.eql('Credenciales inválidas'));",
+                  "pm.test('respuesta idéntica a la de clave incorrecta (no revela si el correo existe)', () => pm.expect(pm.response.text()).to.eql(pm.environment.get('mensajeClaveErrada')));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"correo\":\"no.existe@foodsave.test\",\"contrasena\":\"clave-incorrecta-postman\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "API-03 Consumidor no puede publicar",
+      "description": "SWR-AUTH-010",
+      "item": [
+        {
+          "name": "POST /ofertas con token de CONSUMIDOR",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.environment.set('productoNombre', 'Pan Postman ' + Date.now());",
+                  "pm.environment.set('productoNoCreado', 'Prohibido Postman ' + Date.now());",
+                  "pm.environment.set('vencimiento', new Date(Date.now() + 24*3600*1000).toISOString());"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 403', () => pm.response.to.have.status(403));",
+                  "pm.test('código de error PROHIBIDO', () => pm.expect(pm.response.json().codigo).to.eql('PROHIBIDO'));",
+                  "pm.test('mensaje exacto «No tienes permiso para realizar esta acción»', () => pm.expect(pm.response.json().mensaje).to.eql('No tienes permiso para realizar esta acción'));",
+                  "pm.sendRequest({ url: pm.environment.get('baseUrl') + '/ofertas?q=' + encodeURIComponent(pm.environment.get('productoNombre')), method: 'GET' }, (e, r) => {",
+                  "  pm.test('no se creó ninguna oferta', () => pm.expect(r.json().filter((o) => o.producto === pm.environment.get('productoNoCreado'))).to.be.empty);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{tokenConsumidor}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"sedeId\":\"{{sedeId}}\",\"producto\":\"{{productoNoCreado}}\",\"precioOriginal\":8000,\"precioOferta\":4000,\"cantidad\":10,\"vencimiento\":\"{{vencimiento}}\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/ofertas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ofertas"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "API-04 Publicar oferta (dueño)",
+      "description": "SWR-OFE-001",
+      "item": [
+        {
+          "name": "POST /ofertas válida",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 201', () => pm.response.to.have.status(201));",
+                  "const o = pm.response.json();",
+                  "pm.test('estado ACTIVA', () => pm.expect(o.estado).to.eql('ACTIVA'));",
+                  "pm.test('disponible = cantidad = 10', () => { pm.expect(o.cantidad).to.eql(10); pm.expect(o.disponible).to.eql(10); });",
+                  "pm.test('precioOferta (4000) < precioOriginal (8000)', () => pm.expect(o.precioOferta).to.be.below(o.precioOriginal));",
+                  "pm.test('pertenece a la sede indicada', () => pm.expect(o.sedeId).to.eql(pm.environment.get('sedeId')));",
+                  "pm.environment.set('ofertaId', o.id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{tokenDueno}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"sedeId\":\"{{sedeId}}\",\"producto\":\"{{productoNombre}}\",\"precioOriginal\":8000,\"precioOferta\":4000,\"cantidad\":10,\"vencimiento\":\"{{vencimiento}}\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/ofertas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ofertas"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "API-05 Precio de oferta no menor al original",
+      "description": "SWR-OFE-003",
+      "item": [
+        {
+          "name": "POST /ofertas precioOferta = precioOriginal",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.environment.set('productoPrecioMalo', 'Precio malo Postman ' + Date.now());"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 400', () => pm.response.to.have.status(400));",
+                  "pm.test('código de error PRECIO_INVALIDO', () => pm.expect(pm.response.json().codigo).to.eql('PRECIO_INVALIDO'));",
+                  "pm.test('mensaje exacto «El precio de oferta debe ser menor al precio original»', () => pm.expect(pm.response.json().mensaje).to.eql('El precio de oferta debe ser menor al precio original'));",
+                  "pm.sendRequest({ url: pm.environment.get('baseUrl') + '/ofertas?q=' + encodeURIComponent(pm.environment.get('productoPrecioMalo')), method: 'GET' }, (e, r) => {",
+                  "  pm.test('no se creó la oferta', () => pm.expect(r.json()).to.be.empty);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{tokenDueno}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"sedeId\":\"{{sedeId}}\",\"producto\":\"{{productoPrecioMalo}}\",\"precioOriginal\":8000,\"precioOferta\":8000,\"cantidad\":10,\"vencimiento\":\"{{vencimiento}}\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/ofertas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ofertas"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "API-06 Reservar descuenta inventario",
+      "description": "SWR-RES-001, RES-002, RES-003, RES-005",
+      "item": [
+        {
+          "name": "POST /reservas cantidad 2",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 201', () => pm.response.to.have.status(201));",
+                  "const r = pm.response.json();",
+                  "pm.test('estado RESERVADA y cantidad 2', () => { pm.expect(r.estado).to.eql('RESERVADA'); pm.expect(r.cantidad).to.eql(2); });",
+                  "const creada = new Date(r.createdAt).getTime(), plazo = new Date(r.plazoRetiro).getTime();",
+                  "pm.test('plazoRetiro <= createdAt + 12 h', () => pm.expect(plazo).to.be.at.most(creada + 12*3600*1000 + 1000));",
+                  "pm.test('plazoRetiro <= vencimiento de la oferta', () => pm.expect(plazo).to.be.at.most(new Date(pm.environment.get('vencimiento')).getTime()));",
+                  "pm.environment.set('reservaId', r.id);",
+                  "pm.sendRequest({ url: pm.environment.get('baseUrl') + '/ofertas?q=' + encodeURIComponent(pm.environment.get('productoNombre')), method: 'GET' }, (e, res) => {",
+                  "  const o = res.json().find((x) => x.id === pm.environment.get('ofertaId'));",
+                  "  pm.test('el inventario baja de 10 a 8', () => pm.expect(o.disponible).to.eql(8));",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{tokenConsumidor}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"ofertaId\":\"{{ofertaId}}\",\"cantidad\":2}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/reservas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reservas"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "API-07 Stock insuficiente",
+      "description": "SWR-RES-002",
+      "item": [
+        {
+          "name": "POST /reservas cantidad 999",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 409', () => pm.response.to.have.status(409));",
+                  "pm.test('código de error STOCK_INSUFICIENTE', () => pm.expect(pm.response.json().codigo).to.eql('STOCK_INSUFICIENTE'));",
+                  "pm.test('mensaje exacto «No hay unidades suficientes»', () => pm.expect(pm.response.json().mensaje).to.eql('No hay unidades suficientes'));",
+                  "pm.sendRequest({ url: pm.environment.get('baseUrl') + '/ofertas?q=' + encodeURIComponent(pm.environment.get('productoNombre')), method: 'GET' }, (e, res) => {",
+                  "  const o = res.json().find((x) => x.id === pm.environment.get('ofertaId'));",
+                  "  pm.test('el inventario sigue en 8 (no hubo descuento)', () => pm.expect(o.disponible).to.eql(8));",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{tokenConsumidor}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"ofertaId\":\"{{ofertaId}}\",\"cantidad\":999}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/reservas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reservas"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "API-08 Cancelar reserva devuelve inventario",
+      "description": "SWR-RES-011",
+      "item": [
+        {
+          "name": "POST /reservas/:id/cancelar",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  "pm.test('estado CANCELADA', () => pm.expect(pm.response.json().estado).to.eql('CANCELADA'));",
+                  "pm.sendRequest({ url: pm.environment.get('baseUrl') + '/ofertas?q=' + encodeURIComponent(pm.environment.get('productoNombre')), method: 'GET' }, (e, res) => {",
+                  "  const o = res.json().find((x) => x.id === pm.environment.get('ofertaId'));",
+                  "  pm.test('el inventario vuelve a 10', () => pm.expect(o.disponible).to.eql(10));",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{tokenConsumidor}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/reservas/{{reservaId}}/cancelar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reservas",
+                "{{reservaId}}",
+                "cancelar"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
