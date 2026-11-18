@@ -8,18 +8,15 @@ type BreadcrumbItem = {
   link: string;
 };
 
-// This allows to add custom title as well
+// Títulos en español de las rutas de FoodSave
 const routeMapping: Record<string, BreadcrumbItem[]> = {
-  '/dashboard': [{ title: 'Dashboard', link: '/dashboard' }],
-  '/dashboard/employee': [
-    { title: 'Dashboard', link: '/dashboard' },
-    { title: 'Employee', link: '/dashboard/employee' }
+  '/ofertas': [{ title: 'Ofertas', link: '/ofertas' }],
+  '/ofertas/nueva': [
+    { title: 'Ofertas', link: '/ofertas' },
+    { title: 'Publicar oferta', link: '/ofertas/nueva' }
   ],
-  '/dashboard/product': [
-    { title: 'Dashboard', link: '/dashboard' },
-    { title: 'Product', link: '/dashboard/product' }
-  ]
-  // Add more custom mappings as needed
+  '/reservas': [{ title: 'Mis reservas', link: '/reservas' }],
+  '/gestion/reservas': [{ title: 'Reservas de la sede', link: '/gestion/reservas' }]
 };
 
 export function useBreadcrumbs() {

@@ -1,5 +1,8 @@
 import {
   IconAdjustmentsHorizontal,
+  IconBuildingStore,
+  IconCalendarCheck,
+  IconTag,
   IconAlertCircle,
   IconAlertTriangle,
   IconArrowRight,
@@ -215,6 +218,11 @@ export const Icons = {
   toastWarning: IconAlertTriangle,
   toastError: IconCircleX,
   toastLoading: IconLoader2,
+
+  // FoodSave
+  offer: IconTag,
+  reservation: IconCalendarCheck,
+  store: IconBuildingStore,
 
   // Misc
   pizza: IconPizza,
