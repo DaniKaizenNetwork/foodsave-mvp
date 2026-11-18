@@ -97,13 +97,19 @@ function DataTablePaginationContent<TData extends RowData>({
       )}
       {...props}
     >
-      <div role='status' className='text-sm whitespace-nowrap text-muted-foreground'>
-        {selectedRowCount} {selectedRowCount === 1 ? 'fila seleccionada' : 'filas seleccionadas'}
-        {selectedRowCount > visibleSelectedRowCount
-          ? ` (${selectedRowCount - visibleSelectedRowCount} no visibles)`
-          : ''}
-        .
-      </div>
+      {/* FoodSave no usa selección de filas: el recuento solo se muestra si hay filas seleccionadas.
+          Sin él, un <div /> vacío mantiene los controles de paginación a la derecha. */}
+      {selectedRowCount > 0 ? (
+        <div role='status' className='text-sm whitespace-nowrap text-muted-foreground'>
+          {selectedRowCount} {selectedRowCount === 1 ? 'fila seleccionada' : 'filas seleccionadas'}
+          {selectedRowCount > visibleSelectedRowCount
+            ? ` (${selectedRowCount - visibleSelectedRowCount} no visibles)`
+            : ''}
+          .
+        </div>
+      ) : (
+        <div />
+      )}
       <div className='flex items-center gap-2 sm:gap-6 lg:gap-8'>
         <div className='hidden items-center gap-2 sm:flex'>
           <p id={pageSizeLabelId} className='text-sm font-medium whitespace-nowrap'>
