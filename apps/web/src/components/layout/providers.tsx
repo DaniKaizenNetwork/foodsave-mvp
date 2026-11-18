@@ -1,6 +1,6 @@
 'use client';
 
-import { ThemeProvider } from '@/components/themes/theme-provider';
+import ThemeProvider from '@/components/themes/theme-provider';
 import type { ReactNode } from 'react';
 import QueryProvider from './query-provider';
 
