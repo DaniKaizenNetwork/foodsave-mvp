@@ -26,6 +26,7 @@ Proyecto final de Calidad de Software (CORHUILA, Ingeniería de Sistemas). FoodS
 - Variables de entorno en `.env` (fuera de Git) y `.env.example` versionado sin valores reales: `DATABASE_URL`, `DIRECT_URL`, `JWT_SECRET`, `JWT_EXPIRES_IN`, `SEED_PASSWORD`, `SEED_ALLOW_RESET`, `CORS_ORIGIN`, `PORT`, `NEXT_PUBLIC_API_URL`.
 - Semillas: `npm run seed` (demo, con ofertas) y `npm run seed:test` (sin ofertas) reinician los datos y **solo se ejecutan si `.env` tiene `SEED_ALLOW_RESET=true`**. Cuentas `@foodsave.test` según la hoja «Datos y mensajes». Sede Centro es 24 h (`abierta24h`, cierre nulo); Sede Norte cierra a las 20:00.
 - Códigos de error y mensajes: los de las hojas «Contrato provisional» y «Datos y mensajes» (versión 2 de la matriz), centralizados en `apps/api/src/common/errores.ts`.
+- **Toda migración que cree una tabla debe activar RLS en ella** (`ALTER TABLE "<Tabla>" ENABLE ROW LEVEL SECURITY;`, sin políticas), en la misma migración que la crea. La API se conecta con el rol propietario (con `BYPASSRLS`), así que no se ve afectada; el objetivo es que la API REST de Supabase (`anon`/`authenticated`) no pueda leer ni escribir datos.
 
 ## Pruebas
 - Cada regla de negocio **nace con su prueba unitaria** (patrón Arrange → Act → Assert). No inventes funciones artificiales para cumplir un número de pruebas.
