@@ -1,0 +1,54 @@
+// FoodSave · modelo de datos (PostgreSQL / Supabase)
+// Esta rama: usuarios, comercios y sedes. Horarios, ofertas y reservas llegan en sus ramas.
+
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Rol {
+  CONSUMIDOR
+  PERSONAL
+  DUENO
+  ADMIN // solo dato precargado; su panel queda fuera del MVP
+}
+
+enum EstadoComercio {
+  APROBADO
+}
+
+model Comercio {
+  id     String         @id @default(uuid())
+  nombre String
+  estado EstadoComercio @default(APROBADO)
+  sedes  Sede[]
+  duenos Usuario[]
+}
+
+model Sede {
+  id         String    @id @default(uuid())
+  comercioId String
+  comercio   Comercio  @relation(fields: [comercioId], references: [id])
+  nombre     String
+  direccion  String
+  abierta24h Boolean   @default(false)
+  personal   Usuario[]
+}
+
+model Usuario {
+  id           String    @id @default(uuid())
+  nombre       String
+  correo       String    @unique // se guarda normalizado en minúsculas
+  passwordHash String
+  rol          Rol
+  sedeId       String? // solo PERSONAL
+  sede         Sede?     @relation(fields: [sedeId], references: [id])
+  comercioId   String? // solo DUENO
+  comercio     Comercio? @relation(fields: [comercioId], references: [id])
+  createdAt    DateTime  @default(now())
+}
