@@ -1,0 +1,117 @@
+c1c5c73 | 2026-11-18 | Merge pull request #28 from MarianaPereira04/docs/dossier-final
+418a5a8 | 2026-11-18 | docs(calidad): dossier final con matriz, ISO 25010, defectos, trazabilidad e informe
+dbf14a2 | 2026-11-18 | Merge pull request #27 from MarianaPereira04/docs/explicaciones-codigo
+2b956a6 | 2026-11-18 | docs(calidad): explicacion a nivel de codigo de E2E-01 y E2E-02
+b2942a0 | 2026-11-18 | docs(calidad): explicacion linea por linea de RTL-04, RTL-10 y RTL-12
+90057dd | 2026-11-18 | docs(calidad): analisis de caja blanca de calcularPlazoRetiro, verificarReserva y validarOferta
+59b3c8d | 2026-11-18 | Merge pull request #26 from MarianaPereira04/docs/shift-right-logs
+cf384e5 | 2026-11-18 | Merge pull request #25 from MarianaPereira04/docs/evidencia-unitarias
+2bd79a8 | 2026-11-18 | Merge pull request #24 from MarianaPereira04/chore/ci-github-actions
+fdee1c6 | 2026-11-18 | docs(calidad): escenario d (hallazgo: ERROR_INTERNO por byte nulo en q) y nota de escritura del escenario a
+56e1a4e | 2026-11-18 | docs(calidad): extracto depurado del escenario d (ERROR_INTERNO con GET /ofertas?q=%00)
+ac2f1e3 | 2026-11-18 | docs(calidad): Shift-Right, escenarios a, b, c y e con logs depurados y mapeo de campos
+9d4b82b | 2026-11-18 | docs(calidad): Quality Gate del CI, umbrales, deuda de lint y limitaciones
+32c1729 | 2026-11-18 | chore(ci): workflow de GitHub Actions con Quality Gate para PR a develop y main
+cd57a7e | 2026-11-18 | chore(api): umbral de cobertura del 90 % en las funciones de dominio y script test:cov
+a179a46 | 2026-11-18 | chore(lint): ESLint 10 con typescript-eslint para api y web (reglas con deuda en warn)
+b7dae3a | 2026-11-18 | docs(calidad): evidencia de pruebas unitarias UNIT-01 a UNIT-16 con salida real de jest y cobertura
+47e3e44 | 2026-11-18 | Merge pull request #23 from MarianaPereira04/test/e2e-playwright
+5fdcd01 | 2026-11-18 | Merge pull request #22 from MarianaPereira04/test/rtl-web
+feea1a1 | 2026-11-18 | Merge pull request #21 from MarianaPereira04/test/postman-api
+cdd4a2a | 2026-11-18 | docs(calidad): reporte HTML y traces saneados de la ejecución real de Playwright (5/5)
+d50da22 | 2026-11-18 | chore(e2e): script que redacta contraseña y JWT del reporte y los traces
+5f4b750 | 2026-11-18 | test(e2e): E2E-03 a E2E-05 (registro, seguridad, validación de precio)
+5eb00e2 | 2026-11-18 | test(e2e): configuración que levanta API y web, utilidades y E2E-01/E2E-02 comentados paso a paso
+1d22e6a | 2026-11-18 | chore(e2e): workspace e2e con @playwright/test 1.64.1
+2a9bcb4 | 2026-11-18 | docs(calidad): resultado de la ejecución RTL y README que enlaza cada RTL con su SWR
+8690529 | 2026-11-18 | test(web): RTL-01 a RTL-12 de los seis componentes (RTL-04, 10 y 12 comentadas línea por línea)
+c22debc | 2026-11-18 | test(web): auxiliar compartido de render para las pruebas RTL
+77db956 | 2026-11-18 | chore(web): renombrar vitest.config.ts a vitest.config.mts para quitar el aviso de Vite
+a9be162 | 2026-11-18 | test(api): reporte de la ejecución real de newman (17 peticiones, 42 assertions, 0 fallos)
+3d84958 | 2026-11-18 | docs(calidad): README para ejecutar la colección Postman con newman y npx
+2a39e0a | 2026-11-18 | test(api): colección Postman API-01 a API-08 y environment sin secretos
+91f8c31 | 2026-11-18 | Merge pull request #20 from MarianaPereira04/test/correspondencia
+83d13ad | 2026-11-18 | docs(calidad): correspondencia entre la matriz de pruebas y el código real
+9833d9c | 2026-11-17 | Merge pull request #19 from MarianaPereira04/feature/reservas-cierre-web
+2e68906 | 2026-11-17 | fix(web): el botón de acción tapaba el plazo de retiro en las tablas de reservas
+b4211b8 | 2026-11-17 | fix(web): ocultar «0 filas seleccionadas» en las tablas
+fe36a8b | 2026-11-17 | chore(web): traducir «No results.» y «Clear» de la tabla de datos
+6eb9377 | 2026-11-17 | fix(web): las tablas de reservas medían 0 px de alto y no se veían las filas
+eae2a6e | 2026-11-17 | chore(web): stubs de jsdom para los componentes de la plantilla en Vitest
+6974f79 | 2026-11-17 | feat(web): Reservas de la sede con «Marcar entregada» (SWR-RES-015)
+a6d7ed2 | 2026-11-17 | feat(web): Mis reservas con «Cancelar» (SWR-RES-011)
+aa0ffdc | 2026-11-17 | feat(web): cliente de la API de reservas y piezas comunes de las tablas
+0d2be62 | 2026-11-17 | Merge pull request #18 from MarianaPereira04/feature/reservas-cierre-api
+f7d0c12 | 2026-11-17 | feat(reservas): cancelar, entregar y listar reservas (SWR-RES-011, SWR-RES-015)
+6c37720 | 2026-11-17 | feat(reservas): verificar la cancelación (SWR-RES-011, UNIT-09/10/11)
+da68b27 | 2026-11-17 | Merge pull request #17 from MarianaPereira04/feature/reservas-web
+e41f807 | 2026-11-17 | feat(web): reservar desde el listado de ofertas
+d08d54e | 2026-11-17 | feat(web): formulario de reserva (SWR-RES-001/002/003/005)
+d330408 | 2026-11-17 | Merge pull request #16 from MarianaPereira04/feature/reservas-api
+6cae757 | 2026-11-17 | feat(seed): borrar las reservas al reiniciar los datos
+3aa112e | 2026-11-17 | feat(reservas): crear reserva en una transacción sin sobreventa (SWR-RES-001/002/003/005)
+6d53ed5 | 2026-11-17 | feat(reservas): verificar la reserva (SWR-RES-001/002, UNIT-07, WB-02/03/04/05)
+e086982 | 2026-11-17 | feat(reservas): calcular cierre de sede y plazo de retiro (SWR-RES-005, UNIT-01/02/03/12/13, WB-01/07)
+65a60b5 | 2026-11-17 | feat(db): agregar reservas con CHECK de cantidad y RLS
+e9c055c | 2026-11-17 | Merge pull request #15 from MarianaPereira04/feature/ofertas-web
+cc2cf50 | 2026-11-17 | feat(web): formulario de publicación de ofertas (SWR-OFE-001, SWR-OFE-003)
+deba887 | 2026-11-17 | feat(web): listado y búsqueda de ofertas (SWR-BUS-001, SWR-BUS-005)
+a52ef0b | 2026-11-17 | feat(web): cliente de la API de ofertas y validación del formulario (SWR-OFE-003)
+981730a | 2026-11-17 | fix(web): mostrar la etiqueta de la opción elegida en SelectField
+3fd8cd5 | 2026-11-17 | Merge pull request #14 from MarianaPereira04/feature/ofertas-api
+181e0b8 | 2026-11-17 | feat(seed): horarios de Sede Norte y ofertas demo
+5114185 | 2026-11-17 | feat(ofertas): publicar, listar y sedes propias (SWR-OFE-001, BUS-001, BUS-005)
+0304a2b | 2026-11-17 | feat(ofertas): validar cantidad y precio de la oferta (SWR-OFE-003, UNIT-04/05/06, WB-06)
+18b7268 | 2026-11-17 | feat(db): agregar horarios de sede y ofertas con CHECK de inventario y RLS
+f999c87 | 2026-11-17 | Merge pull request #13 from MarianaPereira04/feature/web-base
+d2da92a | 2026-11-17 | chore(web): traducir al español los textos de la plantilla
+d41e61e | 2026-11-17 | feat(web): sidebar con logo, navegación por rol y rutas protegidas
+8074e72 | 2026-11-17 | feat(web): pantallas de login y registro (SWR-AUTH-001/005/006)
+a48bf34 | 2026-11-17 | feat(web): sesión, cliente de la API, AuthProvider y RutaProtegida (SWR-AUTH-005/010)
+d8b9367 | 2026-11-17 | chore(web): leer el .env de la raíz y fijar una sola copia de React
+68b25fd | 2026-11-17 | chore(web): subir Next a 16.4.6 (versión exacta) por avisos de seguridad
+cf31436 | 2026-11-17 | feat(web): agregar app con layout, logos de marca y favicon
+34bcbc3 | 2026-11-17 | feat(web): aplicar tema y tipografía de marca FoodSave
+ccc17f4 | 2026-11-17 | chore(web): fijar dependencias de la plantilla y configurar Vitest
+a1ff6f1 | 2026-11-17 | chore(web): copiar componentes reutilizables de la plantilla sin Clerk ni demos
+ce859fb | 2026-11-17 | Merge pull request #12 from MarianaPereira04/feature/auth-api
+f6f9dc2 | 2026-11-17 | docs(claude): exigir RLS en toda migración que cree una tabla
+abbcd4d | 2026-11-17 | feat(db): activar RLS sin políticas en todas las tablas
+e3973c9 | 2026-11-17 | feat(seed): semillas de comercio, sedes y usuarios protegidas con SEED_ALLOW_RESET
+fb40c1e | 2026-11-17 | feat(auth): registro, login y guards de sesión y rol (SWR-AUTH-001/005/006/010)
+adb2cc2 | 2026-11-17 | feat(auth): hash de contraseñas con bcryptjs (SWR-SEC-002, UNIT-08)
+2bb6ea6 | 2026-11-17 | feat(db): agregar esquema Prisma de usuarios, comercios y sedes con migración inicial
+90f24f4 | 2026-11-17 | Merge pull request #11 from MarianaPereira04/docs/registro-aprobacion
+939ac70 | 2026-11-17 | docs(plan): registra las rondas de aprobación del plan
+215f92d | 2026-11-17 | Merge pull request #10 from MarianaPereira04/chore/monorepo-base
+88c6fbc | 2026-11-17 | docs(plan): registrar desviaciones de chore/monorepo-base
+02233a1 | 2026-11-17 | feat(logs): agregar logs JSON por petición, eventos, redact y errores comunes
+434db1a | 2026-11-17 | chore(api): crear app NestJS con Jest y ts-jest
+f335a04 | 2026-11-17 | chore(repo): configurar workspaces npm, TypeScript 5.9 y variables de entorno
+c33f409 | 2026-11-17 | Merge pull request #9 from MarianaPereira04/docs/ajuste-contrato-matriz
+e8975c6 | 2026-11-17 | docs(srs): actualiza alcance v5, SWR seleccionados, log y CLAUDE.md
+46683bf | 2026-11-17 | docs(calidad): actualiza matriz de pruebas a v2 con cambios del plan
+30c95cd | 2026-11-17 | Merge pull request #8 from MarianaPereira04/docs/plan-aprobado
+c2f8a46 | 2026-11-17 | docs(plan): aclarar que el paso 0b lo ejecutó el equipo
+8e96da6 | 2026-11-17 | docs(plan): agregar plan aprobado y componentes de la plantilla
+e2a537f | 2026-11-17 | Merge pull request #7 from MarianaPereira04/docs/plan-desarrollo
+05769b1 | 2026-11-17 | docs(plan): agrega plan de referencia y prompts para Claude Code
+26820bc | 2026-11-17 | docs(plan): agrega CLAUDE.md y SWR seleccionados como contexto para la IA
+edfe44f | 2026-11-17 | Merge pull request #6 from MarianaPereira04/docs/identidad-visual
+e669f92 | 2026-11-17 | docs(marca): agrega ficha de marca, tokens de color y prompt de apariencia
+25eb293 | 2026-11-17 | docs(marca): agrega logo de FoodSave en SVG y PNG
+ee60eb6 | 2026-11-17 | Merge pull request #5 from MarianaPereira04/docs/matriz-pruebas
+d523b04 | 2026-11-17 | docs(srs): registra dependencia de listados de reservas en alcance v4
+9e1ad78 | 2026-11-17 | docs(calidad): agrega matriz de pruebas con 49 casos en estado pendiente
+33fbcdd | 2026-11-17 | Merge pull request #4 from MarianaPereira04/docs/verificacion-validacion
+4ede718 | 2026-11-17 | docs(srs): ajustes AJ-01 a AJ-08 de la verificación y validación (v0.3)
+19050c3 | 2026-11-17 | Merge pull request #3 from MarianaPereira04/docs/verificacion-validacion
+e53a80e | 2026-11-17 | docs(calidad): agregar plan de calidad, verificación y validación de requisitos
+5c50f46 | 2026-11-17 | Merge pull request #2 from MarianaPereira04/docs/alcance-trazabilidad
+2ee0922 | 2026-11-17 | docs(srs): agregar alcance del MVP y trazabilidad de 15 SWR
+e2b668a | 2026-11-17 | Merge pull request #1 from MarianaPereira04/docs/srs-v0.2
+dc112ad | 2026-11-17 | docs(srs): corregir regla de bloqueo, trazabilidad de autenticación y nombre (v0.2)
+485dec7 | 2026-11-17 | docs(srs): agregar SRS v0.1 como línea base
+1379ae4 | 2026-11-17 | chore: agregar plantilla de pull request
+7ad84f3 | 2026-11-17 | chore: estructura base del repositorio y dossier de calidad
+79a2e68 | 2026-11-17 | Initial commit
