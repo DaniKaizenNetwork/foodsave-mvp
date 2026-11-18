@@ -1,8 +1,8 @@
 /**
  * Semillas de FoodSave. Uso: `npm run seed` (demo) o `npm run seed:test` (sin ofertas).
  * Borra y recarga los datos: solo se ejecuta si el .env local tiene SEED_ALLOW_RESET=true.
- * Las ofertas de la semilla demo («Pan integral», «Tajada de torta») se añaden con el
- * modelo de ofertas en feature/ofertas-api.
+ * `demo` además publica dos ofertas («Pan integral» y «Tajada de torta»); `test` deja el
+ * sistema sin ofertas para que las pruebas creen las suyas.
  */
 import { PrismaPg } from '@prisma/adapter-pg';
 import { config } from 'dotenv';
@@ -30,8 +30,10 @@ async function main(): Promise<void> {
   });
 
   try {
-    // Orden por dependencias; las ramas siguientes añaden aquí reservas, ofertas y horarios.
+    // Orden por dependencias; la rama de reservas añade aquí las reservas al principio.
     await prisma.$transaction([
+      prisma.oferta.deleteMany(),
+      prisma.horarioSede.deleteMany(),
       prisma.usuario.deleteMany(),
       prisma.sede.deleteMany(),
       prisma.comercio.deleteMany(),
@@ -50,7 +52,18 @@ async function main(): Promise<void> {
       include: { sedes: true },
     });
     const sedeCentro = comercio.sedes.find((sede) => sede.nombre === 'Sede Centro');
-    if (!sedeCentro) throw new Error('No se creó la Sede Centro');
+    const sedeNorte = comercio.sedes.find((sede) => sede.nombre === 'Sede Norte');
+    if (!sedeCentro || !sedeNorte) throw new Error('No se crearon las sedes');
+
+    // Sede Norte no es 24 h: horario los 7 días (0 = domingo ... 6 = sábado), cierre 20:00.
+    await prisma.horarioSede.createMany({
+      data: Array.from({ length: 7 }, (_, diaSemana) => ({
+        sedeId: sedeNorte.id,
+        diaSemana,
+        apertura: '08:00',
+        cierre: '20:00',
+      })),
+    });
 
     const passwordHash = await hashPassword(process.env.SEED_PASSWORD as string);
     await prisma.usuario.createMany({
@@ -63,7 +76,28 @@ async function main(): Promise<void> {
       ],
     });
 
-    console.log(`Semilla «${modo}» cargada: 1 comercio, 2 sedes y 5 usuarios.`);
+    let ofertas = 0;
+    if (modo === 'demo') {
+      const dueno = await prisma.usuario.findUniqueOrThrow({ where: { correo: 'dueno@foodsave.test' } });
+      const vencimiento = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000); // dentro de 3 días
+      await prisma.oferta.createMany({
+        data: [
+          { producto: 'Pan integral', precioOriginal: 8000, precioOferta: 4000, cantidad: 5 },
+          { producto: 'Tajada de torta', precioOriginal: 6000, precioOferta: 3000, cantidad: 3 },
+        ].map((oferta) => ({
+          ...oferta,
+          disponible: oferta.cantidad,
+          vencimiento,
+          sedeId: sedeCentro.id,
+          creadoPorId: dueno.id,
+        })),
+      });
+      ofertas = 2;
+    }
+
+    console.log(
+      `Semilla «${modo}» cargada: 1 comercio, 2 sedes (7 horarios en Sede Norte), 5 usuarios y ${ofertas} ofertas.`,
+    );
   } finally {
     await prisma.$disconnect();
   }
