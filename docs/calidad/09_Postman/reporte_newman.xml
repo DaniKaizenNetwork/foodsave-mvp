@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="FoodSave API (API-01 a API-08)" tests="12" time="2.983">
+  <testsuite name="00 Preparación / Login dueño (apoyo)" id="7dc1ca93-354f-4fac-ad63-39380fec5255" timestamp="2026-11-18T05:20:17.334Z" tests="1" failures="0" errors="0" time="0.570">
+    <testcase name="HTTP 200" time="0.570" classname="00PreparacionLoginDuenoApoyo"/>
+  </testsuite>
+  <testsuite name="00 Preparación / Login consumidor (apoyo)" id="ebcad4d6-42de-464b-847b-55f640282b74" timestamp="2026-11-18T05:20:17.334Z" tests="1" failures="0" errors="0" time="0.157">
+    <testcase name="HTTP 200" time="0.157" classname="00PreparacionLoginConsumidorApoyo"/>
+  </testsuite>
+  <testsuite name="00 Preparación / GET /sedes/mias (sedeId del dueño)" id="e16df403-0d77-4da6-8947-1bdc64f57b70" timestamp="2026-11-18T05:20:17.334Z" tests="2" failures="0" errors="0" time="0.185">
+    <testcase name="HTTP 200" time="0.185" classname="00PreparacionGetSedesMiasSedeIdDelDueno"/>
+    <testcase name="el dueño tiene al menos una sede" time="0.185" classname="00PreparacionGetSedesMiasSedeIdDelDueno"/>
+  </testsuite>
+  <testsuite name="API-01 Login exitoso / POST /auth/login consumidor1" id="dc0d5c44-930b-4b4e-8051-068c9d7d4ca1" timestamp="2026-11-18T05:20:17.334Z" tests="5" failures="0" errors="0" time="0.174">
+    <testcase name="HTTP 200" time="0.174" classname="Api01LoginExitosoPostAuthLoginConsumidor1"/>
+    <testcase name="devuelve accessToken (JWT)" time="0.174" classname="Api01LoginExitosoPostAuthLoginConsumidor1"/>
+    <testcase name="usuario.rol = CONSUMIDOR" time="0.174" classname="Api01LoginExitosoPostAuthLoginConsumidor1"/>
+    <testcase name="usuario trae id y nombre" time="0.174" classname="Api01LoginExitosoPostAuthLoginConsumidor1"/>
+    <testcase name="la respuesta no incluye contraseña ni hash" time="0.174" classname="Api01LoginExitosoPostAuthLoginConsumidor1"/>
+  </testsuite>
+  <testsuite name="API-02 Login con contraseña incorrecta / POST /auth/login clave incorrecta" id="ab39cb47-60f7-43a6-a28f-6afec55b28eb" timestamp="2026-11-18T05:20:17.334Z" tests="4" failures="0" errors="0" time="0.156">
+    <testcase name="HTTP 401" time="0.156" classname="Api02LoginConContrasenaIncorrectaPostAuthLoginClaveIncorrecta"/>
+    <testcase name="código de error CREDENCIALES_INVALIDAS" time="0.156" classname="Api02LoginConContrasenaIncorrectaPostAuthLoginClaveIncorrecta"/>
+    <testcase name="mensaje exacto «Credenciales inválidas»" time="0.156" classname="Api02LoginConContrasenaIncorrectaPostAuthLoginClaveIncorrecta"/>
+    <testcase name="no devuelve accessToken" time="0.156" classname="Api02LoginConContrasenaIncorrectaPostAuthLoginClaveIncorrecta"/>
+  </testsuite>
+  <testsuite name="API-02 Login con contraseña incorrecta / POST /auth/login correo inexistente" id="559c7c2b-1809-4f78-9435-6ad764a9285b" timestamp="2026-11-18T05:20:17.334Z" tests="4" failures="0" errors="0" time="0.156">
+    <testcase name="HTTP 401" time="0.156" classname="Api02LoginConContrasenaIncorrectaPostAuthLoginCorreoInexistente"/>
+    <testcase name="código de error CREDENCIALES_INVALIDAS" time="0.156" classname="Api02LoginConContrasenaIncorrectaPostAuthLoginCorreoInexistente"/>
+    <testcase name="mensaje exacto «Credenciales inválidas»" time="0.156" classname="Api02LoginConContrasenaIncorrectaPostAuthLoginCorreoInexistente"/>
+    <testcase name="respuesta idéntica a la de clave incorrecta (no revela si el correo existe)" time="0.156" classname="Api02LoginConContrasenaIncorrectaPostAuthLoginCorreoInexistente"/>
+  </testsuite>
+  <testsuite name="API-03 Consumidor no puede publicar / POST /ofertas con token de CONSUMIDOR" id="4f0c106f-1961-4fef-be40-00b000c5d060" timestamp="2026-11-18T05:20:17.334Z" tests="4" failures="0" errors="0" time="0.186">
+    <testcase name="HTTP 403" time="0.186" classname="Api03ConsumidorNoPuedePublicarPostOfertasConTokenDeConsumidor"/>
+    <testcase name="código de error PROHIBIDO" time="0.186" classname="Api03ConsumidorNoPuedePublicarPostOfertasConTokenDeConsumidor"/>
+    <testcase name="mensaje exacto «No tienes permiso para realizar esta acción»" time="0.186" classname="Api03ConsumidorNoPuedePublicarPostOfertasConTokenDeConsumidor"/>
+    <testcase name="no se creó ninguna oferta" time="0.186" classname="Api03ConsumidorNoPuedePublicarPostOfertasConTokenDeConsumidor"/>
+  </testsuite>
+  <testsuite name="API-04 Publicar oferta (dueño) / POST /ofertas válida" id="f3d6af90-c7da-486d-aa52-58df491019e8" timestamp="2026-11-18T05:20:17.334Z" tests="5" failures="0" errors="0" time="0.663">
+    <testcase name="HTTP 201" time="0.663" classname="Api04PublicarOfertaDuenoPostOfertasValida"/>
+    <testcase name="estado ACTIVA" time="0.663" classname="Api04PublicarOfertaDuenoPostOfertasValida"/>
+    <testcase name="disponible = cantidad = 10" time="0.663" classname="Api04PublicarOfertaDuenoPostOfertasValida"/>
+    <testcase name="precioOferta (4000) &lt; precioOriginal (8000)" time="0.663" classname="Api04PublicarOfertaDuenoPostOfertasValida"/>
+    <testcase name="pertenece a la sede indicada" time="0.663" classname="Api04PublicarOfertaDuenoPostOfertasValida"/>
+  </testsuite>
+  <testsuite name="API-05 Precio de oferta no menor al original / POST /ofertas precioOferta = precioOriginal" id="39bf9b8d-7083-4c6f-b760-6b5070e85d64" timestamp="2026-11-18T05:20:17.334Z" tests="4" failures="0" errors="0" time="0.185">
+    <testcase name="HTTP 400" time="0.185" classname="Api05PrecioDeOfertaNoMenorAlOriginalPostOfertasPrecioOfertaPrecioOriginal"/>
+    <testcase name="código de error PRECIO_INVALIDO" time="0.185" classname="Api05PrecioDeOfertaNoMenorAlOriginalPostOfertasPrecioOfertaPrecioOriginal"/>
+    <testcase name="mensaje exacto «El precio de oferta debe ser menor al precio original»" time="0.185" classname="Api05PrecioDeOfertaNoMenorAlOriginalPostOfertasPrecioOfertaPrecioOriginal"/>
+    <testcase name="no se creó la oferta" time="0.185" classname="Api05PrecioDeOfertaNoMenorAlOriginalPostOfertasPrecioOfertaPrecioOriginal"/>
+  </testsuite>
+  <testsuite name="API-06 Reservar descuenta inventario / POST /reservas cantidad 2" id="180aa93c-0583-4004-a5ee-0b736775ee49" timestamp="2026-11-18T05:20:17.334Z" tests="5" failures="0" errors="0" time="0.184">
+    <testcase name="HTTP 201" time="0.184" classname="Api06ReservarDescuentaInventarioPostReservasCantidad2"/>
+    <testcase name="estado RESERVADA y cantidad 2" time="0.184" classname="Api06ReservarDescuentaInventarioPostReservasCantidad2"/>
+    <testcase name="plazoRetiro &lt;= createdAt + 12 h" time="0.184" classname="Api06ReservarDescuentaInventarioPostReservasCantidad2"/>
+    <testcase name="plazoRetiro &lt;= vencimiento de la oferta" time="0.184" classname="Api06ReservarDescuentaInventarioPostReservasCantidad2"/>
+    <testcase name="el inventario baja de 10 a 8" time="0.184" classname="Api06ReservarDescuentaInventarioPostReservasCantidad2"/>
+  </testsuite>
+  <testsuite name="API-07 Stock insuficiente / POST /reservas cantidad 999" id="3e1444bf-8437-4cb2-b986-a74d251a0fd1" timestamp="2026-11-18T05:20:17.334Z" tests="4" failures="0" errors="0" time="0.183">
+    <testcase name="HTTP 409" time="0.183" classname="Api07StockInsuficientePostReservasCantidad999"/>
+    <testcase name="código de error STOCK_INSUFICIENTE" time="0.183" classname="Api07StockInsuficientePostReservasCantidad999"/>
+    <testcase name="mensaje exacto «No hay unidades suficientes»" time="0.183" classname="Api07StockInsuficientePostReservasCantidad999"/>
+    <testcase name="el inventario sigue en 8 (no hubo descuento)" time="0.183" classname="Api07StockInsuficientePostReservasCantidad999"/>
+  </testsuite>
+  <testsuite name="API-08 Cancelar reserva devuelve inventario / POST /reservas/:id/cancelar" id="5dc1351d-e1a8-4787-8385-6c3be6a3c960" timestamp="2026-11-18T05:20:17.334Z" tests="3" failures="0" errors="0" time="0.184">
+    <testcase name="HTTP 200" time="0.184" classname="Api08CancelarReservaDevuelveInventarioPostReservasIdCancelar"/>
+    <testcase name="estado CANCELADA" time="0.184" classname="Api08CancelarReservaDevuelveInventarioPostReservasIdCancelar"/>
+    <testcase name="el inventario vuelve a 10" time="0.184" classname="Api08CancelarReservaDevuelveInventarioPostReservasIdCancelar"/>
+  </testsuite>
+</testsuites>
