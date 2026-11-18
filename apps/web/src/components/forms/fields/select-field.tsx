@@ -32,6 +32,8 @@ export function SelectField({
       </FieldLabel>
       <Select
         name={field.name}
+        // `items` hace que el valor seleccionado se muestre con su etiqueta (no con el id)
+        items={options.map(({ value, label }) => ({ value, label }))}
         value={field.state.value}
         onValueChange={(value) => field.handleChange(value ?? '')}
       >
