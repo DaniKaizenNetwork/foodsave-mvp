@@ -14,7 +14,7 @@ loadEnvConfig(
 const nextConfig: NextConfig = {
   // La URL de la API se incrusta de forma explícita en el código del navegador.
   env: {
-    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL ?? ''
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'
   },
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production'
