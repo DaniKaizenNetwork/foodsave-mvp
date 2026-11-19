@@ -1,0 +1,138 @@
+/*
+ * FoodSave · tema único de la interfaz.
+ * Valores tomados de docs/marca/brand-tokens.css y aplicados sobre las variables
+ * que usan los componentes de la plantilla (shadcn/ui). Sustituye a los 10 temas
+ * de la plantilla. Primario #14683B · secundario #F7B21A · acento #F26B21.
+ */
+
+:root {
+  /* Paleta de marca (referencia directa) */
+  --fs-primary: #14683b; /* verde bosque */
+  --fs-secondary: #f7b21a; /* amarillo miel */
+  --fs-accent: #f26b21; /* naranja */
+  --fs-leaf: #6baf3d;
+  --fs-cream: #fff7e6;
+  --fs-brown: #3d2514;
+
+  /* Tokens semánticos (modo claro) */
+  --background: #fffbf2;
+  --foreground: #3d2514;
+  --card: #ffffff;
+  --card-foreground: #3d2514;
+  --popover: #ffffff;
+  --popover-foreground: #3d2514;
+  --primary: #14683b;
+  --primary-foreground: #ffffff;
+  --secondary: #f7b21a;
+  --secondary-foreground: #3d2514;
+  --accent: #fde7c8;
+  --accent-foreground: #3d2514;
+  --muted: #f5eedd;
+  --muted-foreground: #6b5646;
+  --destructive: #c62828;
+  --destructive-foreground: #ffffff;
+  --border: #e9dfc9;
+  --input: #e9dfc9;
+  --ring: #14683b;
+
+  /* Sidebar oscuro de marca */
+  --sidebar: #0f4f2e;
+  --sidebar-foreground: #fff7e6;
+  --sidebar-primary: #f7b21a;
+  --sidebar-primary-foreground: #3d2514;
+  --sidebar-accent: #14683b;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: color-mix(in oklab, #fff7e6 14%, transparent);
+  --sidebar-ring: #f7b21a;
+
+  --radius: 0.75rem;
+}
+
+.dark {
+  --background: #10201a;
+  --foreground: #fff7e6;
+  --card: #16291f;
+  --card-foreground: #fff7e6;
+  --popover: #16291f;
+  --popover-foreground: #fff7e6;
+  --primary: #6baf3d;
+  --primary-foreground: #10201a;
+  --secondary: #f7b21a;
+  --secondary-foreground: #3d2514;
+  --accent: #1e3a2a;
+  --accent-foreground: #fff7e6;
+  --muted: #1b3025;
+  --muted-foreground: #c9bba3;
+  --destructive: #e57373;
+  --destructive-foreground: #10201a;
+  --border: #284637;
+  --input: #284637;
+  --ring: #6baf3d;
+
+  --sidebar: #0b1712;
+  --sidebar-foreground: #fff7e6;
+}
+
+/* Tokens → utilidades de Tailwind (bg-primary, text-muted-foreground, font-heading...) */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Colores de marca que no tienen rol shadcn: bg-brand-accent, text-brand-leaf... */
+  --color-brand-accent: var(--fs-accent);
+  --color-brand-leaf: var(--fs-leaf);
+  --color-brand-cream: var(--fs-cream);
+  --color-brand-brown: var(--fs-brown);
+
+  /* Tipografía: Nunito (cuerpo) y Fredoka (títulos), cargadas con next/font en el layout */
+  --font-sans: var(--font-nunito), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-fredoka), ui-sans-serif, system-ui, sans-serif;
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+@layer base {
+  body {
+    font-family: var(--font-sans);
+  }
+
+  /* Títulos con Fredoka (h1–h4 y los títulos de card, diálogo y hoja de la plantilla) */
+  h1,
+  h2,
+  h3,
+  h4,
+  [data-slot='card-title'],
+  [data-slot='dialog-title'],
+  [data-slot='alert-dialog-title'],
+  [data-slot='sheet-title'] {
+    font-family: var(--font-heading);
+  }
+}

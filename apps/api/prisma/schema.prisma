@@ -1,0 +1,118 @@
+// FoodSave · modelo de datos (PostgreSQL / Supabase)
+// Usuarios, comercios, sedes, horarios, ofertas y reservas.
+
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Rol {
+  CONSUMIDOR
+  PERSONAL
+  DUENO
+  ADMIN // solo dato precargado; su panel queda fuera del MVP
+}
+
+enum EstadoComercio {
+  APROBADO
+}
+
+enum EstadoReserva {
+  RESERVADA
+  ENTREGADA
+  CANCELADA
+  EXPIRADA // sin uso en el MVP (no hay expiración automática)
+}
+
+enum EstadoOferta {
+  ACTIVA
+  CERRADA
+  AGOTADA
+}
+
+model Comercio {
+  id     String         @id @default(uuid())
+  nombre String
+  estado EstadoComercio @default(APROBADO)
+  sedes  Sede[]
+  duenos Usuario[]
+}
+
+model Sede {
+  id         String        @id @default(uuid())
+  comercioId String
+  comercio   Comercio      @relation(fields: [comercioId], references: [id])
+  nombre     String
+  direccion  String
+  abierta24h Boolean       @default(false)
+  personal   Usuario[]
+  horarios   HorarioSede[]
+  ofertas    Oferta[]
+}
+
+model Usuario {
+  id           String    @id @default(uuid())
+  nombre       String
+  correo       String    @unique // se guarda normalizado en minúsculas
+  passwordHash String
+  rol          Rol
+  sedeId       String? // solo PERSONAL
+  sede         Sede?     @relation(fields: [sedeId], references: [id])
+  comercioId   String? // solo DUENO
+  comercio     Comercio? @relation(fields: [comercioId], references: [id])
+  createdAt    DateTime  @default(now())
+  ofertas      Oferta[]
+  reservas     Reserva[]
+}
+
+/// Horario de atención por día. Solo se usa si la sede no es 24 h (`abierta24h = false`).
+model HorarioSede {
+  id        String @id @default(uuid())
+  sedeId    String
+  sede      Sede   @relation(fields: [sedeId], references: [id])
+  diaSemana Int // 0 = domingo ... 6 = sábado (igual que Date.getDay())
+  apertura  String // "HH:mm", hora local de Bogotá
+  cierre    String // "HH:mm", hora local de Bogotá
+
+  @@unique([sedeId, diaSemana])
+}
+
+model Oferta {
+  id             String       @id @default(uuid())
+  sedeId         String
+  sede           Sede         @relation(fields: [sedeId], references: [id])
+  producto       String
+  precioOriginal Int // pesos colombianos, sin decimales
+  precioOferta   Int
+  cantidad       Int
+  disponible     Int // inventario actual; la CHECK de la migración exige 0 <= disponible <= cantidad
+  vencimiento    DateTime
+  estado         EstadoOferta @default(ACTIVA)
+  creadoPorId    String
+  creadoPor      Usuario      @relation(fields: [creadoPorId], references: [id])
+  createdAt      DateTime     @default(now())
+  reservas       Reserva[]
+
+  @@index([sedeId, estado])
+}
+
+model Reserva {
+  id            String        @id @default(uuid())
+  ofertaId      String
+  oferta        Oferta        @relation(fields: [ofertaId], references: [id])
+  consumidorId  String
+  consumidor    Usuario       @relation(fields: [consumidorId], references: [id])
+  cantidad      Int // la CHECK de la migración exige cantidad > 0
+  estado        EstadoReserva @default(RESERVADA)
+  plazoRetiro   DateTime // el menor entre 12 h desde la reserva, el cierre de la sede y el vencimiento
+  createdAt     DateTime      @default(now())
+  actualizadaAt DateTime      @updatedAt
+
+  @@index([consumidorId])
+  @@index([ofertaId, estado])
+}

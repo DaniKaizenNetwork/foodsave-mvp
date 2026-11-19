@@ -1,0 +1,17 @@
+.DS_Store
+node_modules/
+dist/
+coverage/
+*.log
+.env
+.env.*
+!.env.example
+*.tsbuildinfo
+apps/api/src/generated/
+apps/web/.next/
+apps/web/next-env.d.ts
+apps/web/AGENTS.md
+
+# Playwright
+e2e/test-results/
+e2e/playwright-report/

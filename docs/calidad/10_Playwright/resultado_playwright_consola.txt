@@ -1,0 +1,10 @@
+
+Running 5 tests using 1 worker
+
+  ✓  1 tests/flujo-cancelacion.spec.ts:17:7 › E2E-02: reservar y cancelar › el consumidor reserva 2, cancela y el inventario vuelve a 5 (10.0s)
+  ✓  2 tests/flujo-principal.spec.ts:9:5 › E2E-01: el dueño publica, el consumidor reserva y el personal entrega (14.2s)
+  ✓  3 tests/oferta-validacion.spec.ts:5:5 › E2E-05: el precio de oferta igual al original se rechaza y, corregido, se publica (5.2s)
+  ✓  4 tests/registro.spec.ts:4:5 › E2E-03: una persona se registra e inicia sesión por primera vez (3.8s)
+  ✓  5 tests/seguridad.spec.ts:5:5 › E2E-04: contraseña errada no inicia sesión y la ruta protegida exige sesión (2.9s)
+
+  5 passed (41.2s)

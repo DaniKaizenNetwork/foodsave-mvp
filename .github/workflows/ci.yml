@@ -1,0 +1,56 @@
+name: CI
+
+# Quality Gate de FoodSave: se ejecuta en cada pull request hacia develop o main.
+# Si cualquier paso falla, el workflow falla y el PR no debe fusionarse.
+# Postman y Playwright NO se ejecutan aquí: necesitan la base de datos y secretos
+# (ver docs/calidad/11_CI_Quality_Gate/README.md).
+on:
+  pull_request:
+    branches: [develop, main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  calidad:
+    name: Quality Gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      # Valores ficticios: ninguna prueba ni compilación se conecta a la base de datos ni a la API.
+      DATABASE_URL: postgresql://ci:ci@localhost:5432/ci
+      DIRECT_URL: postgresql://ci:ci@localhost:5432/ci
+      JWT_SECRET: secreto-solo-para-ci
+      NEXT_PUBLIC_API_URL: http://localhost:3001
+      NEXT_TELEMETRY_DISABLED: '1'
+    steps:
+      - name: Descargar el código
+        uses: actions/checkout@v4
+
+      - name: Instalar Node.js 22 (con caché de npm)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Instalar dependencias (npm ci)
+        run: npm ci
+
+      - name: Lint (ESLint, falla con errores)
+        run: npm run lint
+
+      - name: Typecheck (api y web)
+        run: npm run typecheck
+
+      - name: Pruebas unitarias de la API con umbral de cobertura del dominio (Jest)
+        run: npm run test:cov -w apps/api
+
+      - name: Pruebas de componentes de la web (Vitest + RTL)
+        run: npm test -w apps/web
+
+      - name: Build (api y web)
+        run: npm run build

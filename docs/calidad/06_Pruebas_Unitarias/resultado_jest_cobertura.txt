@@ -1,0 +1,229 @@
+PASS src/ofertas/ofertas.service.spec.ts
+  OfertasService.publicar (SWR-OFE-001, SWR-OFE-003, SWR-AUTH-010)
+    ✓ crea la oferta ACTIVA con disponible igual a la cantidad en una sede del usuario (3 ms)
+    ✓ rechaza con PROHIBIDO una sede que no es del usuario y no crea nada
+    ✓ rechaza con el código de validarOferta y no crea nada (1 ms)
+    ✓ comprueba la sede antes que las reglas de negocio (403 antes que 400)
+
+PASS src/common/logging/request-logger.middleware.spec.ts
+  RequestLoggerMiddleware
+    ✓ escribe una línea JSON con método, ruta plantilla, estado y duración, y sin datos sensibles (6 ms)
+    ✓ registra rechazos 4xx con nivel warn y el código de error (1 ms)
+    ✓ usa la ruta pedida cuando solo coincidió el comodín del middleware (404)
+
+PASS src/seed/seed-guard.spec.ts
+  verificarPermisoReinicio (seed protegida)
+    ✓ permite el reinicio solo con SEED_ALLOW_RESET=true y SEED_PASSWORD (1 ms)
+    ✓ bloquea el reinicio si SEED_ALLOW_RESET es undefined
+    ✓ bloquea el reinicio si SEED_ALLOW_RESET es ""
+    ✓ bloquea el reinicio si SEED_ALLOW_RESET es "false"
+    ✓ bloquea el reinicio si SEED_ALLOW_RESET es "TRUE"
+    ✓ bloquea el reinicio si SEED_ALLOW_RESET es "1"
+    ✓ bloquea el reinicio si falta SEED_PASSWORD
+
+PASS src/reservas/verificar-cancelacion.spec.ts
+  verificarCancelacion (SWR-RES-011)
+    ✓ UNIT-09: permite cancelar una reserva RESERVADA con el plazo vigente (ahora 18:00, plazo 20:00)
+    ✓ UNIT-10: rechaza con el plazo vencido, incluida la frontera (ahora = plazo y ahora > plazo) (1 ms)
+    ✓ UNIT-11: rechaza si la reserva no está RESERVADA (ENTREGADA o CANCELADA) aunque el plazo esté vigente
+    ✓ una reserva EXPIRADA tampoco se puede cancelar
+    ✓ frontera inferior: un milisegundo antes del plazo todavía se puede cancelar
+
+PASS src/reservas/cierre-sede.spec.ts
+  calcularCierreSede (SWR-RES-005)
+    ✓ UNIT-12: el cierre de una sede 24 h es null
+    ✓ UNIT-13: el cierre de una sede con horario es el del día de la reserva en hora de Bogotá
+    ✓ usa el día de la semana de Bogotá aunque en UTC ya sea el día siguiente
+    ✓ respeta los minutos del cierre
+    ✓ una sede no 24 h sin horario para ese día es un error de configuración (6 ms)
+
+PASS src/reservas/verificar-reserva.spec.ts
+  verificarReserva (SWR-RES-001, SWR-RES-002)
+    ✓ UNIT-07: una cantidad mayor al stock se rechaza con STOCK_INSUFICIENTE (1 ms)
+    ✓ WB-02: cantidad 0 se rechaza con CANTIDAD_INVALIDA
+    ✓ WB-03: una oferta CERRADA se rechaza con OFERTA_NO_ACTIVA
+    ✓ WB-04: frontera, vencimiento igual a ahora se rechaza con PRODUCTO_VENCIDO
+    ✓ WB-05: frontera, cantidad igual al disponible se acepta
+    ✓ rechaza la cantidad -1 con CANTIDAD_INVALIDA
+    ✓ rechaza la cantidad 1.5 con CANTIDAD_INVALIDA (1 ms)
+    ✓ rechaza la cantidad NaN con CANTIDAD_INVALIDA
+    ✓ rechaza la cantidad Infinity con CANTIDAD_INVALIDA
+    ✓ una oferta AGOTADA se rechaza con OFERTA_NO_ACTIVA
+    ✓ una oferta ACTIVA con 0 unidades se rechaza con STOCK_INSUFICIENTE
+    ✓ prioridad entre errores: cantidad, luego oferta no activa, luego vencido, luego stock
+
+PASS src/reservas/plazo-retiro.spec.ts
+  calcularPlazoRetiro (SWR-RES-005)
+    ✓ UNIT-01 / TC-RES-002: limita las 12 horas (07:00, cierre 20:00, vence 23:00 → 19:00) (1 ms)
+    ✓ UNIT-02 / TC-RES-001: limita el cierre de la sede (17:00, cierre 20:00, vence 23:00 → 20:00)
+    ✓ UNIT-03 / TC-RES-003: limita el vencimiento tras el cierre (10:00, cierre 21:00, vence 15:00 → 15:00)
+    ✓ WB-01: limita el vencimiento sin que limite el cierre (08:00, cierre 22:00, vence 15:00 → 15:00)
+    ✓ WB-07: sede 24 h (cierre null) no limita (07:00, vence 23:00 → 19:00)
+    ✓ sede 24 h con vencimiento cercano: limita el vencimiento
+    ✓ frontera: cierre igual al límite de 12 h (19:00 = 19:00) devuelve ese mismo instante
+    ✓ no modifica las fechas recibidas y devuelve una fecha nueva
+
+PASS src/reservas/dto/reserva.dto.spec.ts
+  validarCuerpoReserva (forma del cuerpo de POST /reservas)
+    ✓ acepta ofertaId y cantidad numérica (3 ms)
+    ✓ rechaza con CAMPOS_INVALIDOS: sin cuerpo
+    ✓ rechaza con CAMPOS_INVALIDOS: ofertaId ausente
+    ✓ rechaza con CAMPOS_INVALIDOS: ofertaId vacío (1 ms)
+    ✓ rechaza con CAMPOS_INVALIDOS: ofertaId numérico
+    ✓ rechaza con CAMPOS_INVALIDOS: cantidad como texto
+    ✓ rechaza con CAMPOS_INVALIDOS: cantidad ausente
+    ✓ rechaza con CAMPOS_INVALIDOS: cantidad nula
+    ✓ deja pasar 0, negativa y decimal: los rechaza verificarReserva con CANTIDAD_INVALIDA
+
+PASS src/common/logging/redact.spec.ts
+  redact (UNIT-16 · SWR-SEC-002)
+    ✓ oculta contraseñas, hash, tokens y Authorization y conserva el resto (1 ms)
+    ✓ oculta también los campos sensibles anidados y en arreglos, sin importar mayúsculas
+    ✓ no modifica el objeto original
+
+PASS src/ofertas/dto/oferta.dto.spec.ts
+  validarCuerpoOferta (forma del cuerpo de POST /ofertas)
+    ✓ acepta un cuerpo completo, recorta el producto y convierte el vencimiento a fecha (5 ms)
+    ✓ rechaza con CAMPOS_INVALIDOS: producto vacío (1 ms)
+    ✓ rechaza con CAMPOS_INVALIDOS: sedeId ausente
+    ✓ rechaza con CAMPOS_INVALIDOS: cantidad como texto (1 ms)
+    ✓ rechaza con CAMPOS_INVALIDOS: precioOferta como texto
+    ✓ rechaza con CAMPOS_INVALIDOS: precioOriginal nulo
+    ✓ rechaza con CAMPOS_INVALIDOS: vencimiento ausente
+    ✓ rechaza con CAMPOS_INVALIDOS: vencimiento no es una fecha
+    ✓ rechaza con CAMPOS_INVALIDOS: precio decimal (no cabe en la columna entera)
+    ✓ rechaza con CAMPOS_INVALIDOS: precio fuera del rango de la columna (1 ms)
+    ✓ rechaza con CAMPOS_INVALIDOS: cuerpo vacío
+    ✓ deja pasar cantidad cero, negativa o decimal y precios negativos: lo decide validarOferta / limitación conocida
+    ✓ acepta un vencimiento pasado (Decisión #6: no se valida que sea futuro)
+
+PASS src/reservas/reservas.service.spec.ts
+  ReservasService.crear (SWR-RES-001, 002, 003, 005)
+    ✓ crea la reserva RESERVADA, descuenta el inventario con un UPDATE condicional y calcula el plazo (8 ms)
+    ✓ sede con horario: el cierre limita el plazo (17:00, cierre 20:00 → 20:00) (1 ms)
+    ✓ el vencimiento limita el plazo (10:00, vence 15:00 → 15:00) (1 ms)
+    ✓ rechaza (cantidad mayor al stock) con { disponible: 5 } y no toca el inventario ni crea la reserva (2 ms)
+    ✓ rechaza (cantidad 0) con {} y no toca el inventario ni crea la reserva (1 ms)
+    ✓ rechaza (cantidad decimal) con {} y no toca el inventario ni crea la reserva (3 ms)
+    ✓ rechaza (oferta cerrada) con { estado: 'CERRADA' } y no toca el inventario ni crea la reserva
+    ✓ rechaza (producto vencido) con { vencimiento: 2026-11-17T14:00:00.000Z } y no toca el inventario ni crea la reserva (25 ms)
+    ✓ oferta inexistente: OFERTA_NO_ENCONTRADA
+    ✓ consumidor que ya no existe (token de una semilla anterior): NO_AUTENTICADO, sin evento de rechazo (1 ms)
+    ✓ el UPDATE no actualiza ninguna fila (otro se llevó las unidades): STOCK_INSUFICIENTE y no crea la reserva (1 ms)
+    ✓ dos reservas simultáneas sobre la última unidad: una se crea y la otra recibe STOCK_INSUFICIENTE (1 ms)
+    ✓ muchas reservas simultáneas nunca superan el inventario (5 unidades, 12 intentos de 1) (2 ms)
+    ✓ una sede no 24 h sin horario para el día es un error de configuración y no descuenta stock (1 ms)
+
+PASS src/ofertas/validar-oferta.spec.ts
+  validarOferta (SWR-OFE-003)
+    ✓ UNIT-04: rechaza cantidad cero con CANTIDAD_INVALIDA (1 ms)
+    ✓ UNIT-05: rechaza un precio de oferta igual al original con PRECIO_INVALIDO
+    ✓ UNIT-06: acepta el mínimo permitido (cantidad 1, precio de oferta 7999 < 8000) (1 ms)
+    ✓ WB-06: rechaza una cantidad decimal (1.5) con CANTIDAD_INVALIDA
+    ✓ evalúa la cantidad antes que el precio cuando ambos fallan (1 ms)
+    ✓ rechaza una cantidad negativa (-1) con CANTIDAD_INVALIDA
+
+PASS src/auth/roles.guard.spec.ts
+  RolesGuard (UNIT-15 · SWR-AUTH-010)
+    ✓ permite al DUENO (2 ms)
+    ✓ deniega al CONSUMIDOR con PROHIBIDO (7 ms)
+    ✓ exige sesión cuando la ruta pide un rol y no hay usuario
+    ✓ sin @Roles() basta con estar autenticado (1 ms)
+
+PASS src/reservas/reservas-cierre.service.spec.ts
+  ReservasService.cancelar (SWR-RES-011)
+    ✓ cancela, devuelve las unidades al inventario y registra el evento (16 ms)
+    ✓ una reserva ajena responde igual que una inexistente (404) y no toca nada (2 ms)
+    ✓ rechaza con RESERVA_NO_CANCELABLE si ya está ENTREGADA y no devuelve unidades
+    ✓ rechaza con RESERVA_NO_CANCELABLE si ya está CANCELADA y no devuelve unidades
+    ✓ rechaza con el plazo vencido, incluida la frontera, y no devuelve unidades (1 ms)
+    ✓ dos cancelaciones simultáneas de la misma reserva: una se aplica y las unidades vuelven una sola vez (1 ms)
+    ✓ cancelar y entregar a la vez: gana uno solo y el inventario es coherente con el resultado (1 ms)
+  ReservasService.entregar (SWR-RES-015)
+    ✓ marca la reserva ENTREGADA en una sede del usuario y registra el evento con el consumidor (1 ms)
+    ✓ una reserva de otra sede se rechaza con PROHIBIDO y no cambia de estado
+    ✓ una reserva inexistente responde RESERVA_NO_ENCONTRADA (1 ms)
+    ✓ una reserva ENTREGADA no se puede entregar (RESERVA_NO_ENTREGABLE)
+    ✓ una reserva CANCELADA no se puede entregar (RESERVA_NO_ENTREGABLE) (1 ms)
+    ✓ se puede entregar aunque el plazo ya haya vencido (no hay expiración automática en el MVP)
+    ✓ dos entregas simultáneas: una se aplica y la otra recibe RESERVA_NO_ENTREGABLE
+  listados de reservas (dependencia implícita d)
+    ✓ listarMias filtra por el consumidor (1 ms)
+    ✓ listarDeSede sin sedeId usa todas las sedes del usuario
+    ✓ listarDeSede con sedeId propio y estado filtra por ambos
+    ✓ listarDeSede con una sede ajena responde PROHIBIDO y no consulta reservas
+    ✓ listarDeSede de un usuario sin sedes devuelve una lista vacía sin consultar
+
+PASS src/auth/auth.service.spec.ts
+  AuthService.login (UNIT-14 · SWR-AUTH-006)
+    ✓ responde igual con correo inexistente que con contraseña errada (364 ms)
+
+PASS src/auth/password.spec.ts
+  hashPassword / verifyPassword (UNIT-08 · SWR-SEC-002)
+    ✓ guarda la contraseña con hash y sal, y verifyPassword distingue la clave correcta (464 ms)
+
+-------------------------------|---------|----------|---------|---------|-------------------
+File                           | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+-------------------------------|---------|----------|---------|---------|-------------------
+All files                      |   55.27 |    60.25 |   47.31 |   55.82 |                   
+ src                           |       0 |      100 |       0 |       0 |                   
+  app.module.ts                |       0 |      100 |       0 |       0 | 1-26              
+ src/auth                      |   42.24 |    43.33 |   43.75 |   41.83 |                   
+  auth.controller.ts           |       0 |      100 |       0 |       0 | 1-20              
+  auth.module.ts               |       0 |        0 |       0 |       0 | 1-34              
+  auth.service.ts              |   66.66 |     62.5 |   66.66 |      64 | 26-37,52-54       
+  jwt.guard.ts                 |       0 |        0 |       0 |       0 | 1-48              
+  password.ts                  |     100 |      100 |     100 |     100 |                   
+  public.decorator.ts          |       0 |      100 |       0 |       0 | 1-6               
+  roles.decorator.ts           |     100 |      100 |     100 |     100 |                   
+  roles.guard.ts               |     100 |      100 |     100 |     100 |                   
+ src/auth/dto                  |       0 |        0 |       0 |       0 |                   
+  auth.dto.ts                  |       0 |        0 |       0 |       0 | 1-38              
+ src/common                    |      50 |      100 |     100 |    62.5 |                   
+  common.module.ts             |       0 |      100 |     100 |       0 | 1-10              
+  errores.ts                   |     100 |      100 |     100 |     100 |                   
+ src/common/filters            |       0 |        0 |       0 |       0 |                   
+  http-exception.filter.ts     |       0 |        0 |       0 |       0 | 1-41              
+ src/common/logging            |   95.34 |    85.18 |   88.88 |   94.73 |                   
+  event-logger.service.ts      |      90 |       50 |   66.66 |    87.5 | 30                
+  redact.ts                    |   93.75 |     90.9 |     100 |   93.33 | 28                
+  request-logger.middleware.ts |     100 |    85.71 |     100 |     100 | 28,36             
+ src/generated/prisma          |   71.42 |      100 |     100 |   71.42 |                   
+  browser.ts                   |       0 |      100 |     100 |       0 | 16-19             
+  client.ts                    |     100 |      100 |     100 |     100 |                   
+  enums.ts                     |     100 |      100 |     100 |     100 |                   
+ src/generated/prisma/internal |   61.66 |      100 |   14.28 |   61.66 |                   
+  class.ts                     |   53.84 |      100 |   14.28 |   53.84 | 42-44,48-52       
+  prismaNamespace.ts           |     100 |      100 |     100 |     100 |                   
+  prismaNamespaceBrowser.ts    |       0 |      100 |     100 |       0 | 18-170            
+ src/ofertas                   |   46.75 |    35.71 |   33.33 |   47.61 |                   
+  ofertas.controller.ts        |       0 |        0 |       0 |       0 | 1-24              
+  ofertas.module.ts            |       0 |      100 |     100 |       0 | 1-12              
+  ofertas.service.ts           |    92.3 |    66.66 |      75 |    90.9 | 78-79             
+  sedes.controller.ts          |       0 |      100 |       0 |       0 | 1-14              
+  sedes.service.ts             |   42.85 |        0 |       0 |      40 | 13-35             
+  validar-oferta.ts            |     100 |      100 |     100 |     100 |                   
+ src/ofertas/dto               |   96.15 |       95 |     100 |     100 |                   
+  oferta.dto.ts                |   96.15 |       95 |     100 |     100 | 51                
+ src/prisma                    |   46.66 |      100 |       0 |   45.45 |                   
+  prisma.module.ts             |       0 |      100 |     100 |       0 | 1-9               
+  prisma.service.ts            |      70 |      100 |       0 |    62.5 | 10-18             
+ src/reservas                  |   76.96 |    83.33 |      68 |   77.09 |                   
+  cierre-sede.ts               |     100 |      100 |     100 |     100 |                   
+  plazo-retiro.ts              |     100 |      100 |     100 |     100 |                   
+  reservas.controller.ts       |       0 |        0 |       0 |       0 | 1-68              
+  reservas.module.ts           |       0 |      100 |     100 |       0 | 1-11              
+  reservas.service.ts          |   98.91 |    93.18 |     100 |     100 | 62,161,248        
+  verificar-cancelacion.ts     |     100 |      100 |     100 |     100 |                   
+  verificar-reserva.ts         |     100 |      100 |     100 |     100 |                   
+ src/reservas/dto              |     100 |      100 |     100 |     100 |                   
+  reserva.dto.ts               |     100 |      100 |     100 |     100 |                   
+ src/seed                      |   13.04 |    22.22 |   14.28 |   13.95 |                   
+  seed-guard.ts                |     100 |      100 |     100 |     100 |                   
+  seed.ts                      |       0 |        0 |       0 |       0 | 7-109             
+-------------------------------|---------|----------|---------|---------|-------------------
+Test Suites: 16 passed, 16 total
+Tests:       114 passed, 114 total
+Snapshots:   0 total
+Time:        4.101 s
+Ran all test suites.

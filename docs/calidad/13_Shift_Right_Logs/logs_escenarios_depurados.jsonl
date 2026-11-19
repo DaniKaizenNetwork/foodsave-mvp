@@ -1,0 +1,15 @@
+{"ts":"2026-11-18T14:54:47.870Z","nivel":"info","metodo":"GET","ruta":"/ofertas","estado":200,"duracionMs":563}
+{"ts":"2026-11-18T14:54:48.071Z","nivel":"info","tipo":"evento","evento":"LOGIN_OK","usuarioId":"<usuario-consumidor1>","rol":"CONSUMIDOR"}
+{"ts":"2026-11-18T14:54:48.072Z","nivel":"info","metodo":"POST","ruta":"/auth/login","estado":200,"duracionMs":175}
+{"ts":"2026-11-18T14:54:49.151Z","nivel":"info","tipo":"evento","evento":"RESERVA_CREADA","reservaId":"<reserva>","ofertaId":"<oferta>","usuarioId":"<usuario-consumidor1>","cantidad":1}
+{"ts":"2026-11-18T14:54:49.152Z","nivel":"info","metodo":"POST","ruta":"/reservas","estado":201,"duracionMs":1073,"usuarioId":"<usuario-consumidor1>"}
+{"ts":"2026-11-18T14:54:49.963Z","nivel":"info","tipo":"evento","evento":"RESERVA_CANCELADA","reservaId":"<reserva>","ofertaId":"<oferta>","usuarioId":"<usuario-consumidor1>","cantidad":1}
+{"ts":"2026-11-18T14:54:49.964Z","nivel":"info","metodo":"POST","ruta":"/reservas/:id/cancelar","estado":200,"duracionMs":753,"usuarioId":"<usuario-consumidor1>"}
+{"ts":"2026-11-18T14:54:50.154Z","nivel":"warn","tipo":"evento","evento":"LOGIN_FALLIDO","motivo":"CREDENCIALES_INVALIDAS"}
+{"ts":"2026-11-18T14:54:50.155Z","nivel":"warn","metodo":"POST","ruta":"/auth/login","estado":401,"duracionMs":173,"codigoError":"CREDENCIALES_INVALIDAS"}
+{"ts":"2026-11-18T14:54:50.162Z","nivel":"warn","metodo":"POST","ruta":"/reservas","estado":400,"duracionMs":0,"usuarioId":"<usuario-consumidor1>","codigoError":"CAMPOS_INVALIDOS"}
+{"ts":"2026-11-18T14:54:50.354Z","nivel":"info","metodo":"GET","ruta":"/ofertas","estado":200,"duracionMs":188}
+{"ts":"2026-11-18T14:54:50.553Z","nivel":"info","metodo":"GET","ruta":"/ofertas","estado":200,"duracionMs":187}
+{"ts":"2026-11-18T14:54:50.756Z","nivel":"info","metodo":"GET","ruta":"/ofertas","estado":200,"duracionMs":186}
+{"ts":"2026-11-18T14:54:50.954Z","nivel":"info","metodo":"GET","ruta":"/ofertas","estado":200,"duracionMs":187}
+{"ts":"2026-11-18T14:54:51.160Z","nivel":"info","metodo":"GET","ruta":"/ofertas","estado":200,"duracionMs":188}

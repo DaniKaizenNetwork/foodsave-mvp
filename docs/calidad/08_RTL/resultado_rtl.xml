@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="12" failures="0" errors="0" time="0.850900749">
+    <testsuite name="src/components/ListaOfertas.test.tsx" timestamp="2026-11-18T05:23:34.707Z" hostname="192.168.1.16" tests="4" failures="0" errors="0" skipped="0" time="0.114494334">
+        <testcase classname="src/components/ListaOfertas.test.tsx" name="ListaOfertas (SWR-BUS-001, SWR-BUS-005) &gt; RTL-06: mientras la API responde muestra «Cargando ofertas…»" time="0.034343333">
+        </testcase>
+        <testcase classname="src/components/ListaOfertas.test.tsx" name="ListaOfertas (SWR-BUS-001, SWR-BUS-005) &gt; RTL-07: sin ofertas muestra «No hay ofertas disponibles»" time="0.011153625">
+        </testcase>
+        <testcase classname="src/components/ListaOfertas.test.tsx" name="ListaOfertas (SWR-BUS-001, SWR-BUS-005) &gt; RTL-08: con dos ofertas muestra producto, precio y unidades disponibles de cada una" time="0.026182458">
+        </testcase>
+        <testcase classname="src/components/ListaOfertas.test.tsx" name="ListaOfertas (SWR-BUS-001, SWR-BUS-005) &gt; RTL-09: al buscar «pan» consulta la API con q=pan y actualiza la URL" time="0.0412185">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/components/LoginForm.test.tsx" timestamp="2026-11-18T05:23:34.708Z" hostname="192.168.1.16" tests="2" failures="0" errors="0" skipped="0" time="0.265758541">
+        <testcase classname="src/components/LoginForm.test.tsx" name="LoginForm (SWR-AUTH-005, SWR-AUTH-006) &gt; RTL-03: con credenciales válidas guarda la sesión y navega a /ofertas" time="0.168764375">
+        </testcase>
+        <testcase classname="src/components/LoginForm.test.tsx" name="LoginForm (SWR-AUTH-005, SWR-AUTH-006) &gt; RTL-04: con credenciales inválidas muestra «Credenciales inválidas» y no navega" time="0.095738209">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/components/OfertaForm.test.tsx" timestamp="2026-11-18T05:23:34.708Z" hostname="192.168.1.16" tests="1" failures="0" errors="0" skipped="0" time="0.124292208">
+        <testcase classname="src/components/OfertaForm.test.tsx" name="OfertaForm (SWR-OFE-001, SWR-OFE-003) &gt; RTL-10: con precio de oferta igual al original muestra el error de precio y no envía" time="0.122870208">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/components/RegisterForm.test.tsx" timestamp="2026-11-18T05:23:34.708Z" hostname="192.168.1.16" tests="2" failures="0" errors="0" skipped="0" time="0.18450675">
+        <testcase classname="src/components/RegisterForm.test.tsx" name="RegisterForm (SWR-AUTH-001) &gt; RTL-01: con los campos vacíos muestra los tres mensajes obligatorios y no llama a la API" time="0.063882958">
+        </testcase>
+        <testcase classname="src/components/RegisterForm.test.tsx" name="RegisterForm (SWR-AUTH-001) &gt; RTL-02: con datos válidos registra a la persona y muestra «Cuenta creada correctamente»" time="0.118607042">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/components/ReservaForm.test.tsx" timestamp="2026-11-18T05:23:34.708Z" hostname="192.168.1.16" tests="2" failures="0" errors="0" skipped="0" time="0.129157833">
+        <testcase classname="src/components/ReservaForm.test.tsx" name="ReservaForm (SWR-RES-001, SWR-RES-002, SWR-RES-003, SWR-RES-005) &gt; RTL-11: si no hay unidades suficientes (409) muestra «No hay unidades suficientes» y no confirma" time="0.09517475">
+        </testcase>
+        <testcase classname="src/components/ReservaForm.test.tsx" name="ReservaForm (SWR-RES-001, SWR-RES-002, SWR-RES-003, SWR-RES-005) &gt; RTL-12: deshabilita el botón mientras envía y luego muestra «Reserva confirmada» con el plazo" time="0.032426375">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/components/RutaProtegida.test.tsx" timestamp="2026-11-18T05:23:34.709Z" hostname="192.168.1.16" tests="1" failures="0" errors="0" skipped="0" time="0.032691083">
+        <testcase classname="src/components/RutaProtegida.test.tsx" name="RutaProtegida (SWR-AUTH-010, lado cliente) &gt; RTL-05: un CONSUMIDOR en una ruta de DUENO/PERSONAL ve «No tienes permiso…» y no ve el contenido" time="0.031150208">
+        </testcase>
+    </testsuite>
+</testsuites>
