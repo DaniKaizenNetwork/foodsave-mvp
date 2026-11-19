@@ -1,3 +1,7 @@
+ae9c443 | 2026-11-18 | Merge pull request #30 from MarianaPereira04/chore/preparar-despliegue
+cac49f7 | 2026-11-18 | chore(despliegue): URL de la API y CORS desde variables de entorno con valor local por defecto
+fbbb30a | 2026-11-18 | Merge pull request #29 from MarianaPereira04/docs/cierre-final
+6c907f1 | 2026-11-18 | docs: cierre final con README, ficha de marca, hallazgo H-20 e informe
 c1c5c73 | 2026-11-18 | Merge pull request #28 from MarianaPereira04/docs/dossier-final
 418a5a8 | 2026-11-18 | docs(calidad): dossier final con matriz, ISO 25010, defectos, trazabilidad e informe
 dbf14a2 | 2026-11-18 | Merge pull request #27 from MarianaPereira04/docs/explicaciones-codigo
