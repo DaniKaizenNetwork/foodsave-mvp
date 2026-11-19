@@ -1,7 +1,7 @@
 import { obtenerToken } from '@/lib/auth/sesion-storage';
 
-/** URL base de la API NestJS (NEXT_PUBLIC_API_URL, sin barra final). */
-const BASE_URL = (process.env.NEXT_PUBLIC_API_URL ?? '').replace(/\/$/, '');
+/** URL base de la API NestJS (NEXT_PUBLIC_API_URL, sin barra final); por defecto, la API local. */
+const BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001').replace(/\/$/, '');
 
 /** Se emite cuando la API rechaza el token de una sesión guardada (401 NO_AUTENTICADO). */
 export const EVENTO_SESION_EXPIRADA = 'foodsave:sesion-expirada';
