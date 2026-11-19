@@ -1,0 +1,70 @@
+
+> @foodsave/api@0.1.0 test:cov
+> jest --coverage
+
+-------------------------------|---------|----------|---------|---------|-------------------
+File                           | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+-------------------------------|---------|----------|---------|---------|-------------------
+All files                      |   57.79 |    64.43 |   51.61 |   58.41 |                   
+ src                           |       0 |      100 |       0 |       0 |                   
+  app.module.ts                |       0 |      100 |       0 |       0 | 1-26              
+ src/auth                      |   42.24 |    43.33 |   43.75 |   41.83 |                   
+  auth.controller.ts           |       0 |      100 |       0 |       0 | 1-20              
+  auth.module.ts               |       0 |        0 |       0 |       0 | 1-34              
+  auth.service.ts              |   66.66 |     62.5 |   66.66 |      64 | 26-37,52-54       
+  jwt.guard.ts                 |       0 |        0 |       0 |       0 | 1-48              
+  password.ts                  |     100 |      100 |     100 |     100 |                   
+  public.decorator.ts          |       0 |      100 |       0 |       0 | 1-6               
+  roles.decorator.ts           |     100 |      100 |     100 |     100 |                   
+  roles.guard.ts               |     100 |      100 |     100 |     100 |                   
+ src/auth/dto                  |     100 |       90 |     100 |     100 |                   
+  auth.dto.ts                  |     100 |       90 |     100 |     100 | 37                
+ src/common                    |      50 |      100 |     100 |    62.5 |                   
+  common.module.ts             |       0 |      100 |     100 |       0 | 1-10              
+  errores.ts                   |     100 |      100 |     100 |     100 |                   
+ src/common/filters            |       0 |        0 |       0 |       0 |                   
+  http-exception.filter.ts     |       0 |        0 |       0 |       0 | 1-41              
+ src/common/logging            |   97.67 |    88.88 |   88.88 |   97.36 |                   
+  event-logger.service.ts      |      90 |       50 |   66.66 |    87.5 | 30                
+  redact.ts                    |     100 |      100 |     100 |     100 |                   
+  request-logger.middleware.ts |     100 |    85.71 |     100 |     100 | 28,36             
+ src/generated/prisma          |   71.42 |      100 |     100 |   71.42 |                   
+  browser.ts                   |       0 |      100 |     100 |       0 | 16-19             
+  client.ts                    |     100 |      100 |     100 |     100 |                   
+  enums.ts                     |     100 |      100 |     100 |     100 |                   
+ src/generated/prisma/internal |   61.66 |      100 |   14.28 |   61.66 |                   
+  class.ts                     |   53.84 |      100 |   14.28 |   53.84 | 42-44,48-52       
+  prismaNamespace.ts           |     100 |      100 |     100 |     100 |                   
+  prismaNamespaceBrowser.ts    |       0 |      100 |     100 |       0 | 18-170            
+ src/ofertas                   |   46.75 |    35.71 |   33.33 |   47.61 |                   
+  ofertas.controller.ts        |       0 |        0 |       0 |       0 | 1-24              
+  ofertas.module.ts            |       0 |      100 |     100 |       0 | 1-12              
+  ofertas.service.ts           |    92.3 |    66.66 |      75 |    90.9 | 78-79             
+  sedes.controller.ts          |       0 |      100 |       0 |       0 | 1-14              
+  sedes.service.ts             |   42.85 |        0 |       0 |      40 | 13-35             
+  validar-oferta.ts            |     100 |      100 |     100 |     100 |                   
+ src/ofertas/dto               |   96.15 |       95 |     100 |     100 |                   
+  oferta.dto.ts                |   96.15 |       95 |     100 |     100 | 51                
+ src/prisma                    |   46.66 |      100 |       0 |   45.45 |                   
+  prisma.module.ts             |       0 |      100 |     100 |       0 | 1-9               
+  prisma.service.ts            |      70 |      100 |       0 |    62.5 | 10-18             
+ src/reservas                  |   76.96 |    83.33 |      68 |   77.09 |                   
+  cierre-sede.ts               |     100 |      100 |     100 |     100 |                   
+  plazo-retiro.ts              |     100 |      100 |     100 |     100 |                   
+  reservas.controller.ts       |       0 |        0 |       0 |       0 | 1-68              
+  reservas.module.ts           |       0 |      100 |     100 |       0 | 1-11              
+  reservas.service.ts          |   98.91 |    93.18 |     100 |     100 | 62,161,248        
+  verificar-cancelacion.ts     |     100 |      100 |     100 |     100 |                   
+  verificar-reserva.ts         |     100 |      100 |     100 |     100 |                   
+ src/reservas/dto              |     100 |      100 |     100 |     100 |                   
+  reserva.dto.ts               |     100 |      100 |     100 |     100 |                   
+ src/seed                      |   13.04 |    22.22 |   14.28 |   13.95 |                   
+  seed-guard.ts                |     100 |      100 |     100 |     100 |                   
+  seed.ts                      |       0 |        0 |       0 |       0 | 7-109             
+-------------------------------|---------|----------|---------|---------|-------------------
+
+Test Suites: 21 passed, 21 total
+Tests:       145 passed, 145 total
+Snapshots:   0 total
+Time:        29.107 s
+Ran all test suites.

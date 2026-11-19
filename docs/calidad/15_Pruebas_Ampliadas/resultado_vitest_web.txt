@@ -1,0 +1,33 @@
+
+ RUN  v5.1.0 <repo>/apps/web
+
+ ✓ src/lib/validar-y-formato.ampliadas.test.ts > validarFormularioOferta · pruebas ampliadas > AMP-27: un formulario completo y correcto no tiene errores 6ms
+ ✓ src/lib/validar-y-formato.ampliadas.test.ts > validarFormularioOferta · pruebas ampliadas > AMP-28: misma regla que la API: precio de oferta igual al original se rechaza 1ms
+ ✓ src/lib/validar-y-formato.ampliadas.test.ts > validarFormularioOferta · pruebas ampliadas > AMP-29: un precio con decimales (en pesos) se rechaza 0ms
+ ✓ src/lib/validar-y-formato.ampliadas.test.ts > validarFormularioOferta · pruebas ampliadas > AMP-30: la cantidad 0 se rechaza 1ms
+ ✓ src/lib/validar-y-formato.ampliadas.test.ts > validarFormularioOferta · pruebas ampliadas > AMP-30: la cantidad -1 se rechaza 0ms
+ ✓ src/lib/validar-y-formato.ampliadas.test.ts > validarFormularioOferta · pruebas ampliadas > AMP-30: la cantidad 2.5 se rechaza 1ms
+ ✓ src/lib/validar-y-formato.ampliadas.test.ts > validarFormularioOferta · pruebas ampliadas > AMP-30: la cantidad undefined se rechaza 0ms
+ ✓ src/lib/validar-y-formato.ampliadas.test.ts > validarFormularioOferta · pruebas ampliadas > AMP-31: un producto solo con espacios cuenta como vacío 1ms
+ ✓ src/lib/validar-y-formato.ampliadas.test.ts > validarFormularioOferta · pruebas ampliadas > AMP-32: un vencimiento con texto inválido se marca como obligatorio 1ms
+ ✓ src/lib/validar-y-formato.ampliadas.test.ts > validarFormularioOferta · pruebas ampliadas > AMP-33 (caracterización, hallazgo): igual que la API, acepta un precio de oferta negativo 1ms
+ ✓ src/lib/validar-y-formato.ampliadas.test.ts > formatPrecio · pruebas ampliadas > AMP-34: muestra pesos colombianos sin decimales y con punto de miles 48ms
+ ✓ src/lib/validar-y-formato.ampliadas.test.ts > formatPrecio · pruebas ampliadas > AMP-35: redondea los decimales (no se muestran centavos) 0ms
+ ✓ src/components/RutaProtegida.test.tsx > RutaProtegida (SWR-AUTH-010, lado cliente) > RTL-05: un CONSUMIDOR en una ruta de DUENO/PERSONAL ve «No tienes permiso…» y no ve el contenido 167ms
+ ✓ src/components/ReservaForm.test.tsx > ReservaForm (SWR-RES-001, SWR-RES-002, SWR-RES-003, SWR-RES-005) > RTL-11: si no hay unidades suficientes (409) muestra «No hay unidades suficientes» y no confirma 456ms
+ ✓ src/components/ReservaForm.test.tsx > ReservaForm (SWR-RES-001, SWR-RES-002, SWR-RES-003, SWR-RES-005) > RTL-12: deshabilita el botón mientras envía y luego muestra «Reserva confirmada» con el plazo 138ms
+ ✓ src/components/ListaOfertas.test.tsx > ListaOfertas (SWR-BUS-001, SWR-BUS-005) > RTL-06: mientras la API responde muestra «Cargando ofertas…» 176ms
+ ✓ src/components/ListaOfertas.test.tsx > ListaOfertas (SWR-BUS-001, SWR-BUS-005) > RTL-07: sin ofertas muestra «No hay ofertas disponibles» 54ms
+ ✓ src/components/ListaOfertas.test.tsx > ListaOfertas (SWR-BUS-001, SWR-BUS-005) > RTL-08: con dos ofertas muestra producto, precio y unidades disponibles de cada una 104ms
+ ✓ src/components/RegisterForm.test.tsx > RegisterForm (SWR-AUTH-001) > RTL-01: con los campos vacíos muestra los tres mensajes obligatorios y no llama a la API 362ms
+ ✓ src/components/OfertaForm.test.tsx > OfertaForm (SWR-OFE-001, SWR-OFE-003) > RTL-10: con precio de oferta igual al original muestra el error de precio y no envía 680ms
+ ✓ src/components/ListaOfertas.test.tsx > ListaOfertas (SWR-BUS-001, SWR-BUS-005) > RTL-09: al buscar «pan» consulta la API con q=pan y actualiza la URL 189ms
+ ✓ src/components/LoginForm.test.tsx > LoginForm (SWR-AUTH-005, SWR-AUTH-006) > RTL-03: con credenciales válidas guarda la sesión y navega a /ofertas 791ms
+ ✓ src/components/RegisterForm.test.tsx > RegisterForm (SWR-AUTH-001) > RTL-02: con datos válidos registra a la persona y muestra «Cuenta creada correctamente» 650ms
+ ✓ src/components/LoginForm.test.tsx > LoginForm (SWR-AUTH-005, SWR-AUTH-006) > RTL-04: con credenciales inválidas muestra «Credenciales inválidas» y no navega 558ms
+
+ Test Files  7 passed (7)
+      Tests  24 passed (24)
+   Start at  13:18:21
+   Duration  17.60s (import 55%, environment 29%, setup 6%, tests 5%, transform 5%)
+
