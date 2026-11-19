@@ -8,6 +8,8 @@ Plataforma web para que comercios de Neiva publiquen **productos próximos a ven
 
 Proyecto final de **Calidad de Software** · Ingeniería de Sistemas · Corporación Universitaria del Huila (CORHUILA) · Docente: Cesar Augusto Pérez Tafur · Noviembre de 2026.
 
+**MVP desplegado (ambiente de prueba):** https://foodsave-mvp-pi.vercel.app
+
 ## Equipo
 
 | Integrante |
@@ -64,6 +66,20 @@ npm run dev -w apps/web   # web en http://localhost:3000
 ```
 
 La contraseña de las cuentas de demostración se define en la variable `SEED_PASSWORD` y no está escrita en el repositorio.
+
+## Despliegue
+
+El MVP está publicado como ambiente de prueba, con la base de datos en Supabase.
+
+| Pieza | Servicio | URL |
+|---|---|---|
+| Web (Next.js) | Vercel | https://foodsave-mvp-pi.vercel.app |
+| API (NestJS) | Render | https://foodsave-mvp-45bk.onrender.com |
+
+- La API corre en el plan gratuito de Render: tras un rato sin uso se duerme y la primera petición puede tardar cerca de un minuto.
+- Variables de entorno (solo nombres, los valores se cargan en cada servicio y no están en el repositorio): API: `DATABASE_URL`, `DIRECT_URL`, `JWT_SECRET`, `CORS_ORIGIN`, `NODE_VERSION`; web: `NEXT_PUBLIC_API_URL`.
+- Mientras no se configuren, la API permite `http://localhost:3000` y la web usa `http://localhost:3001`.
+- Detalle y captura en [`docs/despliegue/`](docs/despliegue/).
 
 ## Pruebas y calidad
 
